@@ -2,7 +2,7 @@ import "lambda-ui-components/dist/main.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ClientProviders } from "./components/providers/ClientProviders";
+import { ClientProviders } from "./providers/ClientProviders";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
