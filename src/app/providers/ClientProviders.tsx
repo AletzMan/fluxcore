@@ -1,5 +1,6 @@
 "use client";
 import { LambdaConfigProvider, ThemeProvider } from "lambda-ui-components";
+import SessionProvider from "./SessionProvider";
 export function ClientProviders({ children }: { children: React.ReactNode }) {
     return (
         <LambdaConfigProvider lang="en">
@@ -10,7 +11,9 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
                 disableTransitionOnChange
                 enableColorScheme={true}
             >
-                {children}
+                <SessionProvider>
+                    {children}
+                </SessionProvider>
             </ThemeProvider>
         </LambdaConfigProvider>
     );
