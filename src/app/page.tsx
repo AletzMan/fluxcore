@@ -1,5 +1,5 @@
 "use client";
-import styles from "./page.module.css";
+import styles from "./page.module.scss";
 import { Button, Input } from "lambda-ui-components";
 
 export default function Home() {
