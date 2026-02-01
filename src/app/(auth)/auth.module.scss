@@ -9,6 +9,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
+        width: 100svw;
+        padding-top: 5em;
 
         &>div {
             display: flex;
@@ -18,9 +20,12 @@
             gap: 1em;
             margin: 3em;
             padding: 2em 3em;
+            width: 90%;
+            max-width: 25em;
             border-radius: var(--radius-box);
             border: 1px solid var(--surface-b);
             background-color: var(--surface-a);
+
 
             &>h1 {
                 margin: 0;
@@ -28,7 +33,7 @@
 
             &>p {
                 text-align: center;
-                margin: 0 0 3em 0;
+                margin: 0 0 2em 0;
             }
         }
     }
