@@ -1,14 +1,14 @@
 
 import { useAuthStore } from "@/app/store/auth.store";
 import { apiFluxCore } from "./axios-instance";
-import { User } from "@/types/models/User";
-import { LoginResponse, RegisterData } from "@/types/api/auth.types";
+import { User } from "@/typesModels/User";
+import { LoginCredentials, LoginResponse, RegisterData } from "@/typesAPI/auth.types";
 
 ///
 class AuthService {
 
-    async login(username: string, password: string): Promise<LoginResponse> {
-        const response = await apiFluxCore.post<LoginResponse>("/auth/login", { username, password });
+    async login(credentials: LoginCredentials): Promise<LoginResponse> {
+        const response = await apiFluxCore.post<LoginResponse>("/auth/login", credentials);
         const { user, accessToken } = response.data;
 
         useAuthStore.getState().setAuth(user, accessToken);

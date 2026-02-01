@@ -1,5 +1,9 @@
 import { User } from "../models/User";
 
+export interface LoginCredentials {
+    username: string;
+    password: string;
+}
 
 export interface LoginResponse {
     user: User;
