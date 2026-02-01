@@ -1,0 +1,45 @@
+.login {
+    &_layout {
+        width: 100svw;
+        height: 100svh;
+    }
+
+    &_page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+
+        &>div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 1em;
+            margin: 3em;
+            padding: 2em 3em;
+            border-radius: var(--radius-box);
+            border: 1px solid var(--surface-b);
+            background-color: var(--surface-a);
+
+            &>h1 {
+                margin: 0;
+            }
+
+            &>p {
+                text-align: center;
+                margin: 0 0 3em 0;
+            }
+        }
+    }
+
+    &_form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1em;
+        width: 100%;
+        max-width: 20em;
+    }
+}

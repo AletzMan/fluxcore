@@ -3,7 +3,7 @@ import { LambdaConfigProvider, ThemeProvider } from "lambda-ui-components";
 import SessionProvider from "./SessionProvider";
 export function ClientProviders({ children }: { children: React.ReactNode }) {
     return (
-        <LambdaConfigProvider lang="en">
+        <LambdaConfigProvider lang="en" >
             <ThemeProvider
                 defaultTheme="slate"
                 lightTheme="mint"
