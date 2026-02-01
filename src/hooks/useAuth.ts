@@ -3,26 +3,27 @@ import { authService } from '@/app/services/api/auth.service';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { LoginCredentials, RegisterData } from '@/typesAPI/auth.types';
+import { ErrorMessages } from '../lib/errors/message-errors';
 
 export function useAuth() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const { user, isAuthenticated, logout: logoutStore } = useAuthStore();
+    const { user, isAuthenticated, logout: logoutStore, setAuth } = useAuthStore();
 
     const login = async (credentials: LoginCredentials) => {
         try {
             setIsLoading(true);
             setError(null);
 
-            await authService.login(credentials);
-
-            router.push('/dashboard');
+            const response = await authService.login(credentials);
+            console.log(response);
+            router.push('/admin');
         } catch (err: any) {
-            const errorMessage = err.response?.data?.message || 'Error al iniciar sesión';
-            setError(errorMessage);
-            throw err;
+            const errorCode = err.response?.data?.code;
+            const message = ErrorMessages[errorCode];
+            setError(message);
         } finally {
             setIsLoading(false);
         }
@@ -37,8 +38,9 @@ export function useAuth() {
 
             router.push('/dashboard');
         } catch (err: any) {
-            const errorMessage = err.response?.data?.message || 'Error al registrarse';
-            setError(errorMessage);
+            const errorCode = err.response?.data?.code;
+            const message = ErrorMessages[errorCode];
+            setError(message);
             throw err;
         } finally {
             setIsLoading(false);

@@ -9,17 +9,17 @@ class AuthService {
 
     async login(credentials: LoginCredentials): Promise<LoginResponse> {
         const response = await apiFluxCore.post<LoginResponse>("/auth/login", credentials);
-        const { user, accessToken } = response.data;
+        const { data } = response.data;
 
-        useAuthStore.getState().setAuth(user, accessToken);
+        useAuthStore.getState().setAuth(data!.user, data!.accessToken);
         return response.data;
     }
 
     async register(data: RegisterData): Promise<LoginResponse> {
         const response = await apiFluxCore.post<LoginResponse>("/auth/register", data);
-        const { user, accessToken } = response.data;
+        const { data: dataResponse } = response.data;
 
-        useAuthStore.getState().setAuth(user, accessToken);
+        useAuthStore.getState().setAuth(dataResponse!.user!, dataResponse!.accessToken!);
         return response.data;
     }
 

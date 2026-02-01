@@ -1,5 +1,5 @@
 "use client";
-import { LambdaConfigProvider, ThemeProvider } from "lambda-ui-components";
+import { LambdaConfigProvider, NotificationProvider, ThemeProvider } from "lambda-ui-components";
 import SessionProvider from "./SessionProvider";
 export function ClientProviders({ children }: { children: React.ReactNode }) {
     return (
@@ -12,7 +12,9 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
                 enableColorScheme={true}
             >
                 <SessionProvider>
-                    {children}
+                    <NotificationProvider duration={5000} maxNotifications={5} placement="top-right">
+                        {children}
+                    </NotificationProvider>
                 </SessionProvider>
             </ThemeProvider>
         </LambdaConfigProvider>

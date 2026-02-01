@@ -18,9 +18,10 @@ export default function SessionProvider({ children }: { children: React.ReactNod
         // Rutas públicas que no requieren autenticación
         const publicRoutes = ['/login', '/register'];
         const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
+        const isLandingPage = pathname === '/';
 
         // Si estamos en una ruta pública, no verificar sesión
-        if (isPublicRoute) {
+        if (isPublicRoute || isLandingPage) {
             useAuthStore.getState().setLoading(false);
             return;
         }
@@ -29,13 +30,8 @@ export default function SessionProvider({ children }: { children: React.ReactNod
             // Intentar restaurar sesión
             const restored = await authService.restoreSession();
 
-            if (!restored) {
-                // No hay sesión válida, redirigir a login
-                router.push('/login');
-            }
         } catch (error) {
             console.error('Error restoring session:', error);
-            router.push('/login');
         }
     };
 
