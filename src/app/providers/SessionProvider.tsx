@@ -1,51 +1,63 @@
-import { usePathname, useRouter } from "next/navigation";
+"use client";
+
+import { usePathname } from "next/navigation";
 import { authService } from "../services/api/auth.service";
-import { apiFluxCore } from "../services/api/axios-instance";
 import { useAuthStore } from "../store/auth.store";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { Loader2 } from "lucide-react";
 
 export default function SessionProvider({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
-    const router = useRouter();
-    const { isLoading, isAuthenticated } = useAuthStore();
+    const { user, isLoading, setLoading } = useAuthStore();
+
+    // Evita que el efecto se ejecute dos veces en Desarrollo (Strict Mode)
+    const initialized = useRef(false);
 
     useEffect(() => {
-        // Solo verificar una vez al montar el componente
-        restoreSessionIfNeeded();
-    }, []);
+        const hydrate = async () => {
+            if (initialized.current) return;
+            initialized.current = true;
 
-    const restoreSessionIfNeeded = async () => {
-        // Rutas públicas que no requieren autenticación
-        const publicRoutes = ['/login', '/register'];
-        const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
-        const isLandingPage = pathname === '/';
+            const authRoutes = ['/login', '/register', '/forgot-password'];
+            const isAuthRoute = authRoutes.some(route => pathname.startsWith(route));
+            const isLandingPage = pathname === '/';
 
-        // Si estamos en una ruta pública, no verificar sesión
-        if (isPublicRoute || isLandingPage) {
-            useAuthStore.getState().setLoading(false);
-            return;
-        }
+            // 1. Si es ruta pública, liberamos el loader de inmediato
+            if (isAuthRoute || isLandingPage) {
+                setLoading(false);
+                // Intentamos cargar al usuario en "silencio" por si ya tiene sesión
+                authService.verifySession().catch(() => null);
+                return;
+            }
 
-        try {
-            // Intentar restaurar sesión
-            const restored = await authService.restoreSession();
+            // 2. Si es ruta privada, esperamos la verificación
+            try {
+                await authService.restoreSession();
+            } catch (error) {
+                console.error('Error durante la hidratación:', error);
+            } finally {
+                // 3. Pase lo que pase, apagamos el loader al final
+                setLoading(false);
+            }
+        };
 
-        } catch (error) {
-            console.error('Error restoring session:', error);
-        }
-    };
+        hydrate();
+    }, [pathname, setLoading]);
 
-    // Mostrar loading mientras verificamos
-    if (isLoading) {
+    // 4. Lógica de renderizado: 
+    // Solo bloqueamos si está cargando Y no tenemos un usuario en el store.
+    /*if (isLoading && !user) {
         return (
-            <div className="">
-                <div className=" ">
-                    <div className=""></div>
-                    <p className=" ">Cargando...</p>
+            <div className="flex h-screen w-full flex-col items-center justify-center bg-background">
+                <div className="flex flex-col items-center gap-4">
+                    <Loader2 className="h-10 w-10 animate-spin text-primary" />
+                    <p className="text-sm font-medium animate-pulse text-muted-foreground">
+                        Sincronizando RetailFlow...
+                    </p>
                 </div>
             </div>
         );
-    }
+    }*/
 
     return <>{children}</>;
 }

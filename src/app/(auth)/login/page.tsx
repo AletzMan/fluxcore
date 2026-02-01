@@ -15,16 +15,8 @@ export default function LoginPage() {
 
 
     const onSubmit = async (data: LoginCredentials) => {
-        console.log(data);
-        console.log(errors);
-        console.log(error);
-
-
         await login(data);
     };
-
-    console.log(errors);
-
 
     return (
         <div className={styles["login_page"]}>

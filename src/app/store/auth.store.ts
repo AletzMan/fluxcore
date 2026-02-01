@@ -1,15 +1,16 @@
 
-import { User } from "@/typesModels/User";
+import { AuthUser } from "@/typesAPI/auth.types";
 import { create } from "zustand";
 
 interface AuthState {
-    user: User | null;
+    user: AuthUser | null;
     accessToken: string | null;
     isAuthenticated: boolean;
     isLoading: boolean;
 
 
-    setAuth: (user: User, accessToken: string) => void;
+    setAuth: (user: AuthUser, accessToken: string) => void;
+    setUser: (user: AuthUser) => void;
     setAccessToken: (token: string) => void;
     setLoading: (loading: boolean) => void;
     logout: () => void;
@@ -27,6 +28,11 @@ export const useAuthStore = create<AuthState>()((set) => ({
             accessToken,
             isAuthenticated: true,
             isLoading: false,
+        }),
+
+    setUser: (user) =>
+        set({
+            user,
         }),
 
     setAccessToken: (accessToken) =>

@@ -6,7 +6,16 @@ export interface LoginCredentials {
     password: string;
 }
 
-export interface LoginResponse extends ApiResponse<{ user: User; accessToken: string; expiresAt: Date; }> {
+export interface AuthUser {
+    id: number;
+    username: string;
+    email: string;
+    name: string;
+    role: string;
+}
+
+
+export interface LoginResponse extends ApiResponse<{ user: AuthUser; token: string; expiresAt: Date; }> {
 
 }
 

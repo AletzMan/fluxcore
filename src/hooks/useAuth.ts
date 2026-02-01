@@ -18,7 +18,9 @@ export function useAuth() {
             setError(null);
 
             const response = await authService.login(credentials);
-            console.log(response);
+
+            if (response.data)
+                setAuth(response.data.user, response.data.token);
             router.push('/admin');
         } catch (err: any) {
             const errorCode = err.response?.data?.code;

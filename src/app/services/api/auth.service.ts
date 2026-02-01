@@ -3,15 +3,22 @@ import { useAuthStore } from "@/app/store/auth.store";
 import { apiFluxCore } from "./axios-instance";
 import { User } from "@/typesModels/User";
 import { LoginCredentials, LoginResponse, RegisterData } from "@/typesAPI/auth.types";
+import { ApiResponse } from "@/typesAPI/common.types";
+import { useAuth } from "@/hooks/useAuth";
 
 ///
 class AuthService {
 
+    private getStore() {
+        return useAuthStore.getState();
+    }
+
     async login(credentials: LoginCredentials): Promise<LoginResponse> {
         const response = await apiFluxCore.post<LoginResponse>("/auth/login", credentials);
         const { data } = response.data;
-
-        useAuthStore.getState().setAuth(data!.user, data!.accessToken);
+        if (data) {
+            this.getStore().setAuth(data!.user, data!.token);
+        }
         return response.data;
     }
 
@@ -19,7 +26,7 @@ class AuthService {
         const response = await apiFluxCore.post<LoginResponse>("/auth/register", data);
         const { data: dataResponse } = response.data;
 
-        useAuthStore.getState().setAuth(dataResponse!.user!, dataResponse!.accessToken!);
+        this.getStore().setAuth(dataResponse!.user!, dataResponse!.token!);
         return response.data;
     }
 
@@ -27,7 +34,7 @@ class AuthService {
         const response = await apiFluxCore.post<{ accessToken: string }>('/auth/refresh-token');
         const { accessToken } = response.data;
 
-        useAuthStore.getState().setAccessToken(accessToken);
+        this.getStore().setAccessToken(accessToken);
         return accessToken;
     }
 
@@ -37,23 +44,23 @@ class AuthService {
         } catch (error) {
             console.error(error);
         } finally {
-            useAuthStore.getState().logout();
+            this.getStore().logout();
         }
     }
 
     async verifySession(): Promise<User | null> {
         try {
-            const response = await apiFluxCore.get<{ user: User; accessToken?: string }>('/auth/me');
-            const { user, accessToken } = response.data;
+            const response = await apiFluxCore.get<ApiResponse<{ user: User; accessToken?: string }>>('/auth/me');
+            const result = response.data.data;
 
-            if (accessToken) {
-                useAuthStore.getState().setAccessToken(accessToken);
-            }
+            if (!result || !result.user) return null;
 
-            const currentToken = useAuthStore.getState().accessToken || accessToken;
-            useAuthStore.getState().setAuth(user, currentToken!);
+            // Si el backend envió un nuevo token en el JSON, lo guardamos.
+            // Si no, confiamos en la cookie que ya viaja en las cabeceras.
+            const token = result.accessToken || this.getStore().accessToken;
 
-            return user;
+            this.getStore().setAuth(result.user, token || "");
+            return result.user;
         } catch (error) {
             return null;
         }
@@ -61,16 +68,16 @@ class AuthService {
 
     async restoreSession(): Promise<boolean> {
         try {
-            useAuthStore.getState().setLoading(true);
+            this.getStore().setLoading(true);
             const user = await this.verifySession();
 
             return !!user;
         } catch (error) {
-            useAuthStore.getState().logout();
+            this.getStore().logout();
 
             return false;
         } finally {
-            useAuthStore.getState().setLoading(false);
+            this.getStore().setLoading(false);
         }
     }
 }
