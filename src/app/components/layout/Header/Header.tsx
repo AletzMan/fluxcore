@@ -1,5 +1,5 @@
-import { LogoFluxCoreLarge } from "../logos/LogoFluxCoreLarge";
-import styles from "./layout.module.scss";
+import { LogoFluxCoreLarge } from "../../logos/LogoFluxCoreLarge";
+import styles from "./Header.module.scss";
 import Link from "next/link";
 
 export function Header() {
