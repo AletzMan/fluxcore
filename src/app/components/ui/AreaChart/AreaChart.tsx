@@ -4,11 +4,13 @@ import { AreaChart as RechartsAreaChart, Area, XAxis, YAxis, CartesianGrid, Tool
 import { ToolTipChart } from './ToolTipChart';
 import { formatCurrency, formatPercentage } from '../../../../lib/utils/common-utils';
 import { CurveType } from 'recharts/types/shape/Curve';
+import { HeaderChart } from '../HeaderChart/HeaderChart';
+import { useRef } from 'react';
 
 
 export type AreaChartType = "porcentage" | "number" | "currency" | "decimal";
 
-interface AreaChartData {
+export interface AreaChartData {
     name: string;
     [key: string]: number | string;
 }
@@ -27,13 +29,11 @@ interface AreaChartProps {
 }
 
 export const AreaChart = ({ area, type, title, description, curveType }: AreaChartProps) => {
+    const refChart = useRef<HTMLDivElement>(null);
 
     return (
-        <div className={styles.container}>
-            <header className={styles.container_header}>
-                <h2>{title}</h2>
-                <span>{description}</span>
-            </header>
+        <div className={styles.container} ref={refChart}>
+            <HeaderChart title={title} description={description} refChart={refChart} />
             <ResponsiveContainer >
                 <RechartsAreaChart
                     className={styles.areachart}
@@ -69,6 +69,7 @@ export const AreaChart = ({ area, type, title, description, curveType }: AreaCha
                             key={index}
                             animationEasing='ease-in-out'
                             animationDuration={200}
+                            isAnimationActive={false}
                             type={curveType}
                             dataKey={group}
                             stroke={colors[index]}
@@ -82,7 +83,7 @@ export const AreaChart = ({ area, type, title, description, curveType }: AreaCha
     );
 }
 
-const colors = [
+export const colors = [
     "var(--lambda-color-cyan-500)",
     "var(--lambda-color-green-500)",
     "var(--lambda-color-yellow-500)",

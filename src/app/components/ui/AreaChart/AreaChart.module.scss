@@ -1,7 +1,6 @@
 .container {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-sm);
     width: 100%;
     height: 100%;
     border-radius: var(--radius-sm);
@@ -9,35 +8,16 @@
     background-color: var(--surface-a);
     overflow: hidden;
 
-    &_header {
-        display: flex;
-        flex-direction: column;
-        padding: var(--spacing-md) var(--spacing-lg);
-        background-color: var(--background-color);
-        background-color: var(--surface-a);
-        border-bottom: 1px solid var(--border-color);
-
-        h2 {
-            margin: 0;
-            padding: 0;
-            font-size: var(--font-size-lg);
-            font-weight: var(--font-weight-bold);
-            color: var(--foreground-title-color);
-        }
-
-        span {
-            margin: 0;
-            padding: 0;
-            font-size: var(--font-size-sm);
-            font-weight: var(--font-weight-regular);
-            color: var(--foreground-secondary-color);
-        }
-    }
 }
 
 .areachart {
     padding: var(--spacing-sm);
     height: 100%;
+    outline: none;
+
+    * {
+        outline: none;
+    }
 }
 
 .tooltip {
