@@ -1,6 +1,6 @@
 
 "use client";
-import { Avatar, Divider } from 'lambda-ui-components';
+import { Avatar, ButtonTheme, Divider, SwitchTheme } from 'lambda-ui-components';
 import { LogoFluxCoreLarge } from '../../logos/LogoFluxCoreLarge';
 import styles from './HeaderSection.module.scss';
 import { useAuth } from '@/hooks/useAuth';
@@ -34,6 +34,9 @@ export function HeaderSection({ children }: { children: React.ReactNode }) {
             <div>
                 {children}
                 <div>
+                    <div className={styles.theme}>
+                        <SwitchTheme showLabel size='small' />
+                    </div>
                     <Divider orientation="vertical" />
                     <div>
                         <span>{user?.name}</span>

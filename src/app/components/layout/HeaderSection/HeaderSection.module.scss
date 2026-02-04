@@ -10,7 +10,7 @@
     height: var(--spacing-3xl);
     padding: var(--spacing-none) var(--spacing-sm);
     background-color: var(--surface-a);
-    border-bottom: 1px solid var(--surface-b);
+    border-bottom: 1px solid var(--border-color);
     width: 100%;
 
     &>div {
@@ -46,4 +46,12 @@
             }
         }
     }
+}
+
+.theme {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    width: max-content;
 }

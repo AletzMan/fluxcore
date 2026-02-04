@@ -1,5 +1,5 @@
 .sidebar {
-    position: relative;
+    position: fixed;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -10,6 +10,7 @@
     border-right: 1px solid var(--border-color);
     transition: width 0.2s ease;
     overflow: hidden;
+    z-index: 100;
 
     &:hover {
         width: 330px;
@@ -67,7 +68,7 @@
     font-weight: 500;
     width: var(--spacing-3xl);
     font-size: var(--font-size-md);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-box);
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
