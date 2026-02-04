@@ -4,8 +4,7 @@ import { AreaChart as RechartsAreaChart, Area, XAxis, YAxis, CartesianGrid, Tool
 import { ToolTipChart } from './ToolTipChart';
 import { formatCurrency, formatPercentage } from '../../../../lib/utils/common-utils';
 import { CurveType } from 'recharts/types/shape/Curve';
-import { HeaderChart } from '../HeaderChart/HeaderChart';
-import { useRef } from 'react';
+import { DashboardCard } from '../DashboardCard/DashboardCard';
 
 
 export type AreaChartType = "porcentage" | "number" | "currency" | "decimal";
@@ -29,11 +28,10 @@ interface AreaChartProps {
 }
 
 export const AreaChart = ({ area, type, title, description, curveType }: AreaChartProps) => {
-    const refChart = useRef<HTMLDivElement>(null);
+
 
     return (
-        <div className={styles.container} ref={refChart}>
-            <HeaderChart title={title} description={description} refChart={refChart} />
+        <DashboardCard title={title} description={description}  >
             <ResponsiveContainer >
                 <RechartsAreaChart
                     className={styles.areachart}
@@ -79,7 +77,7 @@ export const AreaChart = ({ area, type, title, description, curveType }: AreaCha
                     ))}
                 </RechartsAreaChart>
             </ResponsiveContainer>
-        </div>
+        </DashboardCard>
     );
 }
 

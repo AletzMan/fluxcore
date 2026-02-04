@@ -1,9 +1,8 @@
 "use client";
-import { Pie, PieChart, PieSectorDataItem, ResponsiveContainer, Sector, Tooltip } from 'recharts';
+import { Pie, PieChart, PieSectorDataItem, ResponsiveContainer, Sector } from 'recharts';
 import styles from './DonutChart.module.scss'
 import { AreaChartData, colors } from '../AreaChart/AreaChart';
-import { HeaderChart } from '../HeaderChart/HeaderChart';
-import { useRef } from 'react';
+import { DashboardCard } from '../DashboardCard/DashboardCard';
 
 interface DonutChartProps {
     cx: string,
@@ -18,7 +17,6 @@ interface DonutChartProps {
 }
 
 export const DonutChart = (props: DonutChartProps) => {
-    const refChart = useRef<HTMLDivElement>(null);
 
     const renderActiveShape = (props: PieSectorDataItem & { isActive: boolean, index: number }) => {
         const RADIAN = Math.PI / 180;
@@ -119,8 +117,7 @@ export const DonutChart = (props: DonutChartProps) => {
     };
 
     return (
-        <div className={styles.wrapper} ref={refChart}>
-            <HeaderChart title={props.title} description={props.description} refChart={refChart} />
+        <DashboardCard title={props.title} description={props.description} >
             <ResponsiveContainer className={styles.container}>
                 <div className={styles.legend}>
                     {props.data.map((item, index) => (
@@ -132,11 +129,9 @@ export const DonutChart = (props: DonutChartProps) => {
                 </div>
                 <PieChart>
                     <Pie {...props} dataKey="value" shape={renderActiveShape} />
-                    {/*<Tooltip defaultIndex={0} />*/}
-                    {/*<RechartsHookInspector /> */}
                 </PieChart>
             </ResponsiveContainer>
-        </div>
+        </DashboardCard>
     );
 }
 

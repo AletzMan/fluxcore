@@ -1,15 +1,18 @@
+"use client";
 import { Dropdown } from 'lambda-ui-components';
-import styles from './HeaderChart.module.scss'
+import styles from './DashboardCard.module.scss'
 import { toSvg, toPng, toJpeg } from "html-to-image"
 import { DownloadIcon, SaveIcon } from 'lucide-react';
+import { useRef } from 'react';
 
-interface HeaderChartProps {
+interface DashboardCardProps {
     title: string;
     description: string;
-    refChart: React.RefObject<HTMLDivElement | null>;
+    children: React.ReactNode;
 }
 
-export const HeaderChart = ({ title, description, refChart }: HeaderChartProps) => {
+export const DashboardCard = ({ title, description, children }: DashboardCardProps) => {
+    const refChart = useRef<HTMLDivElement>(null);
 
     const handleDownload = (format: "png" | "jpeg" | "svg") => {
         if (!refChart?.current) return;
@@ -54,16 +57,21 @@ export const HeaderChart = ({ title, description, refChart }: HeaderChartProps) 
     }
 
     return (
-        <header className={styles.header}>
-            <div>
-                <h2>{title}</h2>
-                <span>{description}</span>
+        <div className={styles.container} ref={refChart}>
+            <header className={styles.header}>
+                <div>
+                    <h2>{title}</h2>
+                    <span>{description}</span>
+                </div>
+                <Dropdown icon={<DownloadIcon strokeWidth={1.8} absoluteStrokeWidth />} size="small">
+                    <Dropdown.Item icon={<SaveIcon />} text="Save as PNG" onSelectOption={() => handleDownload("png")} />
+                    <Dropdown.Item icon={<SaveIcon />} text="Save as JPEG" onSelectOption={() => handleDownload("jpeg")} />
+                    <Dropdown.Item icon={<SaveIcon />} text="Save as SVG" onSelectOption={() => handleDownload("svg")} />
+                </Dropdown>
+            </header>
+            <div className={`${styles.content} scrollBar`}>
+                {children}
             </div>
-            <Dropdown icon={<DownloadIcon strokeWidth={1.8} absoluteStrokeWidth />} size="small">
-                <Dropdown.Item icon={<SaveIcon />} text="Save as PNG" onSelectOption={() => handleDownload("png")} />
-                <Dropdown.Item icon={<SaveIcon />} text="Save as JPEG" onSelectOption={() => handleDownload("jpeg")} />
-                <Dropdown.Item icon={<SaveIcon />} text="Save as SVG" onSelectOption={() => handleDownload("svg")} />
-            </Dropdown>
-        </header>
+        </div>
     );
 }
