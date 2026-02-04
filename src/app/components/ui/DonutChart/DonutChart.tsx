@@ -4,6 +4,8 @@ import styles from './DonutChart.module.scss'
 import { DashboardCard } from '../DashboardCard/DashboardCard';
 import { COLORS } from '@/utils/constants';
 import { ChartData } from '@/typesComponents/chart';
+import { ExternalLink } from 'lucide-react';
+import { Link, Tooltip } from 'lambda-ui-components';
 
 interface DonutChartProps {
     cx: string,
@@ -118,7 +120,26 @@ export const DonutChart = (props: DonutChartProps) => {
     };
 
     return (
-        <DashboardCard title={props.title} description={props.description} >
+        <DashboardCard
+            title={props.title}
+            description={props.description}
+            headerActions={
+                <Tooltip
+                    content="Ver reporte detallado"
+                    offset={10}
+                    color="info"
+                >
+                    <Link
+                        href="/admin/dashboard/plans"
+                        variant="subtle"
+                        size="small"
+                        type="button"
+                        color="info"
+                        icon={<ExternalLink absoluteStrokeWidth />}
+                    />
+                </Tooltip>
+            }
+        >
             <ResponsiveContainer className={styles.container}>
                 <div className={styles.legend}>
                     {props.data.map((item, index) => (

@@ -7,6 +7,8 @@ import { DashboardCard } from '../DashboardCard/DashboardCard';
 import { COLORS } from '@/utils/constants';
 import { ChartGroup, ChartNumberType } from '@/typesComponents/chart';
 import { CurveType } from 'recharts/types/shape/Curve';
+import { Link, Tooltip as TooltipLambda } from 'lambda-ui-components';
+import { ExternalLink } from 'lucide-react';
 
 
 export interface AreaChartProps {
@@ -22,7 +24,26 @@ export const AreaChart = ({ data, type, title, description, curveType }: AreaCha
 
 
     return (
-        <DashboardCard title={title} description={description}  >
+        <DashboardCard
+            title={title}
+            description={description}
+            headerActions={
+                <TooltipLambda
+                    content="Ver reporte detallado"
+                    offset={10}
+                    color="info"
+                >
+                    <Link
+                        href="/admin/dashboard/mrr"
+                        variant="subtle"
+                        size="small"
+                        type="button"
+                        color="info"
+                        icon={<ExternalLink />}
+                    />
+                </TooltipLambda>
+            }
+        >
             <ResponsiveContainer debounce={10}>
                 <RechartsAreaChart
                     className={styles.areachart}

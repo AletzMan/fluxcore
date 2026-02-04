@@ -1,8 +1,9 @@
 import { DashboardCard } from "@/pp/components/ui/DashboardCard/DashboardCard";
-import { Divider, Progress } from "lambda-ui-components";
+import { Divider, Link, Progress, Tooltip } from "lambda-ui-components";
 import styles from "./SystemStatus.module.scss";
 import { BarChart } from "@/pp/components/ui/BarChart/BarChart";
 import { ChartGroup } from "@/typesComponents/chart";
+import { ExternalLink } from "lucide-react";
 
 interface SystemStatusProps {
     uptime: number;
@@ -23,7 +24,24 @@ export const SystemStatus = ({ uptime, latencyAverage, latencyMax, latencyMin }:
         }
     }
     return (
-        <DashboardCard title="Estado del sistema" description="Salud de la infraestructura">
+        <DashboardCard
+            title="Estado del sistema"
+            description="Salud de la infraestructura"
+            headerActions={
+                <Tooltip
+                    content="Ver todas las analíticas" offset={10}
+                    color="info"
+                >
+                    <Link
+                        href="/admin/tenants"
+                        icon={<ExternalLink absoluteStrokeWidth />}
+                        size="small"
+                        color="info"
+                        type="button"
+                        variant="subtle" />
+                </Tooltip>
+            }
+        >
             <div className={styles.container}>
                 <div className={styles.uptime}>
                     <h3>Estado del servidor</h3>

@@ -40,7 +40,6 @@ export default function AdminPage() {
                         <DonutChart
                             cx="50%"
                             cy="47%"
-
                             data={donutData}
                             dataKey="value"
                             fill="var(--surface-d)"
