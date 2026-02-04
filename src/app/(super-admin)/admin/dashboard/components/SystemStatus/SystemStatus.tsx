@@ -1,6 +1,8 @@
 import { DashboardCard } from "@/pp/components/ui/DashboardCard/DashboardCard";
 import { Divider, Progress } from "lambda-ui-components";
 import styles from "./SystemStatus.module.scss";
+import { BarChart } from "@/pp/components/ui/BarChart/BarChart";
+import { ChartGroup } from "@/typesComponents/chart";
 
 interface SystemStatusProps {
     uptime: number;
@@ -23,13 +25,26 @@ export const SystemStatus = ({ uptime, latencyAverage, latencyMax, latencyMin }:
     return (
         <DashboardCard title="Estado del sistema" description="Salud de la infraestructura">
             <div className={styles.container}>
-                <Progress
-                    value={uptime}
-                    variant="circle"
-                    size="large"
-                    showValue
-                    label="Disponibilidad"
-                    color="success"
+                <div className={styles.uptime}>
+                    <h2>Estado del servidor</h2>
+                    <Progress
+                        value={uptime}
+                        variant="circle"
+                        size="large"
+                        showValue
+                        label="Uptime"
+                        color="success"
+                    />
+                </div>
+                <BarChart
+                    data={errorData}
+                    title="Tasa de errores 4xx y 5xx"
+                    description="Tasa de errores por hora"
+                    type="number"
+                    barSize={15}
+                    showTooltip
+                    colors={["var(--lambda-color-yellow-600)", "var(--danger-base-color)"]}
+                    width={400}
                 />
             </div>
             <Divider spacing={1} />
@@ -53,3 +68,16 @@ export const SystemStatus = ({ uptime, latencyAverage, latencyMax, latencyMin }:
         </DashboardCard>
     );
 }
+
+const errorData: ChartGroup = {
+    data: [
+        { name: '08:00', "400": 12, "500": 2, label: "08:00 AM" },
+        { name: '10:00', "400": 45, "500": 5, label: "10:00 AM" },
+        { name: '12:00', "400": 118, "500": 12, label: "12:00 PM" },
+        { name: '14:00', "400": 84, "500": 35, label: "02:00 PM" },
+        { name: '16:00', "400": 40, "500": 8, label: "04:00 PM" },
+        { name: '18:00', "400": 15, "500": 2, label: "06:00 PM" },
+        { name: '20:00', "400": 5, "500": 0, label: "08:00 PM" },
+    ],
+    groups: ["400", "500"]
+};

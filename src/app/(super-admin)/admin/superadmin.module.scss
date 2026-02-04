@@ -1,12 +1,12 @@
 .main {
     display: flex;
     flex-direction: column;
-    height: 100svh;
+    height: calc(100svh - var(--spacing-3xl));
     width: 100svw;
-    padding-top: var(--spacing-3xl);
     overflow-y: auto;
     overflow-x: hidden;
     background-color: var(--surface-a);
+    margin-top: var(--spacing-3xl);
 }
 
 .content {

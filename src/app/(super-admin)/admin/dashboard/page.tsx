@@ -7,15 +7,16 @@ import { DonutChart } from "@/app/components/ui/DonutChart/DonutChart";
 import { RegisteredTenants, TableData } from "./components/RegisteredTenants";
 import { UsageTenants } from "./components/UsageTenants";
 import { SystemStatus } from "./components/SystemStatus/SystemStatus";
+import { ChartGroup } from "@/typesComponents/chart";
 
 export default function AdminPage() {
     return (
-        <div className={styles.container}>
+        <div className={`${styles.container} scrollBar`}>
             <header className={styles.container_header}>
                 <h1>Panel de control global</h1>
                 <span>Vista general del rendimiento del ecosistema FluxCore </span>
             </header>
-            <Divider spacing={20} />
+            <Divider spacing={10} />
             <div className={styles.container_kips}>
                 <KipCard type="revenue" value={4365.56} percentage={0.35} trend="up" />
                 <KipCard type="tenants" value={37} percentage={0.12} trend="down" />
@@ -23,12 +24,12 @@ export default function AdminPage() {
                 <KipCard type="churnRate" value={0.05} percentage={0.26} trend="down" />
                 <KipCard type="apiCalls" value={1365} />
             </div>
-            <Divider spacing={20} />
-            <div className={styles.container_wrapper}>
+            <Divider spacing={10} />
+            <div className={`${styles.container_wrapper} `}>
                 <div className={styles.container_charts}>
                     <div className={styles.container_charts_area}>
                         <AreaChart
-                            area={area}
+                            data={area}
                             type="currency"
                             title="Tendencia de crecimiento MRR"
                             description="Rendimiento en los últimos 12 meses"
@@ -39,6 +40,7 @@ export default function AdminPage() {
                         <DonutChart
                             cx="50%"
                             cy="47%"
+
                             data={donutData}
                             dataKey="value"
                             fill="var(--surface-d)"
@@ -59,22 +61,22 @@ export default function AdminPage() {
     );
 }
 
-const area: AreaChart = {
+const area: ChartGroup = {
     data: [
-        { name: 'Ene', "2025": 35, label: "Enero" },
-        { name: 'Feb', "2025": 45, label: "Febrero" },
-        { name: 'Mar', "2025": 23, label: "Marzo" },
-        { name: 'Abr', "2025": 67, label: "Abril" },
-        { name: 'May', "2025": 89, label: "Mayo" },
-        { name: 'Jun', "2025": 54, label: "Junio" },
-        { name: 'Jul', "2025": 92, label: "Julio" },
-        { name: 'Ago', "2025": 78, label: "Agosto" },
-        { name: 'Sep', "2025": 33, label: "Septiembre" },
-        { name: 'Oct', "2025": 61, label: "Octubre" },
-        { name: 'Nov', "2025": 49, label: "Noviembre" },
-        { name: 'Dic', "2025": 82, label: "Diciembre" },
+        { name: 'Ene', "2025": 12450, label: "Enero" },
+        { name: 'Feb', "2025": 13800, label: "Febrero" },
+        { name: 'Mar', "2025": 11200, label: "Marzo" },
+        { name: 'Abr', "2025": 15600, label: "Abril" },
+        { name: 'May', "2025": 18900, label: "Mayo" },
+        { name: 'Jun', "2025": 17400, label: "Junio" },
+        { name: 'Jul', "2025": 22300, label: "Julio" },
+        { name: 'Ago', "2025": 20100, label: "Agosto" },
+        { name: 'Sep', "2025": 18500, label: "Septiembre" },
+        { name: 'Oct', "2025": 21200, label: "Octubre" },
+        { name: 'Nov', "2025": 28400, label: "Noviembre" },
+        { name: 'Dic', "2025": 35900, label: "Diciembre" },
     ],
-    groups: ["2025", "2026"]
+    groups: ["2025"]
 };
 
 const donutData = [
