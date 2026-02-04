@@ -17,6 +17,7 @@ interface BarChartProps {
     colors?: string[];
     height?: number | `${number}%`;
     width?: number | `${number}%`;
+    className?: string;
 }
 
 export const BarChart = ({
@@ -29,16 +30,17 @@ export const BarChart = ({
     showTooltip,
     colors,
     height,
-    width
+    width,
+    className
 }: BarChartProps) => {
     const currentColors = colors || COLORS;
     return (
-        <div className={styles.barchart}>
+        <div className={`${styles.barchart} `}>
             <h2>{title}</h2>
             <span>{description}</span>
             <ResponsiveContainer height={height} width={width} >
                 <RechartsBarChart
-                    className={styles.barchart_chart}
+                    className={`${styles.barchart_chart}  `}
                     responsive
                     data={data.data}
                     margin={{
