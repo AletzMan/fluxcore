@@ -4,6 +4,9 @@ import styles from "./Adminpage.module.scss";
 import { KipCard } from "@/app/components/ui/KipCard/KipCard";
 import { AreaChart } from "@/app/components/ui/AreaChart/AreaChart";
 import { DonutChart } from "@/app/components/ui/DonutChart/DonutChart";
+import { RegisteredTenants, TableData } from "./components/RegisteredTenants";
+import { UsageTenants } from "./components/UsageTenants";
+import { SystemStatus } from "./components/SystemStatus/SystemStatus";
 
 export default function AdminPage() {
     return (
@@ -47,7 +50,9 @@ export default function AdminPage() {
                     </div>
                 </div>
                 <div className={styles.container_tables}>
-
+                    <RegisteredTenants data={tableData} />
+                    <UsageTenants data={usageData} />
+                    <SystemStatus {...systemStatus} />
                 </div>
             </div>
         </div>
@@ -78,3 +83,146 @@ const donutData = [
     { name: 'Pro', value: 5 },
     { name: 'Enterprise', value: 15 },
 ];
+
+const tableData: TableData[] = [
+    {
+        id: 1,
+        tenant: "Abarrotes La Esperanza",
+        plan: "Pro",
+        status: "Active",
+        revenue: 29.90
+    },
+    {
+        id: 2,
+        tenant: "Ferretería El Martillo",
+        plan: "Enterprise",
+        status: "Active",
+        revenue: 149.50
+    },
+    {
+        id: 3,
+        tenant: "Boutique Elegance",
+        plan: "Pro",
+        status: "Inactive",
+        revenue: 0.00
+    },
+    {
+        id: 4,
+        tenant: "Cafetería Central",
+        plan: "Gratis",
+        status: "Active",
+        revenue: 0.00
+    },
+    {
+        id: 5,
+        tenant: "Farmacia San Juan",
+        plan: "Enterprise",
+        status: "Trial",
+        revenue: 0.00
+    },
+    {
+        id: 6,
+        tenant: "Llantera 'El Rayo'", // Corregido: comillas simples dentro
+        plan: "Pro",
+        status: "Past Due",
+        revenue: 29.90
+    },
+    {
+        id: 7,
+        tenant: "Gimnasio 'Iron Gym'", // Corregido
+        plan: "Enterprise",
+        status: "Active",
+        revenue: 149.50
+    },
+    {
+        id: 8,
+        tenant: "Veterinaria 'Mi Mascota'", // Corregido
+        plan: "Pro",
+        status: "Canceled",
+        revenue: 0.00
+    },
+    {
+        id: 9,
+        tenant: "Restaurante 'Sabor Real'", // Corregido
+        plan: "Enterprise",
+        status: "Active",
+        revenue: 149.50
+    },
+    {
+        id: 10,
+        tenant: "Tienda de Mascotas 'Puppy'", // Corregido
+        plan: "Gratis",
+        status: "Inactive",
+        revenue: 0.00
+    }
+];
+
+const usageData = [
+    {
+        id: 1,
+        title: "Farmacia San Juan",
+        usage: 5046586572,
+        limit: 5368709120 // 5 GB (Plan Pro - 94%)
+    },
+    {
+        id: 2,
+        title: "Supermercado El Trébol",
+        usage: 13421772800,
+        limit: 21474836480 // 20 GB (Plan Enterprise - 62%)
+    },
+    {
+        id: 3,
+        title: "Ferretería El Martillo",
+        usage: 5368709120,
+        limit: 5368709120 // 5 GB (Plan Pro - 100% Agotado)
+    },
+    {
+        id: 4,
+        title: "Boutique Elegance",
+        usage: 2254857830,
+        limit: 5368709120 // 5 GB (Plan Pro - 42%)
+    },
+    {
+        id: 5,
+        title: "Cafetería Central",
+        usage: 445644800,
+        limit: 524288000 // 500 MB (Plan Gratis - 85%)
+    },
+    {
+        id: 6,
+        title: "Abarrotes La Esperanza",
+        usage: 2576980377,
+        limit: 5368709120 // 5 GB (Plan Pro)
+    },
+    {
+        id: 7,
+        title: "Carnicería Selecta",
+        usage: 1717986918,
+        limit: 5368709120 // 5 GB (Plan Pro)
+    },
+    {
+        id: 8,
+        title: "Panadería Delicia",
+        usage: 498073600,
+        limit: 524288000 // 500 MB (Plan Gratis - 95%)
+    },
+    {
+        id: 9,
+        title: "Minimarket Express",
+        usage: 1181116006,
+        limit: 5368709120 // 5 GB (Plan Pro)
+    },
+    {
+        id: 10,
+        title: "Refaccionaria García",
+        usage: 644245094,
+        limit: 5368709120 // 5 GB (Plan Pro)
+    }
+];
+
+const systemStatus = {
+    uptime: 98,
+    latencyAverage: 120,
+    latencyMax: 200,
+    latencyMin: 80
+};
