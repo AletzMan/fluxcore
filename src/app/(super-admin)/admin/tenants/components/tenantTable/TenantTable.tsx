@@ -41,7 +41,7 @@ export const TenantTable = ({ data }: TenantTableProps) => {
                     data={data!.data!}
                     size='tiny'
                     highlightOnHover
-                    pagination={data.pagination ? {
+                    pagination={data.pagination && data.pagination.totalPages > 1 ? {
                         page: data.pagination?.page,
                         totalPages: data.pagination?.totalPages,
                         totalRows: data.pagination?.totalRecords,

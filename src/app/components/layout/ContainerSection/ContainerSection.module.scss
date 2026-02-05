@@ -26,8 +26,8 @@
         height: 100%;
         padding: var(--spacing-sm);
         background-image:
-            linear-gradient(to right, var(--surface-b) 1px, transparent 1px),
-            linear-gradient(to bottom, var(--surface-b) 1px, transparent 1px),
+            linear-gradient(to right, color-mix(in srgb, var(--surface-b), transparent 48%) 1px, transparent 1px),
+            linear-gradient(to bottom, color-mix(in srgb, var(--surface-b), transparent 48%) 1px, transparent 1px),
             radial-gradient(circle at 50% 50%, var(--surface-a) 0%, transparent 70%);
         background-size: 32px 32px, 32px 32px, 100% 100%;
     }
