@@ -13,11 +13,22 @@
         h1 {
             font-size: var(--font-size-3xl);
             font-weight: var(--font-weight-bold);
+            color: var(--foreground-title-color);
         }
 
         span {
             color: var(--foreground-secondary-color);
             font-size: var(--font-size-md);
         }
+    }
+
+    &_content {
+        height: 100%;
+        padding: var(--spacing-sm);
+        background-image:
+            linear-gradient(to right, var(--surface-b) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--surface-b) 1px, transparent 1px),
+            radial-gradient(circle at 50% 50%, var(--surface-a) 0%, transparent 70%);
+        background-size: 32px 32px, 32px 32px, 100% 100%;
     }
 }

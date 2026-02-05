@@ -15,7 +15,9 @@ export const ContainerSection = ({ children, title, description }: ContainerSect
                 <span>{description}</span>
             </header>
             <Divider spacing={10} />
-            {children}
+            <div className={styles.container_content}>
+                {children}
+            </div>
         </div>
     );
 }
