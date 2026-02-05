@@ -6,7 +6,6 @@
 }
 
 * {
-    color: var(--foreground-color);
     font-family: var(--font-jost);
     margin: 0;
     padding: 0;

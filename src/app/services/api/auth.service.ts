@@ -4,8 +4,6 @@ import { apiFluxCore } from "./axios-instance";
 import { User } from "@/typesModels/User";
 import { LoginCredentials, LoginResponse, RegisterData } from "@/typesAPI/auth.types";
 import { ApiResponse } from "@/typesAPI/common.types";
-import { useAuth } from "@/hooks/useAuth";
-
 ///
 class AuthService {
 
