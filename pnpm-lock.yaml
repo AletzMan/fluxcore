@@ -21,8 +21,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       lambda-ui-components:
-        specifier: ^1.0.1
-        version: 1.0.1(prismjs@1.30.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: ^1.0.3
+        version: 1.0.3(prismjs@1.30.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       lucide-react:
         specifier: ^0.563.0
         version: 0.563.0(react@19.2.3)
@@ -1541,8 +1541,8 @@ packages:
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
-  lambda-ui-components@1.0.1:
-    resolution: {integrity: sha512-s/rUQA7FRrvzhVnp9od50h0S9lRrBSeV2uwXUPeu9ZkGNjbD527CeB564RBRfdQs8siUyDbNbOGWrQDJ1fEpmg==}
+  lambda-ui-components@1.0.3:
+    resolution: {integrity: sha512-7rawIFNnqnweTO53PyarCnAoh6eT2b/d0xfDC8V/LCN6ybIKshAuKOjCuCEuPBj1Z5L5WVFZvGKA3hscbbFDQA==}
     peerDependencies:
       prismjs: '>=1.29.0'
       react: '>=18.0.0'
@@ -3706,7 +3706,7 @@ snapshots:
     dependencies:
       json-buffer: 3.0.1
 
-  lambda-ui-components@1.0.1(prismjs@1.30.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
+  lambda-ui-components@1.0.3(prismjs@1.30.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       '@fontsource-variable/manrope': 5.2.8
       class-variance-authority: 0.7.1
