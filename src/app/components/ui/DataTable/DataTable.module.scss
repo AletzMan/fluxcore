@@ -1,24 +1,105 @@
 .datatable {
     display: flex;
     flex-direction: column;
+    gap: var(--spacing-sm);
     height: 100%;
 
     .datatable_header {
         display: flex;
         gap: var(--spacing-sm);
-        justify-content: flex-end;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--spacing-sm) var(--spacing-md) 0 var(--spacing-md);
+        border-radius: var(--radius-box);
+        border: var(--border-width) solid var(--border-color);
+        background-color: var(--surface-a);
+        width: 100%;
+
+        &>div:is(:first-child) {
+            display: flex;
+            flex-direction: row;
+            gap: var(--spacing-sm);
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+    }
+
+    .datatable_search {
+        display: flex;
+        gap: var(--spacing-sm);
+        justify-content: space-between;
         align-items: center;
+        width: 100%;
+        max-width: 350px;
     }
 
     .datatable_actions {
         display: flex;
         gap: var(--spacing-sm);
         justify-content: center;
+        align-items: center;
+        width: 100%;
     }
 
-    .datatable_filters {
+    &_filters {
         display: flex;
-        flex-direction: column;
+        height: 0;
+        flex-direction: row;
+        align-items: center;
         gap: var(--spacing-sm);
+        padding: 0 var(--spacing-xs);
+        overflow: hidden;
+        width: 100%;
+        transition: height 0.25s ease-out;
+
+        &_open {
+            height: 3em;
+        }
+
+
+        &_custom {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: 0 var(--spacing-sm);
+            overflow: hidden;
+            width: 100%;
+        }
+    }
+
+    &_divider {
+        flex-shrink: 0;
+    }
+
+    &_tags {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm) var(--spacing-xs);
+        overflow: hidden;
+        width: 100%;
+
+        & div {
+            background-color: var(--surface-b) !important;
+            border: var(--border-width) solid var(--surface-c) !important;
+            padding: var(--spacing-xs) var(--spacing-sm);
+
+            span {
+
+                &:first-child {
+                    color: var(--foreground-secondary-color);
+                    font-weight: var(--font-weight-regular);
+                }
+
+                &:nth-child(2) {
+                    color: var(--foreground-title-color);
+                    font-weight: var(--font-weight-medium);
+                }
+            }
+        }
     }
 }
