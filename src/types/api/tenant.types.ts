@@ -17,4 +17,8 @@ export interface GetTenantsParams {
     search?: string;
     status?: PlanStatusType;
     subscription?: SubscriptionType;
+    createdFrom?: Date;
+    createdTo?: Date;
+    validUntilFrom?: Date;
+    validUntilTo?: Date;
 }
