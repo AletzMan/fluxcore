@@ -5,8 +5,7 @@ import { Suspense } from 'react';
 import { PagedResponse } from '@/typesAPI/common.types';
 import { Tenant } from '@/typesModels/Tenant';
 import { GetTenantsParams } from '@/typesAPI/tenant.types';
-import { TenantsView } from './components/TenantsView';
-import { PlanStatusType, SubscriptionType } from '@/typesAPI/plan.types';
+import { TenantsView } from './components/TenantsView/TenantsView';
 
 const getTenants = async (params: GetTenantsParams) => {
     const response = await tenantService.getAllTenants(params);
@@ -14,19 +13,11 @@ const getTenants = async (params: GetTenantsParams) => {
 }
 
 export default async function TenantsPage({ searchParams }: {
-    searchParams: {
-        page: number,
-        pageSize: number,
-        sort: string,
-        order: string,
-        search: string,
-        status: PlanStatusType,
-        subscription: SubscriptionType
-    }
+    searchParams: GetTenantsParams
 }) {
 
-    const { page, pageSize, sort, order, search, status, subscription } = await searchParams;
-    const tenants: PagedResponse<Tenant> | undefined = await getTenants({ page, pageSize, sort, order, search, status: status!, subscription: subscription! });
+    const params = await searchParams;
+    const tenants: PagedResponse<Tenant> | undefined = await getTenants({ ...params });
     return (
         <ContainerSection title="Gestión de Comercios" description="Administración de empresas registradas y configuración de datos maestros por cliente.">
             <div className={styles.tenants}>
