@@ -27,22 +27,21 @@ export const TenantsView = ({ tenants, pagination, success }: TenantsViewProps) 
                 "delete"
             ]}
             filters={[
-                { id: '1', key: 'subscription', value: '1', label: 'Free', type: 'string', nameGroup: 'Suscripción' },
-                { id: '2', key: 'subscription', value: '2', label: 'Basic', type: 'string', nameGroup: 'Suscripción' },
-                { id: '3', key: 'subscription', value: '3', label: 'Premium', type: 'string', nameGroup: 'Suscripción' },
-                { id: '4', key: 'subscription', value: '4', label: 'Enterprise', type: 'string', nameGroup: 'Suscripción' },
-                { id: '5', key: 'subscription', value: '5', label: 'Intertal', type: 'string', nameGroup: 'Suscripción' },
-                { id: '6', key: 'status', value: '1', label: 'Activo', type: 'boolean', nameGroup: 'Estado' },
-                { id: '7', key: 'status', value: '2', label: 'Trial', type: 'boolean', nameGroup: 'Estado' },
-                { id: '8', key: 'status', value: '3', label: 'Expirado', type: 'boolean', nameGroup: 'Estado' },
-                { id: '9', key: 'status', value: '4', label: 'Suspensión', type: 'boolean', nameGroup: 'Estado' },
-                { id: '10', key: 'status', value: '5', label: 'Cancelado', type: 'boolean', nameGroup: 'Estado' },
-                { id: '11', key: 'isActive', value: 'true', label: 'Acceso', type: 'boolean', nameGroup: 'Acceso' },
-                { id: '12', key: 'isActive', value: 'false', label: 'Sin acceso', type: 'boolean', nameGroup: 'Acceso' },
-                { id: '13', key: 'createdFrom', value: '2022-01-01', label: 'Desde', type: 'date', nameGroup: 'Fecha de creación' },
-                { id: '14', key: 'createdTo', value: '2022-01-01', label: 'Hasta', type: 'date', nameGroup: 'Fecha de creación' },
-                { id: '15', key: 'validUntilFrom', value: '2022-01-01', label: 'Desde', type: 'date', nameGroup: 'Fecha de expiración' },
-                { id: '16', key: 'validUntilTo', value: '2022-01-01', label: 'Hasta', type: 'date', nameGroup: 'Fecha de expiración' },
+                { id: '1', key: 'subscription', value: '1', label: 'Free', type: 'multiple-choice', nameGroup: 'Suscripción' },
+                { id: '2', key: 'subscription', value: '2', label: 'Basic', type: 'multiple-choice', nameGroup: 'Suscripción' },
+                { id: '3', key: 'subscription', value: '3', label: 'Premium', type: 'multiple-choice', nameGroup: 'Suscripción' },
+                { id: '4', key: 'subscription', value: '4', label: 'Enterprise', type: 'multiple-choice', nameGroup: 'Suscripción' },
+                { id: '5', key: 'subscription', value: '5', label: 'Intertal', type: 'multiple-choice', nameGroup: 'Suscripción' },
+                { id: '6', key: 'status', value: '1', label: 'Activo', type: 'multiple-choice', nameGroup: 'Estado' },
+                { id: '7', key: 'status', value: '2', label: 'Trial', type: 'multiple-choice', nameGroup: 'Estado' },
+                { id: '8', key: 'status', value: '3', label: 'Expirado', type: 'multiple-choice', nameGroup: 'Estado' },
+                { id: '9', key: 'status', value: '4', label: 'Suspensión', type: 'multiple-choice', nameGroup: 'Estado' },
+                { id: '10', key: 'status', value: '5', label: 'Cancelado', type: 'multiple-choice', nameGroup: 'Estado' },
+                { id: '11', key: 'isActive', value: 'true', label: 'Activo', optionalLabel: 'Inactivo', type: 'boolean', nameGroup: 'Acceso' },
+                { id: '12', key: 'createdFrom', value: '2022-01-01', label: 'Desde', type: 'date', nameGroup: 'Fecha de creación' },
+                { id: '13', key: 'createdTo', value: '2022-01-01', label: 'Hasta', type: 'date', nameGroup: 'Fecha de creación' },
+                { id: '14', key: 'validUntilFrom', value: '2022-01-01', label: 'Desde', type: 'date', nameGroup: 'Fecha de expiración' },
+                { id: '15', key: 'validUntilTo', value: '2022-01-01', label: 'Hasta', type: 'date', nameGroup: 'Fecha de expiración' },
             ]}
         />
     );

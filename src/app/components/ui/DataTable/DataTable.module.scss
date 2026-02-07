@@ -3,17 +3,27 @@
     flex-direction: column;
     gap: var(--spacing-sm);
     height: 100%;
+    overflow: hidden;
 
-    .datatable_header {
+    &_header {
         display: flex;
         gap: var(--spacing-sm);
         flex-direction: column;
         align-items: flex-start;
-        padding: var(--spacing-sm) var(--spacing-md) 0 var(--spacing-md);
+        padding: var(--spacing-xs) var(--spacing-md) var(--spacing-xs) var(--spacing-md);
         border-radius: var(--radius-box);
         border: var(--border-width) solid var(--border-color);
         background-color: var(--surface-a);
         width: 100%;
+
+        @media (max-width: 768px) {
+            padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md) var(--spacing-md);
+
+        }
+
+        &_open {
+            padding: var(--spacing-xs) var(--spacing-md) var(--spacing-md) var(--spacing-md);
+        }
 
         &>div:is(:first-child) {
             display: flex;
@@ -22,19 +32,29 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
+            flex-wrap: wrap;
         }
     }
 
-    .datatable_search {
+    &_search {
         display: flex;
         gap: var(--spacing-sm);
-        justify-content: space-between;
+        flex-wrap: wrap;
         align-items: center;
         width: 100%;
-        max-width: 350px;
     }
 
-    .datatable_actions {
+    &_search_input {
+        display: flex;
+        gap: var(--spacing-sm);
+        flex-wrap: wrap;
+        align-items: center;
+        flex: 1;
+        min-width: 250px;
+        max-width: 100%;
+    }
+
+    &_actions {
         display: flex;
         gap: var(--spacing-sm);
         justify-content: center;
@@ -44,27 +64,56 @@
 
     &_filters {
         display: flex;
-        height: 0;
         flex-direction: row;
         align-items: center;
+        flex-wrap: wrap;
         gap: var(--spacing-sm);
         padding: 0 var(--spacing-xs);
         overflow: hidden;
         width: 100%;
-        transition: height 0.25s ease-out;
 
         &_open {
-            height: 3em;
+            padding: var(--spacing-xs) var(--spacing-xs);
         }
-
 
         &_custom {
             display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: var(--spacing-sm);
-            padding: 0 var(--spacing-sm);
+            flex-direction: column;
+            align-items: flex-start;
+            border-radius: var(--radius-box);
             overflow: hidden;
+            width: 100%;
+            margin-bottom: var(--spacing-2xs);
+
+            &:hover {
+                cursor: pointer;
+                background-color: var(--surface-b);
+            }
+
+            &>label {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-xs) var(--spacing-xs);
+
+
+            }
+        }
+    }
+
+    &_table {
+
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        min-width: 0;
+
+        &>div {
+            flex: 1;
+            overflow: auto;
             width: 100%;
         }
     }

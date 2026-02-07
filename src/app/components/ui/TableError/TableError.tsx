@@ -27,7 +27,7 @@ export const TableError = ({
     const router = useRouter();
     const pathname = usePathname();
 
-    const handleRetry = onRetry || (() => router.refresh());
+    const handleRetry = onRetry || (() => window.location.reload());
     const handleReset = onResetFilters || (() => router.replace(pathname));
     const handleCreate = onCreate || (() => router.push(`${pathname}/new`));
 

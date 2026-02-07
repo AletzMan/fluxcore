@@ -1,16 +1,16 @@
 "use client"
 import styles from './DataTable.module.scss'
-import { Button, Checkbox, DatePicker, Divider, Dropdown, Input, Join, Link, Table, Tag } from 'lambda-ui-components';
-import { Calendar, Eye, Filter, FilterIcon, List, ListFilter, Pencil, Plus, Search, Trash2 } from 'lucide-react';
+import { Button, Checkbox, DatePicker, Divider, Dropdown, Input, Join, Link, Switch, Table, Tag } from 'lambda-ui-components';
+import { Calendar, Eye, List, ListFilter, Pencil, Search, ToggleLeft, Trash, Trash2 } from 'lucide-react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { Pagination } from '@/typesAPI/common.types';
 import { Fragment, useState } from 'react';
 import { TableError } from '@/pp/components/ui/TableError/TableError';
 import { useDebouncedCallback } from '@/hooks/useDebounce';
-import { DateItem } from './DateItem';
-import { formatDateTimeShort } from '@/utils/common-utils';
+import { AnimatePresence, motion } from 'motion/react';
 
-type FilterType = "string" | "number" | "date" | "boolean" | "actions";
+
+type FilterType = "string" | "number" | "date" | "boolean" | "actions" | "multiple" | "multiple-choice";
 
 //Tipos de acciones para las diferentes combinaciones
 type ActionsType = ["view"] | ["edit"] | ["delete"] | ["view", "edit"] | ["view", "delete"] | ["edit", "delete"] | ["view", "edit", "delete"];
@@ -37,6 +37,7 @@ interface DataTableProps<T> {
         key: string,
         value: string,
         label: string,
+        optionalLabel?: string,
         type: FilterType,
         nameGroup: string
     }[];
@@ -55,8 +56,6 @@ export const DataTable = <T extends { id: string | number }>({
     const pathname = usePathname();
     const [search, setSearch] = useState(searchParams.get('search') || '');
     const router = useRouter();
-
-    console.log(data);
 
     const paginationParams = ['page', 'pageSize'];
     const currentKeys = Array.from(searchParams.keys());
@@ -239,14 +238,12 @@ export const DataTable = <T extends { id: string | number }>({
     }
 
 
-    console.log(filterByValue);
-    console.log(getFiltersActive());
-
     return (
-        <div className={styles.datatable}>
-            <header className={styles.datatable_header}>
-                <div >
-                    <div className={styles.datatable_search}>
+        <div className={styles.datatable} >
+            <header
+                className={`${styles.datatable_header} ${isFilterOpen ? styles.datatable_header_open : ''}`}   >
+                <div className={styles.datatable_search}>
+                    <div className={styles.datatable_search_input}>
                         <Join size="small" >
                             <Input
                                 placeholder="Buscar"
@@ -264,55 +261,73 @@ export const DataTable = <T extends { id: string | number }>({
                         color='neutral'
                         label='Filtros'
                         icon={<ListFilter />}
-                        onClick={() => setIsFilterOpen(!isFilterOpen)}
+                        onClick={() => { setIsFilterOpen(!isFilterOpen) }}
                     />
                 </div>
-                <div className={`${styles.datatable_filters} ${isFilterOpen ? styles.datatable_filters_open : ''}`}>
-                    {filterByValue && Object.keys(filterByValue).map((key, index) => (
-                        <Dropdown
-                            key={key}
-                            onSelect={(value) => console.log(value)}
-                            icon={filterByValue[key]![0].type === "string" ? <List /> : filterByValue[key][0].type === "date" ? <Calendar /> : <List />}
-                            size='small'
-                            variant='solid'
-                            text={key}
-                        >
-                            <Fragment key={key}>
-                                {
-                                    filterByValue[key].map((filter) => (
-                                        filter.type === 'date' ? (
+                <AnimatePresence>
+                    {isFilterOpen && <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.15, ease: "easeInOut" }}
+                        className={`${styles.datatable_filters} ${isFilterOpen ? styles.datatable_filters_open : ''}`}>
+                        {filterByValue && Object.keys(filterByValue).map((key, index) => (
+                            <Dropdown
+                                key={key}
+                                onSelect={(value) => console.log(value)}
+                                icon={filterByValue[key]![0].type === "multiple-choice" ? <List /> : filterByValue[key][0].type === "date" ? <Calendar /> : <ToggleLeft />}
+                                size='small'
+                                variant='solid'
+                                text={key}
+                            >
+                                <Fragment key={key}>
+                                    {
+                                        filterByValue[key].map((filter) => (
                                             <div className={styles.datatable_filters_custom} key={filter.id}>
-                                                <DatePicker
-                                                    label={filter.label}
-                                                    size='tiny'
-                                                    value={getDateValue(filter.key)}
-                                                    onChange={(e: any) => handleDateChange(filter.key, filter.type, e)}
-                                                    isDateDisabled={(date) => checkIsDateDisabled(filter.key, date)}
-                                                    displayFormat="medium"
-                                                    type="inline"
-                                                />
+                                                {filter.type === 'date' && (
+                                                    <DatePicker
+                                                        label={filter.label}
+                                                        size='tiny'
+                                                        value={getDateValue(filter.key)}
+                                                        onChange={(e: any) => handleDateChange(filter.key, filter.type, e)}
+                                                        isDateDisabled={(date) => checkIsDateDisabled(filter.key, date)}
+                                                        displayFormat="medium"
+                                                        type="inline"
+                                                    />)}
+                                                {filter.type === 'boolean' && (
+                                                    <Switch
+                                                        label={searchParams.get(filter.key)?.split(',').includes(filter.value) ? filter.label : filter.optionalLabel}
+                                                        size='tiny'
+                                                        color='secondary'
+                                                        checked={searchParams.get(filter.key)?.split(',').includes(filter.value) || false}
+                                                        onChange={(e) => {
+                                                            handleFilter(filter.key, filter.value, e.target.checked, filter.type);
+                                                        }}
+                                                    />
+                                                )}
+                                                {filter.type === 'multiple-choice' && (
+                                                    <div className={styles.datatable_filters_custom} key={filter.id}>
+                                                        <Checkbox
+                                                            label={filter.label}
+                                                            size='tiny'
+                                                            color='secondary'
+                                                            checked={searchParams.get(filter.key)?.split(',').includes(filter.value) || false}
+                                                            onChange={(e) => {
+                                                                handleFilter(filter.key, filter.value, e.target.checked, filter.type);
+                                                            }}
+                                                        />
+                                                    </div>
+                                                )}
                                             </div>
-                                        ) : (
-                                            <Dropdown.ItemCustom key={filter.id} data-navigable>
-                                                <Checkbox
-                                                    label={filter.label}
-                                                    size='tiny'
-                                                    color='secondary'
-                                                    checked={searchParams.get(filter.key)?.split(',').includes(filter.value) || false}
-                                                    onChange={(e) => {
-                                                        handleFilter(filter.key, filter.value, e.target.checked, filter.type);
-                                                    }}
-                                                />
-                                            </Dropdown.ItemCustom>
-                                        )
-                                    ))
-                                }
-                            </Fragment>
-                        </Dropdown>
-                    ))}
-                </div>
-                <Divider color='neutral' contentPosition="start" spacing={0}><span className={styles.datatable_divider}>Filtros activos</span></Divider>
-                <div className={styles.datatable_tags}>
+                                        ))
+                                    }
+                                </Fragment>
+                            </Dropdown>
+                        ))}
+                    </motion.div>}
+                </AnimatePresence>
+                {getFiltersActive().length > 0 && <Divider color='neutral' contentPosition="start" spacing={0}><span className={styles.datatable_divider}>Filtros activos</span></Divider>}
+                {getFiltersActive().length > 0 && <div className={styles.datatable_tags}>
                     {getFiltersActive().map((filter, index) => (
                         <Tag
                             key={`${filter.key}-${index}`}
@@ -326,9 +341,20 @@ export const DataTable = <T extends { id: string | number }>({
                             <span>{filter.value}</span>
                         </Tag>
                     ))}
-                </div>
+                    {getFiltersActive().length > 0 && <Button
+                        size='tiny'
+                        variant='text'
+                        color='info'
+                        label='Limpiar'
+                        icon={<Trash />}
+                        onClick={() => {
+                            setSearch('');
+                            router.replace(`${pathname}?page=1`);
+                        }}
+                    />}
+                </div>}
             </header>
-            <div>
+            <div className={styles.datatable_table}>
                 <Table
                     data={data}
                     size='tiny'
@@ -369,7 +395,6 @@ export const DataTable = <T extends { id: string | number }>({
                             <Table.Row key={item.id}>
                                 {columns.map((col, index) => (
                                     <Table.Cell key={`${item.id}-${index}`} align={col.align || 'left'}>
-                                        {/* Aquí ejecutamos la función render de la columna */}
                                         {col.render && col.render(item)}
                                     </Table.Cell>
                                 ))}

@@ -3,6 +3,8 @@
     flex-direction: column;
     height: calc(100svh - 4rem);
     overflow-y: auto;
+    overflow-x: hidden;
+    max-width: 100vw;
 
     &_header {
         display: flex;
@@ -23,6 +25,8 @@
     }
 
     &_content {
+        display: flex;
+        flex-direction: column;
         height: 100%;
         padding: var(--spacing-sm);
         background-image:
