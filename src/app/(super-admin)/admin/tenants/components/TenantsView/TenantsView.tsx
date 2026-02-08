@@ -3,10 +3,9 @@ import { DataTable, DataTableColumn } from "@/pp/components/ui/DataTable/DataTab
 import { Pagination } from "@/typesAPI/common.types";
 import { PlanStatusType } from "@/typesAPI/plan.types";
 import { Tenant } from "@/typesModels/Tenant";
-import { Button, Tag } from "lambda-ui-components";
+import { Tag } from "lambda-ui-components";
 import styles from "./TenantsView.module.scss";
 import { formatDateTimeShort } from "@/utils/common-utils";
-import { Eye, Pencil, Trash2 } from "lucide-react";
 
 interface TenantsViewProps {
     tenants: Tenant[];
@@ -15,6 +14,7 @@ interface TenantsViewProps {
 }
 
 export const TenantsView = ({ tenants, pagination, success }: TenantsViewProps) => {
+    console.log(tenants);
     return (
         <DataTable<Tenant>
             data={tenants || []}
@@ -40,8 +40,6 @@ export const TenantsView = ({ tenants, pagination, success }: TenantsViewProps) 
                 { id: '11', key: 'isActive', value: 'true', label: 'Activo', optionalLabel: 'Inactivo', type: 'boolean', nameGroup: 'Acceso' },
                 { id: '12', key: 'createdFrom', value: '2022-01-01', label: 'Desde', type: 'date', nameGroup: 'Fecha de creación' },
                 { id: '13', key: 'createdTo', value: '2022-01-01', label: 'Hasta', type: 'date', nameGroup: 'Fecha de creación' },
-                { id: '14', key: 'validUntilFrom', value: '2022-01-01', label: 'Desde', type: 'date', nameGroup: 'Fecha de expiración' },
-                { id: '15', key: 'validUntilTo', value: '2022-01-01', label: 'Hasta', type: 'date', nameGroup: 'Fecha de expiración' },
             ]}
         />
     );
@@ -53,7 +51,7 @@ const columns: DataTableColumn<Tenant>[] = [
         sortKey: 'id',
         nameColumn: 'Id',
         type: 'number',
-        width: '40px',
+        width: '75px',
         align: 'center',
         isSortable: true,
         render: (tenant) => tenant.id,
@@ -68,13 +66,22 @@ const columns: DataTableColumn<Tenant>[] = [
         render: (tenant) => tenant.name,
     },
     {
+        sortKey: 'companyName',
+        nameColumn: 'Empresa',
+        type: 'string',
+        width: '200px',
+        align: 'center',
+        isSortable: true,
+        render: (tenant) => tenant.companyName,
+    },
+    {
         sortKey: 'subscription',
         nameColumn: 'Suscripción',
         type: 'string',
-        width: '120px',
+        width: '125px',
         align: 'center',
         isSortable: true,
-        render: (tenant) => <div className={`${styles.subscription} ${styles["subscription_" + tenant.subscription.toLowerCase()]}`}>{tenant.subscription}</div>,
+        render: (tenant) => <div className={`${styles.subscription} ${styles["subscription_" + tenant.subscription?.toLowerCase()]}`}>{tenant.subscription}</div>,
     },
     {
         sortKey: 'status',
@@ -104,19 +111,19 @@ const columns: DataTableColumn<Tenant>[] = [
         sortKey: 'createdAt',
         nameColumn: 'Creado',
         type: 'date',
-        width: '90px',
+        width: '125px',
         align: 'center',
         isSortable: true,
         render: (tenant) => formatDateTimeShort(tenant.createdAt),
     },
     {
-        sortKey: 'validUntil',
-        nameColumn: 'Válido hasta',
+        sortKey: 'lastModifiedAt',
+        nameColumn: 'Actualizado',
         type: 'date',
-        width: '90px',
+        width: '125px',
         align: 'center',
         isSortable: true,
-        render: (tenant) => formatDateTimeShort(tenant.validUntil),
+        render: (tenant) => formatDateTimeShort(tenant.lastModifiedAt),
     }
 ]
 
