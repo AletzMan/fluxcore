@@ -12,13 +12,11 @@ export interface RegisterTenantRequest {
 export interface GetTenantsParams {
     page?: number;
     pageSize?: number;
-    sort?: string;
-    order?: string;
+    sortBy?: string;
+    sortDirection?: string;
     search?: string;
     status?: PlanStatusType;
     subscription?: SubscriptionType;
     createdFrom?: Date;
     createdTo?: Date;
-    validUntilFrom?: Date;
-    validUntilTo?: Date;
 }
