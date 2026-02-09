@@ -1,3 +1,4 @@
+import { BaseParams } from "./common.types";
 import { PlanStatusType, SubscriptionType } from "./plan.types";
 
 export interface RegisterTenantRequest {
@@ -9,12 +10,7 @@ export interface RegisterTenantRequest {
     password: string;
 }
 
-export interface GetTenantsParams {
-    page?: number;
-    pageSize?: number;
-    sortBy?: string;
-    sortDirection?: string;
-    search?: string;
+export interface GetTenantsParams extends BaseParams {
     status?: PlanStatusType;
     subscription?: SubscriptionType;
     createdFrom?: Date;
