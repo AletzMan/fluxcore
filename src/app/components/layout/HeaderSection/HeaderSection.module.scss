@@ -43,6 +43,14 @@
                 gap: var(--spacing-md);
             }
         }
+
+        .user_info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            gap: var(--spacing-xs);
+        }
     }
 }
 

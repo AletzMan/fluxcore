@@ -46,7 +46,7 @@ export function HeaderSection({ children }: { children: React.ReactNode }) {
                         <SwitchTheme showLabel size='small' />
                     </div>
                     <Divider orientation="vertical" />
-                    <div>
+                    <div className={styles.user_info}>
                         <span>{user?.name}</span>
                         <span>{getRoleLabel(user?.role!)}</span>
                     </div>
