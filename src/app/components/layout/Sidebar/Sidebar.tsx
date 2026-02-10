@@ -14,8 +14,11 @@ interface SidebarProps {
 }
 
 export const Sidebar = ({ menuData, title }: SidebarProps) => {
-    const currentPath = usePathname();
+    const pathname = usePathname();
     const { open } = useMainMenuStore();
+
+    const currentPath = pathname.split("/").slice(0, 3).join("/");
+
     return (
         <div className={`${styles.sidebar} ${open ? styles.sidebar_open : ""}`}>
             <div>

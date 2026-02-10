@@ -6,19 +6,28 @@
     overflow-x: hidden;
     max-width: 100vw;
 
-    &_header {
+    .header {
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--spacing-none) var(--spacing-xs);
         width: 100%;
 
-        h1 {
+        &_content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        &_title {
             font-size: var(--font-size-3xl);
             font-weight: var(--font-weight-bold);
             color: var(--foreground-title-color);
         }
 
-        span {
+        &_description {
             color: var(--foreground-secondary-color);
             font-size: var(--font-size-md);
         }
@@ -35,4 +44,8 @@
             radial-gradient(circle at 50% 50%, var(--surface-a) 0%, transparent 70%);
         background-size: 32px 32px, 32px 32px, 100% 100%;
     }
+}
+
+.add_button {
+    align-self: flex-end;
 }

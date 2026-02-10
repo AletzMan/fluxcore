@@ -19,7 +19,12 @@ export default async function TenantsPage({ searchParams }: {
     const params = await searchParams;
     const tenants: PagedResponse<Tenant> | undefined = await getTenants({ ...params });
     return (
-        <ContainerSection title="Gestión de Comercios" description="Administración de empresas registradas y configuración de datos maestros por cliente.">
+        <ContainerSection
+            title="Gestión de Comercios"
+            description="Administración de empresas registradas y configuración de datos maestros por cliente."
+            titleAddButton="Agregar Comercio"
+            hrefAddButton="/admin/tenants/add"
+        >
             <div className={styles.tenants}>
                 <Suspense fallback={<div>Cargando...</div>}>
                     <TenantsView
