@@ -77,6 +77,39 @@ export const ErrorMessages: Record<string, string> = {
     USER_ROLE_ID_INVALID: "Debes seleccionar un rol válido para el usuario",
     USER_UPDATE_NO_FIELDS: "No se detectaron cambios para actualizar",
 
+    // Tenant - Admin User
+    TENANT_ADMIN_NAME_REQUIRED: "El nombre del administrador es requerido",
+    TENANT_ADMIN_NAME_TOO_SHORT: "El nombre del administrador debe tener al menos 3 caracteres",
+    TENANT_ADMIN_USERNAME_REQUIRED: "El nombre de usuario del administrador es requerido",
+    TENANT_ADMIN_USERNAME_TOO_SHORT: "El nombre de usuario debe tener al menos 3 caracteres",
+    TENANT_ADMIN_EMAIL_INVALID: "El correo electrónico del administrador es inválido",
+    TENANT_ADMIN_PASSWORD_REQUIRED: "La contraseña del administrador es requerida",
+    TENANT_ADMIN_PASSWORD_TOO_SHORT: "La contraseña debe tener al menos 8 caracteres",
+    TENANT_ADMIN_PASSWORD_INVALID_FORMAT: "La contraseña debe contener mayúsculas, minúsculas y números",
+
+    // Tenant - Company
+    TENANT_COMPANY_NAME_REQUIRED: "El nombre de la empresa es requerido",
+    TENANT_COMPANY_NAME_TOO_SHORT: "El nombre de la empresa debe tener al menos 3 caracteres",
+    TENANT_COMPANY_NAME_TOO_LONG: "El nombre de la empresa no puede exceder 100 caracteres",
+    TENANT_TAX_ID_REQUIRED: "El RFC es requerido",
+    TENANT_TAX_ID_TOO_SHORT: "El RFC debe tener al menos 12 caracteres",
+    TENANT_TAX_ID_TOO_LONG: "El RFC no puede exceder 13 caracteres",
+    TENANT_ADDRESS_REQUIRED: "La dirección es requerida",
+    TENANT_ADDRESS_TOO_LONG: "La dirección no puede exceder 200 caracteres",
+    TENANT_PHONE_REQUIRED: "El teléfono es requerido",
+    TENANT_PHONE_TOO_SHORT: "El teléfono debe tener al menos 10 dígitos",
+    TENANT_PHONE_INVALID: "El teléfono debe contener exactamente 10 dígitos",
+    TENANT_COMPANY_EMAIL_REQUIRED: "El correo electrónico de la empresa es requerido",
+    TENANT_COMPANY_EMAIL_INVALID: "El correo electrónico de la empresa es inválido",
+    TENANT_SUBSCRIPTION_INVALID: "El tipo de suscripción seleccionado es inválido",
+    TENANT_PASSWORDS_DO_NOT_MATCH: "Las contraseñas y la confirmación no coinciden",
+    TENANT_PLAN_ID_INVALID: "El plan seleccionado es inválido",
+    TENANT_BILLING_CYCLE_INVALID: "El ciclo de facturación es inválido",
+    TENANT_BILLING_CYCLE_REQUIRED: "El ciclo de facturación es requerido",
+    TENANT_AUTO_RENEW_REQUIRED: "El estado de auto renovación es requerido",
+    TENANT_START_TRIAL_REQUIRED: "El estado de inicio de prueba es requerido",
+    TENANT_PAYMENT_METHOD_ID_REQUIRED: "El método de pago es requerido",
+
     // Movement (Inventory)
     MOVEMENT_PRODUCT_VARIANT_ID_REQUIRED: "Debes seleccionar un producto",
     MOVEMENT_USER_ID_REQUIRED: "El registro del empleado es requerido",
@@ -201,6 +234,8 @@ export const ErrorMessages: Record<string, string> = {
     ROLE_NOT_FOUND: "El rol solicitado no existe",
     SALE_NOT_FOUND: "La venta no fue encontrada",
     SESSION_NOT_FOUND: "Sesión de caja no válida o cerrada",
+    TENANT_NOT_FOUND: "Empresa no encontrada",
+    PLAN_NOT_FOUND: "Plan no encontrado",
 
     // Exists / Duplicates
     BRAND_NAME_EXISTS: "Ya existe una marca con este nombre",
@@ -232,6 +267,9 @@ export const ErrorMessages: Record<string, string> = {
     SALE_DUPLICATE_DETAIL: "El mismo producto aparece varias veces en la venta",
     SALE_INVALID_PAYMENT_STATE: "El estado del pago no permite esta operación",
     SALE_INSUFFICIENT_PAYMENT: "El monto pagado es menor al total de la venta",
+
+    // Tenant
+    TENANT_CONFLICT: "Ocurrió un error al crear la empresa. Por favor, intente nuevamente",
 
     // Image Upload
     IMAGE_SERVICE_UNAVAILABLE: "El servicio de carga de imágenes no está disponible",

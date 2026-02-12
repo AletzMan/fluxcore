@@ -3,9 +3,8 @@ import { PlanStatusType, SubscriptionType } from "@/typesAPI/plan.types";
 
 export interface Tenant {
     id: number;
-    name: string;
-    currentSubscriptionId: number;
     companyName: string;
+    currentSubscriptionId: number;
     taxId: string;
     address: string;
     phone: string;

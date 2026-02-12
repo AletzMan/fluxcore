@@ -50,6 +50,9 @@
       "@/utils/*": [
         "./src/lib/utils/*"
       ],
+      "@/lib/*": [
+        "./src/lib/*"
+      ],
       "@/typesComponents/*": [
         "./src/types/components/*"
       ]

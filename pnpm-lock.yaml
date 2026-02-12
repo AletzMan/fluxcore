@@ -21,8 +21,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       lambda-ui-components:
-        specifier: ^1.0.3
-        version: 1.0.3(prismjs@1.30.0)(react-dom@19.2.3(react@19.2.4))(react@19.2.4)
+        specifier: ^1.3.2
+        version: 1.3.2(prismjs@1.30.0)(react-dom@19.2.3(react@19.2.4))(react@19.2.4)
       lucide-react:
         specifier: ^0.563.0
         version: 0.563.0(react@19.2.4)
@@ -1247,20 +1247,6 @@ packages:
     resolution: {integrity: sha512-8RipRLol37bNs2bhoV67fiTEvdTrbMUYcFTiy3+wuuOnUog2QBHCZWXDRijWQfAkhBj2Uf5UnVaiWwA5vdd82w==}
     engines: {node: '>= 6'}
 
-  framer-motion@12.29.2:
-    resolution: {integrity: sha512-lSNRzBJk4wuIy0emYQ/nfZ7eWhqud2umPKw2QAQki6uKhZPKm2hRQHeQoHTG9MIvfobb+A/LbEWPJU794ZUKrg==}
-    peerDependencies:
-      '@emotion/is-prop-valid': '*'
-      react: ^18.0.0 || ^19.0.0
-      react-dom: ^18.0.0 || ^19.0.0
-    peerDependenciesMeta:
-      '@emotion/is-prop-valid':
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-
   framer-motion@12.33.0:
     resolution: {integrity: sha512-ca8d+rRPcDP5iIF+MoT3WNc0KHJMjIyFAbtVLvM9eA7joGSpeqDfiNH/kCs1t4CHi04njYvWyj0jS4QlEK/rJQ==}
     peerDependencies:
@@ -1555,8 +1541,8 @@ packages:
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
-  lambda-ui-components@1.0.3:
-    resolution: {integrity: sha512-7rawIFNnqnweTO53PyarCnAoh6eT2b/d0xfDC8V/LCN6ybIKshAuKOjCuCEuPBj1Z5L5WVFZvGKA3hscbbFDQA==}
+  lambda-ui-components@1.3.2:
+    resolution: {integrity: sha512-TwSnz7x51CmMn5amwucaeXqRglrs3uQrVu7FkRJjpecwP61k68LGxYsa8xcnE+AnewLayjTc2MQ7cBZNge/kfA==}
     peerDependencies:
       prismjs: '>=1.29.0'
       react: '>=18.0.0'
@@ -1626,9 +1612,6 @@ packages:
 
   minimist@1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
-
-  motion-dom@12.29.2:
-    resolution: {integrity: sha512-/k+NuycVV8pykxyiTCoFzIVLA95Nb1BFIVvfSu9L50/6K6qNeAYtkxXILy/LRutt7AzaYDc2myj0wkCVVYAPPA==}
 
   motion-dom@12.33.0:
     resolution: {integrity: sha512-XRPebVypsl0UM+7v0Hr8o9UAj0S2djsQWRdHBd5iVouVpMrQqAI0C/rDAT3QaYnXnHuC5hMcwDHCboNeyYjPoQ==}
@@ -3451,15 +3434,6 @@ snapshots:
       hasown: 2.0.2
       mime-types: 2.1.35
 
-  framer-motion@12.29.2(react-dom@19.2.3(react@19.2.4))(react@19.2.4):
-    dependencies:
-      motion-dom: 12.29.2
-      motion-utils: 12.29.2
-      tslib: 2.8.1
-    optionalDependencies:
-      react: 19.2.4
-      react-dom: 19.2.3(react@19.2.4)
-
   framer-motion@12.33.0(react-dom@19.2.3(react@19.2.4))(react@19.2.4):
     dependencies:
       motion-dom: 12.33.0
@@ -3746,12 +3720,12 @@ snapshots:
     dependencies:
       json-buffer: 3.0.1
 
-  lambda-ui-components@1.0.3(prismjs@1.30.0)(react-dom@19.2.3(react@19.2.4))(react@19.2.4):
+  lambda-ui-components@1.3.2(prismjs@1.30.0)(react-dom@19.2.3(react@19.2.4))(react@19.2.4):
     dependencies:
       '@fontsource-variable/manrope': 5.2.8
       class-variance-authority: 0.7.1
       clsx: 2.1.1
-      framer-motion: 12.29.2(react-dom@19.2.3(react@19.2.4))(react@19.2.4)
+      framer-motion: 12.33.0(react-dom@19.2.3(react@19.2.4))(react@19.2.4)
       lucide-react: 0.482.0(react@19.2.4)
       prismjs: 1.30.0
       react: 19.2.4
@@ -3817,10 +3791,6 @@ snapshots:
       brace-expansion: 2.0.2
 
   minimist@1.2.8: {}
-
-  motion-dom@12.29.2:
-    dependencies:
-      motion-utils: 12.29.2
 
   motion-dom@12.33.0:
     dependencies:
