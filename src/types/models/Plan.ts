@@ -1,10 +1,9 @@
-import { SubscriptionType } from "@/enums/common.enums";
+
 
 export interface Plan {
     id: number;
     name: string;
     description: string;
-    type: SubscriptionType;
     monthlyPrice: number;
     quarterlyPrice: number;
     semiannualPrice: number;

@@ -1,5 +1,5 @@
 import { BaseParams } from "./common.types";
-import { BillingCycle, PlanStatusType, SubscriptionType } from "@/enums/common.enums";
+import { BillingCycle, PlanStatusType } from "@/enums/common.enums";
 
 export interface RegisterTenantRequest {
     name: string;
@@ -20,7 +20,6 @@ export interface RegisterTenantRequest {
 
 export interface GetTenantsParams extends BaseParams {
     status?: PlanStatusType;
-    subscription?: SubscriptionType;
     createdFrom?: Date;
     createdTo?: Date;
 }

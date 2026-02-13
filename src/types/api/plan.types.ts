@@ -1,8 +1,6 @@
-import { SubscriptionType } from "@/enums/common.enums";
 import { BaseParams } from "./common.types";
 
 export interface GetPlansParams extends BaseParams {
-    type?: SubscriptionType;
     isActive?: boolean;
     minPrice?: number;
     maxPrice?: number;
@@ -31,7 +29,6 @@ export interface UpdatePlan {
 export interface CreatePlan {
     name: string;
     description: string;
-    type: SubscriptionType;
     monthlyPrice: number;
     quarterlyPrice: number;
     semiannualPrice: number;

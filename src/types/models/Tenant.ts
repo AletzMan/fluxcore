@@ -1,4 +1,4 @@
-import { PlanStatusType, SubscriptionType } from "@/enums/common.enums";
+import { PlanStatusType } from "@/enums/common.enums";
 
 
 export interface Tenant {
@@ -11,7 +11,6 @@ export interface Tenant {
     email: string;
     logoUrl: string;
     status: PlanStatusType;
-    subscription: SubscriptionType;
     isActive: boolean;
     createdAt: string;
     lastModifiedAt: string;
