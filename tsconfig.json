@@ -44,6 +44,9 @@
       "@/typesModels/*": [
         "./src/types/models/*"
       ],
+      "@/enums/*": [
+        "./src/types/enums/*"
+      ],
       "@/validations/*": [
         "./src/lib/validations/*"
       ],

@@ -1,7 +1,8 @@
 "use client"
 import { DataTable, DataTableColumn } from "@/pp/components/ui/DataTable/DataTable";
 import { Pagination } from "@/typesAPI/common.types";
-import { Plan, PlanStatusType } from "@/typesAPI/plan.types";
+import { Plan } from "@/typesModels/Plan";
+import { PlanStatusType } from "@/enums/common.enums";
 import { Tenant } from "@/typesModels/Tenant";
 import { Tag } from "lambda-ui-components";
 import styles from "./PlansView.module.scss";

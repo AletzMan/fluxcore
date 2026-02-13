@@ -1,12 +1,5 @@
 import { BaseParams } from "./common.types";
-import { PlanStatusType, SubscriptionType } from "./plan.types";
-
-export enum BillingCycle {
-    MONTHLY = 1,
-    QUARTERLY = 2,
-    SEMIANNUAL = 3,
-    ANNUAL = 4
-}
+import { BillingCycle, PlanStatusType, SubscriptionType } from "@/enums/common.enums";
 
 export interface RegisterTenantRequest {
     name: string;

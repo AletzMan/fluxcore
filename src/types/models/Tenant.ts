@@ -1,4 +1,4 @@
-import { PlanStatusType, SubscriptionType } from "@/typesAPI/plan.types";
+import { PlanStatusType, SubscriptionType } from "@/enums/common.enums";
 
 
 export interface Tenant {

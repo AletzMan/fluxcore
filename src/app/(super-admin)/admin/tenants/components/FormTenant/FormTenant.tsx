@@ -6,7 +6,7 @@ import { Fieldset } from '@/pp/components/layout/Fieldset/Fieldset';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterTenantSchema } from '@/validations/tenant.schema';
-import { BillingCycle } from '@/typesAPI/tenant.types';
+import { BillingCycle } from '@/enums/common.enums';
 import { ErrorMessages } from '@/lib/errors/message-errors';
 
 interface StepValidationResult {
