@@ -1,14 +1,16 @@
-import { GetPlansParams, Plan } from '@/typesAPI/plan.types';
+import { GetPlansParams } from '@/typesAPI/plan.types';
+import { Plan } from '@/typesModels/Plan';
 import styles from './Planspage.module.scss'
 import { ContainerSection } from '@/app/components/layout/ContainerSection/ContainerSection';
 import { PagedResponse } from '@/typesAPI/common.types';
 import { Suspense } from 'react';
 import { PlansView } from './components/TenantsView/PlansView';
+import { planService } from '@/app/services/api/plan.service';
 
 const getPlans = async (params: GetPlansParams) => {
-    // const response = await planService.getAllPlans(params);
+    const response = await planService.getAllPlans(params);
 
-    return undefined;
+    return response;
 }
 
 
