@@ -1,7 +1,7 @@
 "use client"
 import { DataTable, DataTableColumn } from "@/pp/components/ui/DataTable/DataTable";
 import { Pagination } from "@/typesAPI/common.types";
-import { PlanStatusType } from "@/typesAPI/plan.types";
+import { PlanStatusType } from "@/enums/common.enums";
 import { Tenant } from "@/typesModels/Tenant";
 import { Tag } from "lambda-ui-components";
 import styles from "./TenantsView.module.scss";
@@ -55,15 +55,6 @@ const columns: DataTableColumn<Tenant>[] = [
         align: 'center',
         isSortable: true,
         render: (tenant) => tenant.id,
-    },
-    {
-        sortKey: 'name',
-        nameColumn: 'Nombre',
-        type: 'string',
-        width: '200px',
-        align: 'left',
-        isSortable: true,
-        render: (tenant) => tenant.name,
     },
     {
         sortKey: 'companyName',
