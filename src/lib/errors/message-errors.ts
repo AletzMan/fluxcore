@@ -213,7 +213,7 @@ export const ErrorMessages: Record<string, string> = {
     DOMAIN_ERROR: "Ocurrió un error al procesar la solicitud. Por favor, intenta de nuevo.",
     SERVER_ERROR: "Ocurrió un error inesperado en el servidor. Por favor, intenta más tarde.",
     TOO_MANY_REQUESTS: "Has realizado demasiadas solicitudes. Por favor, intenta de nuevo más tarde.",
-    NETWORK_ERROR: "No pudimos conectar con el servidor. Revisa tu conexión a internet.",
+    NETWORK_ERROR: "No pudimos conectar con el servidor. Revisa tu conexión a internet. Si el problema persiste, contacta al administrador.",
 
 
     // Not Found
