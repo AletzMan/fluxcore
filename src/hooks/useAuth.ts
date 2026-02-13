@@ -13,40 +13,31 @@ export function useAuth() {
     const { user, isAuthenticated, logout: logoutStore, setAuth } = useAuthStore();
 
     const login = async (credentials: LoginCredentials) => {
-        try {
-            setIsLoading(true);
-            setError(null);
+        setIsLoading(true);
+        setError(null);
 
-            const response = await authService.login(credentials);
+        const response = await authService.login(credentials);
 
-            if (response.data)
-                setAuth(response.data.user, response.data.token);
+        if (response && response.success) {
             router.push('/admin');
-        } catch (err: any) {
-            const errorCode = err.response?.data?.code;
-            const message = ErrorMessages[errorCode];
-            setError(message);
-        } finally {
-            setIsLoading(false);
+        } else {
+            setError(response?.message || "Ocurrió un error al iniciar sesión");
         }
+        setIsLoading(false);
     };
 
     const register = async (data: RegisterData) => {
-        try {
-            setIsLoading(true);
-            setError(null);
+        setIsLoading(true);
+        setError(null);
 
-            await authService.register(data);
+        const response = await authService.register(data);
 
+        if (response && response.success) {
             router.push('/dashboard');
-        } catch (err: any) {
-            const errorCode = err.response?.data?.code;
-            const message = ErrorMessages[errorCode];
-            setError(message);
-            throw err;
-        } finally {
-            setIsLoading(false);
+        } else {
+            setError(response?.message || "Ocurrió un error en el registro");
         }
+        setIsLoading(false);
     };
 
     const logout = async () => {

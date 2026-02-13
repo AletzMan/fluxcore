@@ -14,10 +14,7 @@ export interface AuthUser {
     role: string;
 }
 
-
-export interface LoginResponse extends ApiResponse<{ user: AuthUser; token: string; expiresAt: Date; }> {
-
-}
+export interface LoginResponse extends ApiResponse<{ user: AuthUser; token: string; expiresAt: Date; }> { }
 
 export interface RegisterData {
     username: string;
