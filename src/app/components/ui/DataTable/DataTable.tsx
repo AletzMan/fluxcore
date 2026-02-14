@@ -261,6 +261,7 @@ export const DataTable = <T extends { id: string | number }>({
         return active;
     }
 
+    console.log("data", data);
 
     return (
         <div className={styles.datatable} >

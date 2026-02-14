@@ -13,7 +13,7 @@ interface PlansViewProps {
 }
 
 export const PlansView = ({ plans, pagination, success }: PlansViewProps) => {
-    console.log(plans);
+    console.log("plans", plans);
     return (
         <DataTable<Plan>
             data={plans || []}
@@ -26,12 +26,7 @@ export const PlansView = ({ plans, pagination, success }: PlansViewProps) => {
                 "delete"
             ]}
             filters={[
-                { id: '1', key: 'type', value: 'FREE', label: 'Free', type: 'multiple-choice', nameGroup: 'Tipo' },
-                { id: '2', key: 'type', value: 'BASIC', label: 'Basic', type: 'multiple-choice', nameGroup: 'Tipo' },
-                { id: '3', key: 'type', value: 'PREMIUM', label: 'Premium', type: 'multiple-choice', nameGroup: 'Tipo' },
-                { id: '4', key: 'type', value: 'ENTERPRISE', label: 'Enterprise', type: 'multiple-choice', nameGroup: 'Tipo' },
-                { id: '5', key: 'type', value: 'INTERNAL', label: 'Internal', type: 'multiple-choice', nameGroup: 'Tipo' },
-                { id: '6', key: 'isActive', value: 'true', label: 'Activo', optionalLabel: 'Inactivo', type: 'boolean', nameGroup: 'Estado' },
+                { id: '1', key: 'isActive', value: 'true', label: 'Activo', optionalLabel: 'Inactivo', type: 'boolean', nameGroup: 'Estado' },
             ]}
         />
     );

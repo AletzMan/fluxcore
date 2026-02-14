@@ -66,15 +66,6 @@ const columns: DataTableColumn<Tenant>[] = [
         render: (tenant) => tenant.companyName,
     },
     {
-        sortKey: 'subscription',
-        nameColumn: 'Suscripción',
-        type: 'string',
-        width: '125px',
-        align: 'center',
-        isSortable: true,
-        render: (tenant) => <div className={`${styles.subscription} ${styles["subscription_" + tenant.subscription?.toLowerCase()]}`}>{tenant.subscription}</div>,
-    },
-    {
         sortKey: 'status',
         nameColumn: 'Estado',
         type: 'string',

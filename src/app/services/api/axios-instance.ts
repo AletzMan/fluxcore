@@ -15,7 +15,7 @@ const handleAxiosError = (error: unknown) => {
         let errorCode = "UNKNOWN_ERROR";
         let message = "Error inesperado.";
 
-        // 1. DETECCIÓN DE SERVIDOR CAÍDO (Node.js) 🔌
+        // 1. DETECCIÓN DE SERVIDOR CAÍDO (.NET ) 🔌 
         // ECONNREFUSED significa que nadie escucha en ese puerto (Backend apagado)
         // ETIMEDOUT significa que el servidor no respondió a tiempo
         // ERR_NETWORK significa que hubo un error de red
@@ -77,6 +77,8 @@ export const apiFluxCorePut = async <T>(url: string, data?: any, config?: AxiosR
     }
 };
 
+import { cacheService } from "../cache.service";
+
 export const apiFluxCoreServer = async () => {
     const { cookies } = await import("next/headers");
     const cookieStore = await cookies();
@@ -91,6 +93,51 @@ export const apiFluxCoreServer = async () => {
             Cookie: cookieStore.toString()
         }
     });
+
+    // Request Interceptor for Caching
+    instance.interceptors.request.use(async (config) => {
+        if ((config as any).cache) {
+            const key = cacheService.generateKey(config);
+            const cachedData = await cacheService.get(key);
+
+            if (cachedData) {
+                // Return a special error object to be caught by the response interceptor
+                throw {
+                    __isCache: true,
+                    data: cachedData,
+                    config,
+                    headers: config.headers,
+                };
+            }
+        }
+        return config;
+    });
+
+    // Response Interceptor for Caching
+    instance.interceptors.response.use(
+        (response) => {
+            if ((response.config as any).cache) {
+                const key = cacheService.generateKey(response.config);
+                const ttl = (response.config as any).ttl || 60; // Default 60s
+                cacheService.set(key, response.data, ttl);
+            }
+            return response;
+        },
+        async (error) => {
+            // Check if it's our standard cache hit "error"
+            if (error && error.__isCache) {
+                // Return a mock AxiosResponse
+                return Promise.resolve({
+                    data: error.data,
+                    status: 200,
+                    statusText: 'OK (Cached)',
+                    headers: error.headers,
+                    config: error.config,
+                });
+            }
+            return Promise.reject(error);
+        }
+    );
 
     return instance;
 };

@@ -33,7 +33,11 @@ export const TableError = ({
 
     if (!isError && !isSearch && !isEmptyResponse) return null;
 
+    console.log(isError, isSearch, isEmptyResponse);
+
     const stateConfig = getStateConfig(isError, isEmptyResponse, isSearch);
+
+    console.log(stateConfig);
 
     if (!stateConfig) return null;
 
