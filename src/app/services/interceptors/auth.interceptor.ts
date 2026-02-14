@@ -75,7 +75,7 @@ apiFluxCore.interceptors.response.use(
                 const newAccessToken = response;
 
                 // Guardar nuevo token en memoria
-                useAuthStore.getState().setAccessToken(newAccessToken);
+                useAuthStore.getState().setAccessToken(newAccessToken as string);
 
                 isRefreshing = false;
                 processQueue(null, newAccessToken);
