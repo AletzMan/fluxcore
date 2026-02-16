@@ -13,7 +13,7 @@ interface PlansViewProps {
 }
 
 export const PlansView = ({ plans, pagination, success }: PlansViewProps) => {
-    console.log("plans", plans);
+
     return (
         <DataTable<Plan>
             data={plans || []}

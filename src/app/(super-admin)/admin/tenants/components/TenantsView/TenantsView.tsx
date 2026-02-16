@@ -14,7 +14,7 @@ interface TenantsViewProps {
 }
 
 export const TenantsView = ({ tenants, pagination, success }: TenantsViewProps) => {
-    console.log(tenants);
+
     return (
         <DataTable<Tenant>
             data={tenants || []}

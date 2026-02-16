@@ -1,9 +1,4 @@
-:root {
-    --radius-field: var(--radius-xs);
-    --radius-box: var(--radius-sm);
-    --radius-selector: var(--radius-xs);
-
-}
+:root {}
 
 * {
     font-family: var(--font-jost);

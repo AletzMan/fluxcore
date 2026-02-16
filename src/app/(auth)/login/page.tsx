@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { LoginCredentials } from "@/typesAPI/auth.types";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "@/validations/auth.schema";
+import { loginSchema } from "../../../validations/auth.schema";
 
 export default function LoginPage() {
     const { login, isLoading, error } = useAuth();

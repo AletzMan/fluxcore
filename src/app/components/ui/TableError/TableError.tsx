@@ -29,7 +29,7 @@ export const TableError = ({
 
     const handleRetry = onRetry || (() => window.location.reload());
     const handleReset = onResetFilters || (() => router.replace(pathname));
-    const handleCreate = onCreate || (() => router.push(`${pathname}/new`));
+    const handleCreate = onCreate || (() => router.push(`${pathname}/add`));
 
     if (!isError && !isSearch && !isEmptyResponse) return null;
 

@@ -149,6 +149,29 @@ export const ErrorMessages: Record<string, string> = {
     VARIANT_QUANTITY_INVALID: "La cantidad ingresada no es válida",
     VARIANT_UNIT_PRICE_INVALID: "El precio unitario no es válido",
 
+
+    // Plan
+    PLAN_NAME_REQUIRED: "El nombre del plan es requerido",
+    PLAN_NAME_TOO_SHORT: "El nombre del plan es demasiado corto",
+    PLAN_NAME_TOO_LONG: "El nombre del plan es demasiado largo",
+    PLAN_DESCRIPTION_REQUIRED: "La descripción del plan es obligatoria",
+    PLAN_DESCRIPTION_TOO_SHORT: "La descripción es demasiado corta, mínimo 10 caracteres",
+    PLAN_DESCRIPTION_TOO_LONG: "La descripción es demasiado larga",
+    PLAN_PRICE_REQUIRED: "El precio del plan es requerido",
+    PLAN_PRICE_INVALID: "El precio del plan es inválido",
+    PLAN_PRICE_MIN: "El precio debe ser mayor o igual a cero",
+    PLAN_UPDATE_REQUIRED: "No se detectaron cambios para actualizar",
+    PLAN_NAME_EXISTS: "El nombre del plan ya existe",
+    PLAN_INVALID_PRICING: "El precio del plan debe ser mayor o igual a cero",
+    PLAN_INVALID_LIMITS: "Los límites del plan (usuarios, productos, sucursales) deben ser mayores a cero",
+    PLAN_HAS_ACTIVE_SUBSCRIPTIONS: "No se puede eliminar un plan que tiene suscripciones activas",
+    PLAN_TRIAL_DAYS_INVALID: "Los días de prueba deben ser mayores o iguales a cero",
+    PLAN_MAX_USERS_INVALID: "El número máximo de usuarios debe ser mayor o igual a cero",
+    PLAN_MAX_PRODUCTS_INVALID: "El número máximo de productos debe ser mayor o igual a cero",
+    PLAN_MAX_BRANCHES_INVALID: "El número máximo de sucursales debe ser mayor o igual a cero",
+    PLAN_FEATURES_INVALID_JSON: "Las características del plan son inválidas (debe ser un JSON válido)",
+
+
     // Provider
     PROVIDER_COMPANY_NAME_REQUIRED: "El nombre de la empresa es requerido",
     PROVIDER_COMPANY_NAME_TOO_SHORT: "El nombre de la empresa debe tener al menos 3 caracteres",
@@ -213,6 +236,7 @@ export const ErrorMessages: Record<string, string> = {
     DOMAIN_ERROR: "Ocurrió un error al procesar la solicitud. Por favor, intenta de nuevo.",
     SERVER_ERROR: "Ocurrió un error inesperado en el servidor. Por favor, intenta más tarde.",
     TOO_MANY_REQUESTS: "Has realizado demasiadas solicitudes. Por favor, intenta de nuevo más tarde.",
+    BAD_REQUEST: "Ocurrió un error al procesar la solicitud. Por favor, intenta de nuevo.",
     NETWORK_ERROR: "No pudimos conectar con el servidor. Revisa tu conexión a internet. Si el problema persiste, contacta al administrador.",
 
 

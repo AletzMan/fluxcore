@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export const DateItem = ({ filter }: { filter: any }) => {
     const [value, setValue] = useState<Date | undefined>(new Date());
-    console.log(value);
+
     return (
         <DatePicker
             label={filter.label}

@@ -5,7 +5,7 @@ import { UserIcon } from 'lucide-react';
 import { Fieldset } from '@/pp/components/layout/Fieldset/Fieldset';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { RegisterTenantSchema } from '@/validations/tenant.schema';
+import { RegisterTenantSchema } from '../../../../../../validations/tenant.schema';
 import { BillingCycle } from '@/enums/common.enums';
 import { ErrorMessages } from '@/lib/errors/message-errors';
 
@@ -56,14 +56,12 @@ export const FormTenant = () => {
                 errorMessage = "Paso inválido";
         }
 
-        console.log('Step:', stepIndex, 'isValid:', isValid, 'errors:', errors, 'errorMessage:', errorMessage);
-
         return {
             isValid,
             errorMessage
         };
     }
-    console.log(getValues());
+
     return (
         <div className={styles.formtenant}>
             <Stepper
