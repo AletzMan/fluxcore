@@ -48,7 +48,7 @@
         "./src/types/enums/*"
       ],
       "@/validations/*": [
-        "./src/lib/validations/*"
+        "./src/validations/*"
       ],
       "@/utils/*": [
         "./src/lib/utils/*"
@@ -58,7 +58,7 @@
       ],
       "@/typesComponents/*": [
         "./src/types/components/*"
-      ]
+      ],
     }
   },
   "include": [

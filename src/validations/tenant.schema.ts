@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ErrorMessages } from '../errors/message-errors';
+import { ErrorMessages } from '../lib/errors/message-errors';
 
 
 export const RegisterTenantSchema = z.object({

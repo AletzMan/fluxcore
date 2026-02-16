@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { ValidationRules } from './validation-rules';
-import { ErrorMessages } from '../errors/message-errors';
+import { ValidationRules } from '@/validations/validation-rules';
+import { ErrorMessages } from '@/lib/errors/message-errors';
 
 export const loginSchema = z.object({
     username: z
