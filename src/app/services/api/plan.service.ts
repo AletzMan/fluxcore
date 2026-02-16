@@ -1,5 +1,5 @@
 import { CreatePlan, GetPlansParams, UpdatePlan } from "@/typesAPI/plan.types";
-import { apiFluxCore, apiFluxCoreServerGet } from "./axios-instance";
+import { apiFluxCore, apiFluxCoreServerGet, apiFluxCorePost } from "./axios-instance";
 import { PagedResponse } from "@/typesAPI/common.types";
 import { Plan } from "@/typesModels/Plan";
 import axios from "axios";
@@ -27,9 +27,9 @@ class PlanService {
     }
 
     async createPlan(plan: CreatePlan) {
-        const response = await apiFluxCore.post<Plan>("/plans", plan);
+        const response = await apiFluxCorePost<Plan>("/plans", plan);
         cacheService.invalidateKeysByPattern('get:/plans'); // Invalidate cache
-        return response.data;
+        return response;
     }
 
     async updatePlan(id: number, plan: UpdatePlan) {

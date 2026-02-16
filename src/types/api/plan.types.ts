@@ -6,6 +6,14 @@ export interface GetPlansParams extends BaseParams {
     maxPrice?: number;
 }
 
+
+export interface PlanFeature {
+    name: string;
+    description: string;
+    isEnabled: boolean;
+    displayOrder: number;
+}
+
 export interface UpdatePlan {
     name?: string;
     description?: string;
@@ -23,7 +31,7 @@ export interface UpdatePlan {
     hasApiAccess?: boolean;
     hasPrioritySupport?: boolean;
     trialDays?: number;
-    features?: string;
+    features?: PlanFeature[];
 }
 
 export interface CreatePlan {
@@ -43,5 +51,5 @@ export interface CreatePlan {
     hasApiAccess: boolean;
     hasPrioritySupport: boolean;
     trialDays: number;
-    features?: string;
+    features?: PlanFeature[];
 }
