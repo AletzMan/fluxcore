@@ -517,7 +517,7 @@ export const FormPlan = (props: any) => {
                                     <h2 className={styles.completed_title}>Plan Creado Exitosamente</h2>
                                     <p className={styles.completed_subtitle}>{`El plan ${watch('name')} ha sido creado exitosamente y ya se encuentra disponible para suscripciones.`}</p>
                                 </div>
-                                <Button variant="solid" color="secondary" size="small" label="Ver Tarjeta del Plan" onClick={() => setIsOpenDialog(true)} />
+                                <Button variant="soft" color="secondary" size="small" label="Ver Tarjeta del Plan" onClick={() => setIsOpenDialog(true)} />
                             </div>
                             <Dialog isOpen={isOpenDialog} onClose={() => setIsOpenDialog(false)}>
                                 <div className={styles.completed_preview}>

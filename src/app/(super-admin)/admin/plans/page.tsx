@@ -20,7 +20,12 @@ export default async function PlansPage({ searchParams }: { searchParams: GetPla
     const plans: PagedResponse<Plan> | undefined = await getPlans({ ...params });
     console.log("plans Page", plans);
     return (
-        <ContainerSection title="Distribución de Membresías" description="Definición de costos, límites de almacenamiento y características de los planes actuales.">
+        <ContainerSection
+            title="Distribución de Membresías"
+            description="Definición de costos, límites de almacenamiento y características de los planes actuales."
+            titleAddButton='Nuevo Plan'
+            hrefAddButton='/admin/plans/add'
+        >
             <div className={styles.plans}>
                 <Suspense fallback={<div>Cargando...</div>}>
                     <PlansView

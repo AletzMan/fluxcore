@@ -4,7 +4,7 @@ import { z } from "zod";
 
 export const PlanSchema = z.object({
     name: z.string({ error: ErrorMessages.PLAN_NAME_REQUIRED, }).min(3, ErrorMessages.PLAN_NAME_TOO_SHORT).max(100, ErrorMessages.PLAN_NAME_TOO_LONG),
-    description: z.string({ error: ErrorMessages.PLAN_DESCRIPTION_REQUIRED }).min(10, ErrorMessages.PLAN_DESCRIPTION_TOO_SHORT).max(100, ErrorMessages.PLAN_DESCRIPTION_TOO_LONG),
+    description: z.string({ error: ErrorMessages.PLAN_DESCRIPTION_REQUIRED }).min(10, ErrorMessages.PLAN_DESCRIPTION_TOO_SHORT).max(500, ErrorMessages.PLAN_DESCRIPTION_TOO_LONG),
 
     // Pricing
     monthlyPrice: z.number({ error: ErrorMessages.PLAN_PRICE_REQUIRED }).min(0, ErrorMessages.PLAN_PRICE_MIN),
