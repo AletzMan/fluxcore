@@ -11,7 +11,7 @@ import { loginSchema } from "../../../validations/auth.schema";
 
 export default function LoginPage() {
     const { login, isLoading, error } = useAuth();
-    const { handleSubmit, control, setError, formState: { errors } } = useForm<LoginCredentials>({ resolver: zodResolver(loginSchema) });
+    const { handleSubmit, control, formState: { errors } } = useForm<LoginCredentials>({ resolver: zodResolver(loginSchema) });
 
 
     const onSubmit = async (data: LoginCredentials) => {
