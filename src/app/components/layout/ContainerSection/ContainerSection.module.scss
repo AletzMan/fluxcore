@@ -1,10 +1,8 @@
 .container {
     display: flex;
     flex-direction: column;
-    height: calc(100svh - 4rem);
-    overflow-y: auto;
-    overflow-x: hidden;
     max-width: 100vw;
+    overflow: hidden;
 
     .header {
         display: flex;
@@ -36,7 +34,8 @@
     &_content {
         display: flex;
         flex-direction: column;
-        height: 100%;
+        height: calc(100svh - 155px);
+        overflow-y: auto;
         padding: var(--spacing-sm);
         background-image:
             linear-gradient(to right, color-mix(in srgb, var(--surface-b), transparent 48%) 1px, transparent 1px),

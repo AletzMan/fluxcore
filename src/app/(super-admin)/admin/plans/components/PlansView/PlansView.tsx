@@ -22,7 +22,6 @@ export const PlansView = ({ plans, pagination, success }: PlansViewProps) => {
             success={success}
             actions={[
                 "view",
-                "edit",
                 "delete"
             ]}
             filters={[
@@ -47,7 +46,7 @@ const columns: DataTableColumn<Plan>[] = [
         sortKey: 'name',
         nameColumn: 'Nombre',
         type: 'string',
-        width: '200px',
+        width: '100px',
         align: 'left',
         isSortable: true,
         render: (plan) => plan.name,
@@ -56,10 +55,10 @@ const columns: DataTableColumn<Plan>[] = [
         sortKey: 'description',
         nameColumn: 'Descripción',
         type: 'string',
-        width: '200px',
+        width: '250px',
         align: 'center',
-        isSortable: true,
-        render: (plan) => plan.description,
+        isSortable: false,
+        render: (plan) => <p className={styles.description} title={plan.description}> {plan.description}</p>,
     },
     {
         sortKey: 'isActive',
@@ -71,8 +70,8 @@ const columns: DataTableColumn<Plan>[] = [
         render: (tenant) => {
             return (
                 tenant.isActive ?
-                    <Tag variant="subtle" color="success">Activo</Tag> :
-                    <Tag variant="subtle" color="danger">Inactivo</Tag>
+                    <Tag variant="subtle" color="success" size="tiny">Activo</Tag> :
+                    <Tag variant="subtle" color="danger" size="tiny">Inactivo</Tag>
             )
         },
     },

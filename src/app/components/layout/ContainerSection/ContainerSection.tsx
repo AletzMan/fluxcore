@@ -12,7 +12,7 @@ interface ContainerSectionProps {
 
 export const ContainerSection = ({ children, title, description, titleAddButton, hrefAddButton }: ContainerSectionProps) => {
     return (
-        <div className={`${styles.container} scrollBar`}>
+        <div className={`${styles.container}  `}>
             <header className={styles.header}>
                 <div className={styles.header_content}>
                     <h1 className={styles.header_title}>{title}</h1>
@@ -31,7 +31,7 @@ export const ContainerSection = ({ children, title, description, titleAddButton,
                 )}
             </header>
             <Divider spacing={10} />
-            <div className={styles.container_content}>
+            <div className={`${styles.container_content} scrollBar`}>
                 {children}
             </div>
         </div>

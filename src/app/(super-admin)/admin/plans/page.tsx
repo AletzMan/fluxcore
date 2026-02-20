@@ -4,7 +4,7 @@ import styles from './Planspage.module.scss'
 import { ContainerSection } from '@/app/components/layout/ContainerSection/ContainerSection';
 import { PagedResponse } from '@/typesAPI/common.types';
 import { Suspense } from 'react';
-import { PlansView } from './components/TenantsView/PlansView';
+import { PlansView } from './components/PlansView/PlansView';
 import { planService } from '@/app/services/api/plan.service';
 
 const getPlans = async (params: GetPlansParams) => {

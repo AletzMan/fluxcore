@@ -26,3 +26,13 @@
         background-color: var(--lambda-color-rose-800);
     }
 }
+
+
+/*Agregar puntos ellipsis si el texto es muy largo*/
+.description {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    text-align: start;
+}

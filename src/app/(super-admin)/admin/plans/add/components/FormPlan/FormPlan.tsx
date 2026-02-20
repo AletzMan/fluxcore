@@ -12,7 +12,7 @@ import { planService } from '@/app/services/api/plan.service';
 import { useRouter } from 'next/navigation';
 import { createPlanAction } from '@/app/actions/plan.actions';
 import { PlanCard } from '@/app/components/ui/PlanCard/PlanCard';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'motion/react';
 
 interface StepValidationResult {
@@ -28,10 +28,11 @@ export const FormPlan = (props: any) => {
         title: "",
         message: ""
     });
+    const creationResultRef = useRef<{ success: boolean, title: string, message: string } | null>(null);
     const router = useRouter();
 
     const { control, handleSubmit, trigger, watch, formState: { errors } } = useForm<PlanFormValues>({
-        resolver: zodResolver(PlanSchema),
+        resolver: zodResolver(PlanSchema) as any,
         defaultValues: {
             name: "",
             description: "",
@@ -63,25 +64,25 @@ export const FormPlan = (props: any) => {
             const result = await createPlanAction({
                 ...data,
             });
-            if (result.success) {
-                setIsCreated({
-                    success: true,
-                    title: "¡Plan creado con éxito!",
-                    message: "El nuevo plan de suscripción ya está activo y listo para ser asignado a los comercios."
-                });
-            } else {
-                setIsCreated({
-                    success: false,
-                    title: "Error al crear el plan",
-                    message: result.message || "Verifica que los datos ingresados sean correctos e intenta nuevamente."
-                });
-            }
+            const newState = {
+                success: result.success,
+                title: result.success ? "¡Plan creado con éxito!" : "Error al crear el plan",
+                message: result.success
+                    ? "El nuevo plan de suscripción ya está activo y listo para ser asignado a los comercios."
+                    : (result.message || "Verifica que los datos ingresados sean correctos e intenta nuevamente.")
+            };
+
+            setIsCreated(newState);
+            creationResultRef.current = newState;
+
         } catch (error) {
-            setIsCreated({
+            const errorState = {
                 success: false,
                 title: "Problema de conexión",
                 message: "Ocurrió un error inesperado al comunicarse con el servidor. Por favor, intenta de nuevo en unos momentos."
-            });
+            };
+            setIsCreated(errorState);
+            creationResultRef.current = errorState;
         }
     };
 
@@ -108,12 +109,26 @@ export const FormPlan = (props: any) => {
                 errorMessage = isValid ? "" : "Revise los límites del plan.";
                 break;
             case 3:
+                // Limpiar el ref antes de intentar enviar
+                creationResultRef.current = null;
                 await handleSubmit(onSubmit)();
-                if (isCreated.success) {
+
+                // Asignar a una variable local para evitar que TS asuma que sigue siendo null (narrowing)
+                const result = creationResultRef.current as { success: boolean, title: string, message: string } | null;
+
+                // Verificar el resultado usando el ref en lugar del estado (que es asíncrono)
+                if (result && result.success === false) {
                     isValid = false;
-                    errorMessage = isCreated.title;
+                    errorMessage = result.title;
                     break;
                 }
+
+                // Si el ref es null, significa que no pasó la validación del formulario (onSubmit no se ejecutó)
+                if (!result) {
+                    isValid = false;
+                    break;
+                }
+
                 isValid = true;
                 break;
             default:
