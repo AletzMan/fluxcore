@@ -6,6 +6,8 @@ import { Alert, Button, Checkbox, Dialog, Divider, Input, InputNumber, TextArea 
 import { useState } from 'react';
 import type { ZodType } from 'zod';
 import { apiFluxCorePatch } from '@/app/services/api/axios-instance';
+import { updatePlanAction } from '@/app/actions/plan.actions';
+import { EditIcon } from 'lucide-react';
 
 // ─── Field Definitions ────────────────────────────────────────────────────────
 
@@ -46,6 +48,8 @@ export interface EditFormProps<T extends Record<string, any>> {
     method?: 'PUT' | 'PATCH';
     /** Callback al guardar con éxito */
     onSuccess?: (data: T) => void;
+    /** ID del recurso a editar */
+    id: number;
     /** Estado abierto del Dialog (controlado por el padre vía store) */
     isOpen: boolean;
     /** Callback para cerrar el Dialog */
@@ -65,6 +69,7 @@ export const EditForm = <T extends Record<string, any>>({
     apiUrl,
     method = 'PUT',
     onSuccess,
+    id,
     isOpen,
     onClose,
     title = 'Editar',
@@ -94,7 +99,7 @@ export const EditForm = <T extends Record<string, any>>({
                 return acc;
             }, {} as Record<string, any>);
 
-            const response = await apiFluxCorePatch<T>(apiUrl, payload);
+            const response = await updatePlanAction(id, payload);
 
             if ((response as any)?.success === false) {
                 setStatus({ type: 'error', message: (response as any).message || 'Error al guardar los cambios.' });
@@ -102,7 +107,7 @@ export const EditForm = <T extends Record<string, any>>({
             }
 
             setStatus({ type: 'success', message: 'Los cambios se guardaron correctamente.' });
-            onSuccess?.(response as T);
+            onSuccess?.(response as unknown as T);
 
             // Pequeño delay para que el usuario vea el mensaje de éxito, luego cierra
             setTimeout(() => {
@@ -126,13 +131,19 @@ export const EditForm = <T extends Record<string, any>>({
     };
 
     return (
-        <Dialog isOpen={isOpen} onClose={handleClose}>
-            <div className={styles.editform}>
-                {/* Header */}
+        <Dialog
+            isOpen={isOpen}
+            onClose={handleClose}
+            title={
                 <div className={styles.header}>
-                    <h2 className={styles.title}>{title}</h2>
+                    <h2 className={styles.title}><EditIcon /> {title}</h2>
                     {description && <p className={styles.description}>{description}</p>}
                 </div>
+            }
+
+        >
+            <div className={styles.editform}>
+
 
                 <Divider spacing={0} />
 

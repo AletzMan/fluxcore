@@ -99,10 +99,11 @@ export const EditFormWrapper = ({ planId, plan }: EditFormWrapperProps) => {
                 }}
                 schema={GeneralSchema}
                 apiUrl={apiUrl}
-                title="Editar: Información General"
+                title="Información General"
                 description="Modifica el nombre, descripción, estado y días de prueba del plan."
                 isOpen={activeSection === PLAN_SECTIONS.GENERAL}
                 onClose={closeSection}
+                id={planId}
             />
 
             {/* ── Sección: Precios ── */}
@@ -116,10 +117,11 @@ export const EditFormWrapper = ({ planId, plan }: EditFormWrapperProps) => {
                 }}
                 schema={PricingSchema}
                 apiUrl={apiUrl}
-                title="Editar: Precios"
+                title="Precios"
                 description="Actualiza los precios del plan para cada ciclo de pago."
                 isOpen={activeSection === PLAN_SECTIONS.PRICING}
                 onClose={closeSection}
+                id={planId}
             />
 
             {/* ── Sección: Límites ── */}
@@ -132,10 +134,11 @@ export const EditFormWrapper = ({ planId, plan }: EditFormWrapperProps) => {
                 }}
                 schema={LimitsSchema}
                 apiUrl={apiUrl}
-                title="Editar: Límites y Restricciones"
+                title="Límites y Restricciones"
                 description="Define los límites máximos de recursos del plan."
                 isOpen={activeSection === PLAN_SECTIONS.LIMITS}
                 onClose={closeSection}
+                id={planId}
             />
 
             {/* ── Sección: Módulos ── */}
@@ -151,10 +154,11 @@ export const EditFormWrapper = ({ planId, plan }: EditFormWrapperProps) => {
                 }}
                 schema={ModulesSchema}
                 apiUrl={apiUrl}
-                title="Editar: Características Incluidas"
+                title="Características Incluidas"
                 description="Activa o desactiva los módulos disponibles en este plan."
                 isOpen={activeSection === PLAN_SECTIONS.MODULES}
                 onClose={closeSection}
+                id={planId}
             />
 
             {/* ── Sección: Características Adicionales ── */}

@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { Alert, Button, Checkbox, Dialog, Divider, Input, TextArea } from 'lambda-ui-components';
 import { useState } from 'react';
 import { Trash2, Plus } from 'lucide-react';
-import { apiFluxCorePut } from '@/app/services/api/axios-instance';
+import { updatePlanAction } from '@/app/actions/plan.actions';
 import { PlanFeature } from '@/typesAPI/plan.types';
 
 // ─── Schema ───────────────────────────────────────────────────────────────────
@@ -57,7 +57,7 @@ export const EditFeaturesForm = ({ planId, features, isOpen, onClose }: EditFeat
         setIsLoading(true);
         setStatus(null);
         try {
-            const response = await apiFluxCorePut(`/plans/${planId}/features`, data.features);
+            const response = await updatePlanAction(planId, data);
 
             if ((response as any)?.success === false) {
                 setStatus({ type: 'error', message: (response as any).message || 'Error al guardar los cambios.' });
