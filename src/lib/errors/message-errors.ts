@@ -230,6 +230,7 @@ export const ErrorMessages: Record<string, string> = {
     AUTH_USER_INACTIVE: "Tu cuenta de usuario está inactiva. Contacta al administrador.",
     AUTH_INVALID_REFRESH_TOKEN: "Tu sesión ha expirado. Por favor, ingresa de nuevo.",
     AUTH_USER_NOT_AUTHENTICATED: "Debes iniciar sesión para realizar esta acción",
+    AUTH_UNAUTHORIZED: "No tienes permiso para realizar esta acción",
 
     // Global / Common
     CONFLICT: "Esta acción no se puede realizar porque los datos han cambiado o ya existen.",

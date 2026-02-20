@@ -1,5 +1,14 @@
 
 
+
+export interface PlanFeature {
+    id: number;
+    name: string;
+    description: string;
+    isEnabled: boolean;
+    displayOrder: number;
+}
+
 export interface Plan {
     id: number;
     name: string;
@@ -18,8 +27,9 @@ export interface Plan {
     hasApiAccess: boolean;
     hasPrioritySupport: boolean;
     trialDays: number;
-    features: string;
+    features: PlanFeature[];
     isActive: boolean;
     createdAt: Date;
     lastModifiedAt: Date;
 }
+

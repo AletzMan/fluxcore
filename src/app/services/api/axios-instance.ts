@@ -1,3 +1,4 @@
+import { cacheService } from "../cache.service";
 import axios, { AxiosRequestConfig } from "axios";
 import { ErrorMessages } from "../../../lib/errors/message-errors";
 
@@ -13,6 +14,7 @@ export const apiFluxCore = axios.create({
 const handleAxiosError = (error: unknown) => {
     if (axios.isAxiosError(error)) {
         let errorCode = error.response?.data?.code || "UNKNOWN_ERROR";
+        console.log("errorCode", errorCode);
         let message = ErrorMessages[errorCode] || "Error inesperado.";
         console.log("error.response.data", error.response?.data);
         console.log("error", error.response?.data.errors);
@@ -84,7 +86,25 @@ export const apiFluxCorePut = async <T>(url: string, data?: any, config?: AxiosR
     }
 };
 
-import { cacheService } from "../cache.service";
+export const apiFluxCorePatch = async <T>(url: string, data?: any, config?: AxiosRequestConfig) => {
+    try {
+        const response = await apiFluxCore.patch<T>(url, data, config);
+        return response.data;
+    } catch (error) {
+        console.log("error", error);
+        return handleAxiosError(error);
+    }
+};
+
+export const apiFluxCoreDelete = async <T>(url: string, config?: AxiosRequestConfig) => {
+    try {
+        const response = await apiFluxCore.delete<T>(url, config);
+        return response.data;
+    } catch (error) {
+        return handleAxiosError(error);
+    }
+};
+
 
 export const apiFluxCoreServer = async () => {
     const { cookies } = await import("next/headers");
@@ -151,8 +171,10 @@ export const apiFluxCoreServer = async () => {
 
 export const apiFluxCoreServerGet = async <T>(url: string, config?: AxiosRequestConfig) => {
     try {
+        console.log("url", url);
         const api = await apiFluxCoreServer();
         const response = await api.get<T>(url, config);
+        console.log("response apiFluxCoreServerGet", response.data);
         return response.data;
     } catch (error) {
         return handleAxiosError(error);
@@ -163,6 +185,7 @@ export const apiFluxCoreServerPost = async <T>(url: string, data?: any, config?:
     try {
         const api = await apiFluxCoreServer();
         const response = await api.post<T>(url, data, config);
+        console.log(response.data);
         return response.data;
     } catch (error) {
         return handleAxiosError(error);

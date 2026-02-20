@@ -1,6 +1,6 @@
 import { CreatePlan, GetPlansParams, UpdatePlan } from "@/typesAPI/plan.types";
 import { apiFluxCore, apiFluxCoreServerGet, apiFluxCorePost } from "./axios-instance";
-import { PagedResponse } from "@/typesAPI/common.types";
+import { ApiResponse, PagedResponse } from "@/typesAPI/common.types";
 import { Plan } from "@/typesModels/Plan";
 import axios from "axios";
 
@@ -21,9 +21,19 @@ class PlanService {
         }
     }
 
-    async getPlanById(id: number) {
-        const response = await apiFluxCore.get<Plan>(`/plans/${id}`);
-        return response.data;
+    async getPlanById(id: number): Promise<Plan | undefined | null> {
+        try {
+            const config = { cache: true, ttl: 120 };
+            console.log("id", id);
+            const response = await apiFluxCoreServerGet<ApiResponse<Plan>>(`/plans/${id}`, config as any);
+            console.log("response", response);
+            return response.data;
+        } catch (error) {
+            console.warn("Error al obtener el plan:", error);
+            if (axios.isAxiosError(error)) {
+                return error.response?.data;
+            }
+        }
     }
 
     async createPlan(plan: CreatePlan) {

@@ -14,7 +14,7 @@ export async function createPlanAction(data: CreatePlan): Promise<any> {
         });
 
         // Revalidamos las rutas necesarias
-        revalidatePath('/admin/plans');
+        revalidatePath('/admin/plans'); 
 
         return response;
     } catch (error: any) {

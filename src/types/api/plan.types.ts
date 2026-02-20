@@ -8,6 +8,7 @@ export interface GetPlansParams extends BaseParams {
 
 
 export interface PlanFeature {
+    id?: number;
     name: string;
     description: string;
     isEnabled: boolean;

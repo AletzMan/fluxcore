@@ -7,16 +7,16 @@ export const PlanSchema = z.object({
     description: z.string({ error: ErrorMessages.PLAN_DESCRIPTION_REQUIRED }).min(10, ErrorMessages.PLAN_DESCRIPTION_TOO_SHORT).max(500, ErrorMessages.PLAN_DESCRIPTION_TOO_LONG),
 
     // Pricing
-    monthlyPrice: z.number({ error: ErrorMessages.PLAN_PRICE_REQUIRED }).min(0, ErrorMessages.PLAN_PRICE_MIN),
-    quarterlyPrice: z.number({ error: ErrorMessages.PLAN_PRICE_REQUIRED }).min(0, ErrorMessages.PLAN_PRICE_MIN),
-    semiannualPrice: z.number({ error: ErrorMessages.PLAN_PRICE_REQUIRED }).min(0, ErrorMessages.PLAN_PRICE_MIN),
-    annualPrice: z.number({ error: ErrorMessages.PLAN_PRICE_REQUIRED }).min(0, ErrorMessages.PLAN_PRICE_MIN),
+    monthlyPrice: z.coerce.number({ error: ErrorMessages.PLAN_PRICE_REQUIRED }).min(0, ErrorMessages.PLAN_PRICE_MIN),
+    quarterlyPrice: z.coerce.number({ error: ErrorMessages.PLAN_PRICE_REQUIRED }).min(0, ErrorMessages.PLAN_PRICE_MIN),
+    semiannualPrice: z.coerce.number({ error: ErrorMessages.PLAN_PRICE_REQUIRED }).min(0, ErrorMessages.PLAN_PRICE_MIN),
+    annualPrice: z.coerce.number({ error: ErrorMessages.PLAN_PRICE_REQUIRED }).min(0, ErrorMessages.PLAN_PRICE_MIN),
 
     // Limits
-    maxUsers: z.number().min(1, ErrorMessages.PLAN_MAX_USERS_INVALID),
-    maxProducts: z.number().min(1, ErrorMessages.PLAN_MAX_PRODUCTS_INVALID),
-    maxBranches: z.number().min(1, ErrorMessages.PLAN_MAX_BRANCHES_INVALID),
-    trialDays: z.number().min(0, ErrorMessages.PLAN_TRIAL_DAYS_INVALID),
+    maxUsers: z.coerce.number().min(1, ErrorMessages.PLAN_MAX_USERS_INVALID),
+    maxProducts: z.coerce.number().min(1, ErrorMessages.PLAN_MAX_PRODUCTS_INVALID),
+    maxBranches: z.coerce.number().min(1, ErrorMessages.PLAN_MAX_BRANCHES_INVALID),
+    trialDays: z.coerce.number().min(0, ErrorMessages.PLAN_TRIAL_DAYS_INVALID),
 
     // Features (Booleans)
     hasInventoryManagement: z.boolean(),
