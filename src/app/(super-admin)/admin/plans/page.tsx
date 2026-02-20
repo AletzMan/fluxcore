@@ -18,7 +18,7 @@ export default async function PlansPage({ searchParams }: { searchParams: GetPla
 
     const params = await searchParams;
     const plans: PagedResponse<Plan> | undefined = await getPlans({ ...params });
-    console.log("plans Page", plans);
+
     return (
         <ContainerSection
             title="Distribución de Membresías"

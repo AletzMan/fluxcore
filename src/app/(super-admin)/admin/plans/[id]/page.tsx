@@ -44,7 +44,7 @@ export default async function PlanPage({ params }: { params: { id: string } }) {
             isError={true}
         />;
     }
-
+    console.log(plan);
     return (
         <ContainerSection
             title="Detalles del Plan"
