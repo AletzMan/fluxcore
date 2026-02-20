@@ -125,6 +125,7 @@ export const apiFluxCoreServer = async () => {
     instance.interceptors.request.use(async (config) => {
         if ((config as any).cache) {
             const key = cacheService.generateKey(config);
+            console.log("key", key);
             const cachedData = await cacheService.get(key);
 
             if (cachedData) {
@@ -145,6 +146,7 @@ export const apiFluxCoreServer = async () => {
         (response) => {
             if ((response.config as any).cache) {
                 const key = cacheService.generateKey(response.config);
+                console.log("key", key.toString());
                 const ttl = (response.config as any).ttl || 60; // Default 60s
                 cacheService.set(key, response.data, ttl);
             }
@@ -201,3 +203,14 @@ export const apiFluxCoreServerPut = async <T>(url: string, data?: any, config?: 
         return handleAxiosError(error);
     }
 };
+
+export const apiFluxCoreServerPatch = async <T>(url: string, data?: any, config?: AxiosRequestConfig) => {
+    try {
+        const api = await apiFluxCoreServer();
+        const response = await api.patch<T>(url, data, config);
+        return response.data;
+    } catch (error) {
+        return handleAxiosError(error);
+    }
+};
+    

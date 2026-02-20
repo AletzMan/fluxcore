@@ -1,5 +1,5 @@
-import { CreatePlan, GetPlansParams, UpdatePlan } from "@/typesAPI/plan.types";
-import { apiFluxCore, apiFluxCoreServerGet, apiFluxCorePost } from "./axios-instance";
+import { CreatePlan, GetPlansParams, UpdatePlan, PlanFeature } from "@/typesAPI/plan.types";
+import { apiFluxCore, apiFluxCoreServerGet, apiFluxCorePost, apiFluxCorePatch, apiFluxCorePut } from "./axios-instance";
 import { ApiResponse, PagedResponse } from "@/typesAPI/common.types";
 import { Plan } from "@/typesModels/Plan";
 import axios from "axios";
@@ -23,10 +23,8 @@ class PlanService {
 
     async getPlanById(id: number): Promise<Plan | undefined | null> {
         try {
-            const config = { cache: true, ttl: 120 };
-            console.log("id", id);
+            const config = { cache: true, ttl: 120 }; 
             const response = await apiFluxCoreServerGet<ApiResponse<Plan>>(`/plans/${id}`, config as any);
-            console.log("response", response);
             return response.data;
         } catch (error) {
             console.warn("Error al obtener el plan:", error);
@@ -44,10 +42,19 @@ class PlanService {
 
     async updatePlan(id: number, plan: UpdatePlan) {
         const response = await apiFluxCore.put<Plan>(`/plans/${id}`, plan);
-        cacheService.invalidateKeysByPattern('get:/plans'); // Invalidate cache
+        
+        cacheService.invalidateKeysByPattern(`get:/plans/${id}`); // Invalidate cache
         return response.data;
     }
 
+    //Update Patch plan by id
+    async updatePlanPatch(id: number, plan: UpdatePlan) {
+        const response = await apiFluxCorePatch<Plan>(`/plans/${id}`, plan);
+        cacheService.invalidateKeysByPattern(`get:/plans/${id}`);
+        cacheService.invalidateKeysByPattern(`get:/plans:`);
+        return response;
+    }
+ 
     async deletePlan(id: number) {
         const response = await apiFluxCore.delete(`/plans/${id}`);
         cacheService.invalidateKeysByPattern('get:/plans'); // Invalidate cache
