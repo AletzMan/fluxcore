@@ -55,14 +55,16 @@ class AuthService {
     }
 
     async verifySession(): Promise<User | null> {
-        const response = await apiFluxCoreGet<ApiResponse<{ user: User; accessToken?: string }>>('/auth/me');
+        const response = await apiFluxCoreGet<ApiResponse<{ user?: User; accessToken?: string } | User>>('/auth/me');
+        // console.log("verifySession response:", response);
 
         if (response && response.success && response.data) {
-            const result = response.data;
+            const result = response.data as any;
+            const user = result.user ? result.user : result;
             const token = result.accessToken || this.getStore().accessToken;
 
-            this.getStore().setAuth(result.user, token || "");
-            return result.user;
+            this.getStore().setAuth(user, token || "");
+            return user;
         }
 
         return null;
