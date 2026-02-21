@@ -70,8 +70,8 @@ const columns: DataTableColumn<Plan>[] = [
         render: (tenant) => {
             return (
                 tenant.isActive ?
-                    <Tag variant="subtle" color="success" size="tiny">Activo</Tag> :
-                    <Tag variant="subtle" color="danger" size="tiny">Inactivo</Tag>
+                    <Tag variant="subtle" color="success" size="tiny" radius="small">Activo</Tag> :
+                    <Tag variant="subtle" color="danger" size="tiny" radius="small">Inactivo</Tag>
             )
         },
     },
