@@ -1,18 +1,18 @@
 "use client";
 import { Button } from "lambda-ui-components";
-import styles from "./EditPlan.module.scss";
+import styles from "./EditSection.module.scss";
 import { EditIcon } from "lucide-react";
-import { useEditPlanStore } from "@/app/store/editplan.store";
+import { useEditSectionStore } from "@/app/store/editsection.store";
 
-interface EditPlanProps {
+interface EditSectionProps {
     /** ID de la sección que este botón abre */
     sectionId: string;
 }
 
-export const EditPlan = ({ sectionId }: EditPlanProps) => {
-    const openSection = useEditPlanStore((s) => s.openSection);
+export const EditSection = ({ sectionId }: EditSectionProps) => {
+    const openSection = useEditSectionStore((s) => s.openSection);
     return (
-        <div className={styles.editPlan}>
+        <div className={styles.editSection}>
             <Button
                 icon={<EditIcon />}
                 variant="outline"

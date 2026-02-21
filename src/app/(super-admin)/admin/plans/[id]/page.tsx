@@ -4,8 +4,9 @@ import { planService } from '@/app/services/api/plan.service';
 import { TableError } from '@/pp/components/ui/TableError/TableError';
 import { ContainerSection } from '@/pp/components/layout/ContainerSection/ContainerSection';
 import { Check, X } from 'lucide-react';
-import { Card, Divider, Tag } from 'lambda-ui-components';
-import { EditPlan } from '../components/EditPlan/EditPlan';
+import { Divider, Tag } from 'lambda-ui-components';
+import { DetailCard } from '../../components/DetailCard/DetailCard';
+import { EditSection } from '../../components/EditSection/EditSection';
 import { EditFormWrapper } from '../../components/EditForm/EditFormWrapper';
 import { PLAN_SECTIONS } from '@/pp/constants/planSections';
 
@@ -68,10 +69,11 @@ export default async function PlanPage({ params }: { params: { id: string } }) {
 
                 <div className={styles.grid}>
                     {/* Información General */}
-                    <Card className={`${styles.card} ${styles.fullWidth}`}>
-                        <EditPlan sectionId={PLAN_SECTIONS.GENERAL} />
-                        <h2>Información General</h2>
-                        <Divider spacing={0} />
+                    <DetailCard
+                        title="Información General"
+                        editAction={<EditSection sectionId={PLAN_SECTIONS.GENERAL} />}
+                        fullWidth
+                    >
                         <div className={styles.cardContent}>
                             <p>{plan.description || "Sin descripción disponible."}</p>
                             <div className={styles.row}>
@@ -87,26 +89,26 @@ export default async function PlanPage({ params }: { params: { id: string } }) {
                                 <span>{formatDateTimeLong(plan.lastModifiedAt?.toString())}</span>
                             </div>
                         </div>
-                    </Card>
+                    </DetailCard>
 
                     {/* Costos y Precios */}
-                    <Card className={styles.card}>
-                        <EditPlan sectionId={PLAN_SECTIONS.PRICING} />
-                        <h2>Precios</h2>
-                        <Divider spacing={0} />
+                    <DetailCard
+                        title="Precios"
+                        editAction={<EditSection sectionId={PLAN_SECTIONS.PRICING} />}
+                    >
                         <div className={styles.priceGrid}>
                             <PriceItem label="Mensual" price={plan.monthlyPrice} />
                             <PriceItem label="Trimestral" price={plan.quarterlyPrice} />
                             <PriceItem label="Semestral" price={plan.semiannualPrice} />
                             <PriceItem label="Anual" price={plan.annualPrice} />
                         </div>
-                    </Card>
+                    </DetailCard>
 
                     {/* Limites del Plan */}
-                    <Card className={styles.card}>
-                        <EditPlan sectionId={PLAN_SECTIONS.LIMITS} />
-                        <h2>Límites y Restricciones</h2>
-                        <Divider spacing={0} />
+                    <DetailCard
+                        title="Límites y Restricciones"
+                        editAction={<EditSection sectionId={PLAN_SECTIONS.LIMITS} />}
+                    >
                         <div className={styles.cardContent}>
                             <div className={styles.row}>
                                 <span>Usuarios máximos:</span>
@@ -121,13 +123,13 @@ export default async function PlanPage({ params }: { params: { id: string } }) {
                                 <span>{plan.maxBranches === -1 ? 'Ilimitadas' : plan.maxBranches}</span>
                             </div>
                         </div>
-                    </Card>
+                    </DetailCard>
 
                     {/* Características y Módulos */}
-                    <Card className={styles.card}>
-                        <EditPlan sectionId={PLAN_SECTIONS.MODULES} />
-                        <h2>Características Incluidas</h2>
-                        <Divider spacing={0} />
+                    <DetailCard
+                        title="Características Incluidas"
+                        editAction={<EditSection sectionId={PLAN_SECTIONS.MODULES} />}
+                    >
                         <div className={styles.featureList}>
                             <FeatureItem name="Gestión de Inventario" enabled={plan.hasInventoryManagement} />
                             <FeatureItem name="Reportes de Ventas" enabled={plan.hasSalesReports} />
@@ -136,13 +138,14 @@ export default async function PlanPage({ params }: { params: { id: string } }) {
                             <FeatureItem name="Acceso API" enabled={plan.hasApiAccess} />
                             <FeatureItem name="Soporte Prioritario" enabled={plan.hasPrioritySupport} />
                         </div>
-                    </Card>
+                    </DetailCard>
 
                     {/* Características Adicionales (features array) */}
-                    <Card className={`${styles.card} ${styles.fullWidth}`}>
-                        <EditPlan sectionId={PLAN_SECTIONS.FEATURES} />
-                        <h2>Características Adicionales</h2>
-                        <Divider spacing={0} />
+                    <DetailCard
+                        title="Características Adicionales"
+                        editAction={<EditSection sectionId={PLAN_SECTIONS.FEATURES} />}
+                        fullWidth
+                    >
                         <div className={styles.cardContent}>
                             {plan.features && plan.features.length > 0 ? (
                                 <div className={`${styles.featureList} ${styles.featureListWrap}`}>
@@ -161,7 +164,7 @@ export default async function PlanPage({ params }: { params: { id: string } }) {
                                 </p>
                             )}
                         </div>
-                    </Card>
+                    </DetailCard>
                 </div>
             </div>
             <EditFormWrapper planId={plan.id} plan={plan} />

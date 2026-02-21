@@ -1,0 +1,16 @@
+.detailCard {
+    position: relative;
+    background-color: var(--surface-a);
+    box-shadow: var(--box-shadow-sm);
+
+    h2 {
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        color: var(--primary-text-color);
+        margin: 0;
+    }
+}
+
+.fullWidth {
+    grid-column: 1 / -1;
+}

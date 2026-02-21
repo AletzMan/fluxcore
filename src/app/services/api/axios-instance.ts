@@ -6,9 +6,6 @@ import { ErrorMessages } from "../../../lib/errors/message-errors";
 export const apiFluxCore = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
     withCredentials: true,
-    headers: {
-        "Content-Type": "application/json",
-    },
 });
 
 const handleAxiosError = (error: unknown) => {
@@ -16,7 +13,7 @@ const handleAxiosError = (error: unknown) => {
         let errorCode = error.response?.data?.code || "UNKNOWN_ERROR";
         console.log("errorCode", errorCode);
         let message = ErrorMessages[errorCode] || "Error inesperado.";
-        console.log("error.response.data", error.response?.data);
+        console.log("error.response.data", error.response);
         console.log("error", error.response?.data.errors);
 
         // 1. DETECCIÓN DE SERVIDOR CAÍDO (.NET ) 🔌 
@@ -89,6 +86,7 @@ export const apiFluxCorePut = async <T>(url: string, data?: any, config?: AxiosR
 export const apiFluxCorePatch = async <T>(url: string, data?: any, config?: AxiosRequestConfig) => {
     try {
         const response = await apiFluxCore.patch<T>(url, data, config);
+        console.log("responsePatch", response);
         return response.data;
     } catch (error) {
         console.log("error", error);
@@ -127,6 +125,7 @@ export const apiFluxCoreServer = async () => {
             const key = cacheService.generateKey(config);
             console.log("key", key);
             const cachedData = await cacheService.get(key);
+            console.log("cachedData", cachedData);
 
             if (cachedData) {
                 // Return a special error object to be caught by the response interceptor
@@ -207,9 +206,14 @@ export const apiFluxCoreServerPut = async <T>(url: string, data?: any, config?: 
 export const apiFluxCoreServerPatch = async <T>(url: string, data?: any, config?: AxiosRequestConfig) => {
     try {
         const api = await apiFluxCoreServer();
+        console.log("urlPATCH", url);
+        console.log("dataPATCH", data);
+        console.log("configPATCH", config);
         const response = await api.patch<T>(url, data, config);
+        console.log("responsePATCH", response.data);
         return response.data;
     } catch (error) {
+        console.log("errorPATCH", error);
         return handleAxiosError(error);
     }
 };

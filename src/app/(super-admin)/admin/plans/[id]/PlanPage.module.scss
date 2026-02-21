@@ -33,138 +33,125 @@
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: var(--spacing-lg);
 
-        .card {
-            position: relative;
-            background-color: var(--surface-a);
-            box-shadow: var(--box-shadow-sm);
+        .cardContent {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+            color: var(--foreground-color);
 
-            h2 {
-                font-size: var(--font-size-lg);
-                font-weight: 600;
-                color: var(--primary-text-color);
-                margin: 0;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            span:first-child {
+                color: var(--foreground-secondary-color);
+                font-size: var(--font-size-md);
             }
 
-            .cardContent {
+            span:last-child {
+                color: var(--foreground-title-color);
+                font-weight: 500;
+            }
+        }
+
+        .priceGrid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+
+            .priceItem {
                 display: flex;
                 flex-direction: column;
-                gap: var(--spacing-xs);
-                color: var(--foreground-color);
+                gap: var(--spacing-2xs);
+                padding: var(--spacing-sm);
+                background-color: var(--surface-b);
+                border-radius: var(--radius-box);
 
-            }
-
-            .row {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-
-                span:first-child {
+                label {
+                    font-size: var(--font-size-sm);
                     color: var(--foreground-secondary-color);
-                    font-size: var(--font-size-md);
                 }
 
-                span:last-child {
-                    color: var(--foreground-title-color);
-                    font-weight: 500;
+                span {
+                    font-size: var(--font-size-lg);
+                    font-weight: 600;
+                    color: var(--primary-base-color);
                 }
             }
+        }
 
-            .priceGrid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: var(--spacing-md);
+        .featureList {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-4xs);
 
-                .priceItem {
+            .featureItem {
+                display: flex;
+                align-items: flex-start;
+                gap: var(--spacing-sm);
+                color: var(--foreground-title-color);
+                padding: var(--spacing-xs) 0;
+
+                .iconWrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-top: 0.125rem;
+                }
+
+                .textContent {
                     display: flex;
                     flex-direction: column;
-                    gap: var(--spacing-2xs);
-                    padding: var(--spacing-sm);
-                    background-color: var(--surface-b);
-                    border-radius: var(--radius-box);
 
-                    label {
+                    .name {
+                        font-weight: 500;
+                        font-size: var(--font-size-md);
+                    }
+
+                    .description {
                         font-size: var(--font-size-sm);
                         color: var(--foreground-secondary-color);
                     }
+                }
 
-                    span {
-                        font-size: var(--font-size-lg);
-                        font-weight: 600;
-                        color: var(--primary-base-color);
+                &.enabled {
+                    .name {
+                        color: var(--foreground-title-color);
+                    }
+
+                    .icon {
+                        color: var(--success-base-color);
+                    }
+                }
+
+                &.disabled {
+                    .name {
+                        color: var(--foreground-secondary-color);
+                        text-decoration: line-through;
+                    }
+
+                    .description {
+                        opacity: 0.7;
+                    }
+
+                    .icon {
+                        color: var(--disabled-color);
                     }
                 }
             }
+        }
 
-            .featureList {
-                display: flex;
-                flex-direction: column;
-                gap: var(--spacing-4xs);
+        .featureListWrap {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            max-height: 200px;
 
-                .featureItem {
-                    display: flex;
-                    align-items: flex-start;
-                    gap: var(--spacing-sm);
-                    color: var(--foreground-title-color);
-                    padding: var(--spacing-xs) 0;
-
-                    .iconWrapper {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin-top: 0.125rem;
-                    }
-
-                    .textContent {
-                        display: flex;
-                        flex-direction: column;
-
-                        .name {
-                            font-weight: 500;
-                            font-size: var(--font-size-md);
-                        }
-
-                        .description {
-                            font-size: var(--font-size-sm);
-                            color: var(--foreground-secondary-color);
-                        }
-                    }
-
-                    &.enabled {
-                        .name {
-                            color: var(--foreground-title-color);
-                        }
-
-                        .icon {
-                            color: var(--success-base-color);
-                        }
-                    }
-
-                    &.disabled {
-                        .name {
-                            color: var(--foreground-secondary-color);
-                            text-decoration: line-through;
-                        }
-
-                        .description {
-                            opacity: 0.7;
-                        }
-
-                        .icon {
-                            color: var(--disabled-color);
-                        }
-                    }
-                }
-            }
-
-            .featureListWrap {
-                display: flex;
-                flex-direction: column;
-                flex-wrap: wrap;
-                max-height: 200px;
-
-                @media (width < 768px) {
-                    max-height: 100%;
-                }
+            @media (width < 768px) {
+                max-height: 100%;
             }
         }
 
