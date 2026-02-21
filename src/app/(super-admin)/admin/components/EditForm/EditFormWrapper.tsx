@@ -2,9 +2,10 @@
 import { z } from 'zod';
 import { EditForm, EditFormField } from './EditForm';
 import { EditFeaturesForm } from './EditFeaturesForm';
-import { useEditPlanStore } from '@/app/store/editplan.store';
+import { useEditSectionStore } from '@/app/store/editsection.store';
 import { Plan } from '@/typesModels/Plan';
 import { PLAN_SECTIONS } from '@/pp/constants/planSections';
+import { updatePlanAction } from '@/app/actions/plan.actions';
 
 // ─── Schemas por sección ──────────────────────────────────────────────────────
 
@@ -81,8 +82,8 @@ interface EditFormWrapperProps {
 }
 
 export const EditFormWrapper = ({ planId, plan }: EditFormWrapperProps) => {
-    const activeSection = useEditPlanStore((s) => s.activeSection);
-    const closeSection = useEditPlanStore((s) => s.closeSection);
+    const activeSection = useEditSectionStore((s) => s.activeSection);
+    const closeSection = useEditSectionStore((s) => s.closeSection);
 
     const apiUrl = `/plans/${planId}`;
 
@@ -104,6 +105,7 @@ export const EditFormWrapper = ({ planId, plan }: EditFormWrapperProps) => {
                 isOpen={activeSection === PLAN_SECTIONS.GENERAL}
                 onClose={closeSection}
                 id={planId}
+                onSubmitAction={updatePlanAction}
             />
 
             {/* ── Sección: Precios ── */}
@@ -122,6 +124,7 @@ export const EditFormWrapper = ({ planId, plan }: EditFormWrapperProps) => {
                 isOpen={activeSection === PLAN_SECTIONS.PRICING}
                 onClose={closeSection}
                 id={planId}
+                onSubmitAction={updatePlanAction}
             />
 
             {/* ── Sección: Límites ── */}
@@ -139,6 +142,7 @@ export const EditFormWrapper = ({ planId, plan }: EditFormWrapperProps) => {
                 isOpen={activeSection === PLAN_SECTIONS.LIMITS}
                 onClose={closeSection}
                 id={planId}
+                onSubmitAction={updatePlanAction}
             />
 
             {/* ── Sección: Módulos ── */}
@@ -159,6 +163,7 @@ export const EditFormWrapper = ({ planId, plan }: EditFormWrapperProps) => {
                 isOpen={activeSection === PLAN_SECTIONS.MODULES}
                 onClose={closeSection}
                 id={planId}
+                onSubmitAction={updatePlanAction}
             />
 
             {/* ── Sección: Características Adicionales ── */}

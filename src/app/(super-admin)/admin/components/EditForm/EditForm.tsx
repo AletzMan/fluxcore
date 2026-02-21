@@ -2,16 +2,15 @@
 import styles from './EditForm.module.scss';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Alert, Button, Checkbox, Dialog, Divider, Input, InputNumber, TextArea } from 'lambda-ui-components';
+import { Alert, Button, Checkbox, Dialog, Divider, FileUpload, Input, InputNumber, TextArea } from 'lambda-ui-components';
 import { useState } from 'react';
 import type { ZodType } from 'zod';
-import { apiFluxCorePatch } from '@/app/services/api/axios-instance';
-import { updatePlanAction } from '@/app/actions/plan.actions';
+import { apiFluxCorePatch, apiFluxCorePut } from '@/app/services/api/axios-instance';
 import { EditIcon } from 'lucide-react';
 
 // ─── Field Definitions ────────────────────────────────────────────────────────
 
-export type EditFieldType = 'text' | 'textarea' | 'number' | 'boolean' | 'select';
+export type EditFieldType = 'text' | 'textarea' | 'number' | 'boolean' | 'select' | 'file';
 
 export interface SelectOption {
     label: string;
@@ -58,6 +57,10 @@ export interface EditFormProps<T extends Record<string, any>> {
     title?: string;
     /** Descripción del dialog */
     description?: string;
+    /** Acción de servidor específica a llamar. Si no se provee, se usará formData hacia apiUrl con el method */
+    onSubmitAction?: (id: number, data: any) => Promise<any>;
+    /** Si es true, enviará los datos como FormData lugar de JSON (útil para subir archivos) */
+    isMultipart?: boolean;
 }
 
 // ─── EditForm Component ───────────────────────────────────────────────────────
@@ -74,6 +77,8 @@ export const EditForm = <T extends Record<string, any>>({
     onClose,
     title = 'Editar',
     description,
+    onSubmitAction,
+    isMultipart = false,
 }: EditFormProps<T>) => {
 
     const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
@@ -93,14 +98,30 @@ export const EditForm = <T extends Record<string, any>>({
         setIsLoading(true);
         setStatus(null);
         try {
-            // Construye el payload usando solo las keys de los campos definidos
-            const payload = fields.reduce((acc, field) => {
-                acc[field.key as string] = data[field.key as string];
-                return acc;
-            }, {} as Record<string, any>);
+            // Construye el payload: JSON por defecto o FormData si es multipart
+            let payload: any;
 
-            const response = await updatePlanAction(id, payload);
+            if (isMultipart) {
+                payload = new FormData();
+                fields.forEach((field) => {
+                    const value = data[field.key as string];
+                    if (value !== undefined && value !== null) {
+                        payload.append(field.key as string, value);
+                    }
+                });
+            } else {
+                payload = fields.reduce((acc, field) => {
+                    acc[field.key as string] = data[field.key as string];
+                    return acc;
+                }, {} as Record<string, any>);
+            }
 
+            const response = onSubmitAction
+                ? await onSubmitAction(id, payload)
+                : method === 'PATCH'
+                    ? await apiFluxCorePatch(apiUrl, payload)
+                    : await apiFluxCorePut(apiUrl, payload);
+            console.log("response", response);
             if ((response as any)?.success === false) {
                 setStatus({ type: 'error', message: (response as any).message || 'Error al guardar los cambios.' });
                 return;
@@ -178,6 +199,21 @@ export const EditForm = <T extends Record<string, any>>({
                                                     label={field.label}
                                                     size="small"
                                                     placeholder={field.placeholder}
+                                                    errorMessage={error}
+                                                    invalid={!!error}
+                                                />
+                                            );
+                                        }
+
+                                        if (field.type === 'file') {
+                                            // Extraemos 'value' de rhfField porque el type='file' no puede recibir value (provoca error en react-hook-form)
+                                            const { value, ...restRhfField } = rhfField;
+                                            return (
+                                                <FileUpload
+                                                    {...restRhfField}
+                                                    id={key}
+                                                    label={field.label}
+                                                    size="small"
                                                     errorMessage={error}
                                                     invalid={!!error}
                                                 />

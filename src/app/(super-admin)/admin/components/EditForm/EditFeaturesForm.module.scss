@@ -2,10 +2,12 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
-    min-width: 480px;
-    max-width: 600px;
-    width: 100%;
+    min-width: 290px;
+    max-width: 560px;
+    width: calc(100svw- var(--spacing-2xl));
     padding: var(--spacing-lg);
+    overflow-y: auto;
+    scrollbar-width: thin;
 
     .header {
         display: flex;

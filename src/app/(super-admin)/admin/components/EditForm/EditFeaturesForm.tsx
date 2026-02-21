@@ -94,7 +94,7 @@ export const EditFeaturesForm = ({ planId, features, isOpen, onClose }: EditFeat
 
     return (
         <Dialog isOpen={isOpen} onClose={handleClose}>
-            <div className={styles.editfeatures}>
+            <div className={`${styles.editfeatures} scrollBar`}>
                 {/* Header */}
                 <div className={styles.header}>
                     <h2 className={styles.title}>Editar: Características Adicionales</h2>
