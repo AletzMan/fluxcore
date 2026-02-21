@@ -1,6 +1,6 @@
 import { GetTenantsParams, RegisterTenantRequest } from "@/typesAPI/tenant.types";
 import { apiFluxCore, apiFluxCoreServerGet } from "./axios-instance";
-import { PagedResponse } from "@/typesAPI/common.types";
+import { PagedResponse, ApiResponse } from "@/typesAPI/common.types";
 import { Tenant } from "@/typesModels/Tenant";
 import axios from "axios";
 
@@ -21,8 +21,16 @@ class TenantService {
     }
 
     async getTenantById(id: number) {
-        const response = await apiFluxCore.get<Tenant>(`/admin/tenants/${id}`);
-        return response.data;
+        try {
+            const config = { cache: true, ttl: 120 };
+            const response = await apiFluxCoreServerGet<ApiResponse<Tenant>>(`/tenants/${id}`, config as any);
+            return response.data;
+        } catch (error) {
+            console.warn("Error al obtener el tenant:", error);
+            if (axios.isAxiosError(error)) {
+                return undefined;
+            }
+        }
     }
 
     async createTenant(tenant: RegisterTenantRequest) {
