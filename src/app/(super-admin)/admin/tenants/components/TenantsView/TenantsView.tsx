@@ -1,11 +1,13 @@
 "use client"
 import { DataTable, DataTableColumn } from "@/pp/components/ui/DataTable/DataTable";
 import { Pagination } from "@/typesAPI/common.types";
-import { PlanStatusType } from "@/enums/common.enums";
 import { Tenant } from "@/typesModels/Tenant";
-import { Tag } from "lambda-ui-components";
+import { Tag, useNotification } from "lambda-ui-components";
 import styles from "./TenantsView.module.scss";
 import { formatDateTimeShort } from "@/utils/common-utils";
+import { tenantService } from "@/pp/services/api/tenant.service";
+import { ErrorMessages } from "@/lib/errors/message-errors";
+import { statusComponent, getStatusColor } from "@/pp/constants/common";
 
 interface TenantsViewProps {
     tenants: Tenant[];
@@ -14,6 +16,33 @@ interface TenantsViewProps {
 }
 
 export const TenantsView = ({ tenants, pagination, success }: TenantsViewProps) => {
+    const { showNotification } = useNotification();
+
+    const deleteTenant = async (id: number) => {
+        try {
+            const response = await tenantService.updateTenant(id, { isActive: false });
+
+            if (response.success) {
+                setTimeout(() => {
+                    document.location.reload();
+                }, 5000);
+                showNotification({
+                    message: "Tenant eliminado correctamente",
+                    notificationType: "success",
+                });
+            } else {
+                showNotification({
+                    message: ErrorMessages[response.code] || "Error al eliminar el tenant",
+                    notificationType: "danger",
+                });
+            }
+        } catch (error) {
+            showNotification({
+                message: "Error al eliminar el tenant",
+                notificationType: "danger",
+            });
+        }
+    }
 
     return (
         <DataTable<Tenant>
@@ -21,6 +50,7 @@ export const TenantsView = ({ tenants, pagination, success }: TenantsViewProps) 
             columns={columns}
             pagination={pagination}
             success={success}
+            onDelete={(id) => deleteTenant(Number(id))}
             actions={[
                 "view",
                 "delete"
@@ -108,25 +138,3 @@ const columns: DataTableColumn<Tenant>[] = [
         render: (tenant) => formatDateTimeShort(tenant.lastModifiedAt),
     }
 ]
-
-export function getStatusColor(status: PlanStatusType): 'success' | 'warning' | 'danger' | 'primary' | 'neutral' | 'secondary' | 'info' {
-    switch (status) {
-        case PlanStatusType.ACTIVE: return 'success';
-        case PlanStatusType.TRIAL: return 'primary';
-        case PlanStatusType.SUSPENDED: return 'warning';
-        case PlanStatusType.EXPIRED:
-        case PlanStatusType.CANCELLED: return 'danger';
-        default: return 'neutral';
-    }
-}
-
-export const statusComponent = {
-    ACTIVE: 'Activo',
-    TRIAL: 'Trial',
-    SUSPENDED: 'Suspendido',
-    EXPIRED: 'Expirado',
-    CANCELLED: 'Cancelado',
-    DEFAULT: 'Inactivo',
-}
-
-

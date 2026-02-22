@@ -1,4 +1,4 @@
-import { formatDateTimeLong } from '@/utils/common-utils';
+import { formatDateTimeLong, formatDateTimeShort } from '@/utils/common-utils';
 import styles from './TenantPage.module.scss';
 import { tenantService } from '@/app/services/api/tenant.service';
 import { TableError } from '@/pp/components/ui/TableError/TableError';
@@ -9,8 +9,7 @@ import { EditSection } from '../../components/EditSection/EditSection';
 import { EditTenantFormWrapper } from '../components/EditTenantFormWrapper/EditTenantFormWrapper';
 import { TENANT_SECTIONS } from '@/app/constants/tenantSections';
 import Image from 'next/image';
-import { PlanStatusType } from '@/enums/common.enums';
-import { getStatusColor, statusComponent } from '../components/TenantsView/TenantsView';
+import { getStatusColor, statusComponent } from '@/app/constants/common';
 
 
 
@@ -40,21 +39,15 @@ export default async function TenantPage({ params }: { params: { id: string } })
                 <header>
                     <div className={styles.titleSection}>
                         <h1>{tenant.companyName}</h1>
-                        <div style={{ display: 'flex', gap: '8px' }}>
-                            <Tag
-                                text={statusComponent[tenant.status]}
-                                color={getStatusColor(tenant.status)}
-                                size='small'
-                                radius='small'
-                                variant='subtle'
-                            />
-                            <Tag
-                                text={tenant.isActive ? 'Sí' : 'No'}
-                                color={tenant.isActive ? 'success' : 'danger'}
-                                size='small'
-                                radius='small'
-                                variant='subtle'
-                            />
+                        <div className={styles.headerInfo}>
+                            <div className={styles.rowHeader}>
+                                <span>Creado el:</span>
+                                <span>{formatDateTimeShort(tenant.createdAt?.toString())}</span>
+                            </div>
+                            <div className={styles.rowHeader}>
+                                <span>Última modificación:</span>
+                                <span>{formatDateTimeShort(tenant.lastModifiedAt?.toString())}</span>
+                            </div>
                         </div>
                     </div>
                 </header>
@@ -109,12 +102,24 @@ export default async function TenantPage({ params }: { params: { id: string } })
                                 <span>{tenant.currentSubscriptionId || "No asignado"}</span>
                             </div>
                             <div className={styles.rowInline}>
-                                <span>Creado el:</span>
-                                <span>{formatDateTimeLong(tenant.createdAt?.toString())}</span>
+                                <span>Status:</span>
+                                <Tag
+                                    text={statusComponent[tenant.status]}
+                                    color={getStatusColor(tenant.status)}
+                                    size='small'
+                                    radius='small'
+                                    variant='subtle'
+                                />
                             </div>
                             <div className={styles.rowInline}>
-                                <span>Última modificación:</span>
-                                <span>{formatDateTimeLong(tenant.lastModifiedAt?.toString())}</span>
+                                <span>Disponibilidad:</span>
+                                <Tag
+                                    text={tenant.isActive ? 'Disponible' : 'Eliminado'}
+                                    color={tenant.isActive ? 'success' : 'danger'}
+                                    size='small'
+                                    radius='small'
+                                    variant='subtle'
+                                />
                             </div>
                         </div>
                     </DetailCard>
