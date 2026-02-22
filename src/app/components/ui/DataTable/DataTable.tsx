@@ -1,6 +1,6 @@
 "use client"
 import styles from './DataTable.module.scss'
-import { Button, Checkbox, DatePicker, Divider, Dropdown, Input, Join, Link, Switch, Table, Tag } from 'lambda-ui-components';
+import { Button, Checkbox, DatePicker, Dialog, Divider, Dropdown, Input, Join, Link, Switch, Table, Tag } from 'lambda-ui-components';
 import { Calendar, Eye, List, ListFilter, Pencil, Search, ToggleLeft, Trash, Trash2 } from 'lucide-react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { Pagination } from '@/typesAPI/common.types';
@@ -65,17 +65,23 @@ interface DataTableProps<T> {
         type: FilterType,
         nameGroup: string
     }[];
+    /**
+     * Función que se ejecuta al confirmar la eliminación de un registro
+     */
+    onDelete?: (id: string | number) => void;
 }
 
-export const DataTable = <T extends { id: string | number }>({
+export const DataTable = <T extends { id: string | number, isActive?: boolean }>({
     data,
     columns,
     pagination,
     success,
     actions,
-    filters
+    filters,
+    onDelete
 }: DataTableProps<T>) => {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [itemToDelete, setItemToDelete] = useState<string | number | null>(null);
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const [search, setSearch] = useState(searchParams.get('search') || '');
@@ -431,17 +437,33 @@ export const DataTable = <T extends { id: string | number }>({
                                 {/*Renderizar para cuando sea actions */}
                                 <Table.Cell  >
                                     <div className={styles.datatable_actions}>
-                                        {actions && actions.map((action) => (
-                                            <Link
-                                                key={action}
-                                                href={action === "view" ? `${pathname}/${item.id}` : action === "edit" ? `${pathname}/${item.id}/edit` : action === "delete" ? `${pathname}/${item.id}/delete` : ""}
-                                                size='tiny'
-                                                variant='solid'
-                                                type='button'
-                                                color={action === "view" ? "primary" : action === "edit" ? "secondary" : action === "delete" ? "danger" : "primary"}
-                                                icon={action === "view" ? <Eye /> : action === "edit" ? <Pencil /> : action === "delete" ? <Trash2 /> : ""}
-                                            />
-                                        ))}
+                                        {actions && actions.map((action) => {
+                                            if (action === "delete" && item.isActive) {
+                                                return (
+                                                    <Button
+                                                        key={action}
+                                                        size='tiny'
+                                                        variant='solid'
+                                                        color='danger'
+                                                        icon={<Trash2 />}
+                                                        onClick={() => setItemToDelete(item.id)}
+                                                    />
+                                                );
+                                            }
+                                            if (action !== "delete") {
+                                                return (
+                                                    <Link
+                                                        key={action}
+                                                        href={action === "view" ? `${pathname}/${item.id}` : action === "edit" ? `${pathname}/${item.id}/edit` : ""}
+                                                        size='tiny'
+                                                        variant='solid'
+                                                        type='button'
+                                                        color={action === "view" ? "primary" : action === "edit" ? "secondary" : "primary"}
+                                                        icon={action === "view" ? <Eye /> : action === "edit" ? <Pencil /> : ""}
+                                                    />
+                                                );
+                                            }
+                                        })}
                                     </div>
                                 </Table.Cell>
                             </Table.Row>
@@ -459,6 +481,25 @@ export const DataTable = <T extends { id: string | number }>({
                     router.replace(`${pathname}?page=1`);
                 }}
             />
+            <Dialog
+                isOpen={!!itemToDelete}
+                onClose={() => setItemToDelete(null)}
+                title="Confirmar eliminación"
+                footer={
+                    <div className={styles.dialog_footer}>
+                        <Button label="Cancelar" variant="soft" color="neutral" size="small" onClick={() => setItemToDelete(null)} />
+                        <Button label="Eliminar" variant="solid" color="danger" size="small" onClick={() => {
+                            if (onDelete && itemToDelete) onDelete(itemToDelete);
+                            setItemToDelete(null);
+                        }} />
+                    </div>
+                }
+            >
+                <div className={styles.dialog_content}>
+                    <p>¿Estás seguro de que deseas eliminar este registro?</p>
+                    <p>Esta acción no se puede deshacer.</p>
+                </div>
+            </Dialog>
         </div>
     );
 }
