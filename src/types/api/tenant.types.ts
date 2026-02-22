@@ -17,6 +17,18 @@ export interface RegisterTenantRequest {
     startTrial: boolean;
     paymentMethodId?: string;
 }
+ 
+export interface UpdateTenantRequest {
+    currentSubscriptionId?: number;
+    status?: PlanStatusType;
+    companyName?: string;
+    taxId?: string;
+    address?: string;
+    phone?: string;
+    email?: string;
+    isActive?: boolean;
+    logoFile?: File;
+}
 
 export interface GetTenantsParams extends BaseParams {
     status?: PlanStatusType;

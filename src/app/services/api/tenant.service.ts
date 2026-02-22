@@ -1,4 +1,4 @@
-import { GetTenantsParams, RegisterTenantRequest } from "@/typesAPI/tenant.types";
+import { GetTenantsParams, RegisterTenantRequest, UpdateTenantRequest } from "@/typesAPI/tenant.types";
 import { apiFluxCore, apiFluxCoreServerGet } from "./axios-instance";
 import { PagedResponse, ApiResponse } from "@/typesAPI/common.types";
 import { Tenant } from "@/typesModels/Tenant";
@@ -12,8 +12,7 @@ class TenantService {
         try {
             const response = await apiFluxCoreServerGet<PagedResponse<Tenant>>(`/admin/tenants`, { params });
             return response;
-        } catch (error) {
-            console.warn("Error al obtener los tenants:", error);
+        } catch (error) { 
             if (axios.isAxiosError(error)) {
                 return error.response?.data;
             }
@@ -25,8 +24,7 @@ class TenantService {
             const config = { cache: true, ttl: 120 };
             const response = await apiFluxCoreServerGet<ApiResponse<Tenant>>(`/tenants/${id}`, config as any);
             return response.data;
-        } catch (error) {
-            console.warn("Error al obtener el tenant:", error);
+        } catch (error) { 
             if (axios.isAxiosError(error)) {
                 return undefined;
             }
@@ -38,14 +36,42 @@ class TenantService {
         return response.data;
     }
 
-    async updateTenant(id: number, tenant: RegisterTenantRequest) {
-        const response = await apiFluxCore.put<Tenant>(`/admin/tenants/${id}`, tenant);
-        return response.data;
+    async updateTenant(id: number, tenant: UpdateTenantRequest) {
+        try {
+            const formData = new FormData();
+            formData.append("currentSubscriptionId", tenant.currentSubscriptionId?.toString() || "");
+            formData.append("status", tenant.status?.toString() || "");
+            formData.append("companyName", tenant.companyName || "");
+            formData.append("taxId", tenant.taxId || "");
+            formData.append("address", tenant.address || "");
+            formData.append("phone", tenant.phone || "");
+            formData.append("email", tenant.email || "");
+            formData.append("isActive", tenant.isActive?.toString() || "");
+            if (tenant.logoFile) {
+                formData.append("logoFile", tenant.logoFile);
+            }
+            const response = await apiFluxCore.patch<Tenant>(`/tenants/${id}`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            return response.data;
+        } catch (error) { 
+            if (axios.isAxiosError(error)) {
+                return error.response?.data;
+            }
+        }
     }
 
     async deleteTenant(id: number) {
-        const response = await apiFluxCore.delete(`/admin/tenants/${id}`);
-        return response.data;
+        try {
+            const response = await apiFluxCore.delete(`/tenants/${id}`);
+            return response.data;
+        } catch (error) { 
+            if (axios.isAxiosError(error)) {
+                return error.response?.data;
+            }
+        }
     }
 
 }
