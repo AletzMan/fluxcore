@@ -3,24 +3,16 @@ import styles from './TenantPage.module.scss';
 import { tenantService } from '@/app/services/api/tenant.service';
 import { TableError } from '@/pp/components/ui/TableError/TableError';
 import { ContainerSection } from '@/pp/components/layout/ContainerSection/ContainerSection';
-import { Divider, Tag } from 'lambda-ui-components';
+import { Tag } from 'lambda-ui-components';
 import { DetailCard } from '../../components/DetailCard/DetailCard';
 import { EditSection } from '../../components/EditSection/EditSection';
 import { EditTenantFormWrapper } from '../components/EditTenantFormWrapper/EditTenantFormWrapper';
 import { TENANT_SECTIONS } from '@/app/constants/tenantSections';
-
+import Image from 'next/image';
 import { PlanStatusType } from '@/enums/common.enums';
+import { getStatusColor, statusComponent } from '../components/TenantsView/TenantsView';
 
-function getStatusColor(status: PlanStatusType): 'success' | 'warning' | 'danger' | 'primary' | 'neutral' | 'secondary' | 'info' {
-    switch (status) {
-        case PlanStatusType.ACTIVE: return 'success';
-        case PlanStatusType.TRIAL: return 'primary';
-        case PlanStatusType.SUSPENDED: return 'warning';
-        case PlanStatusType.EXPIRED:
-        case PlanStatusType.CANCELLED: return 'danger';
-        default: return 'neutral';
-    }
-}
+
 
 async function getTenant(id: number) {
     const tenant = await tenantService.getTenantById(id);
@@ -50,14 +42,14 @@ export default async function TenantPage({ params }: { params: { id: string } })
                         <h1>{tenant.companyName}</h1>
                         <div style={{ display: 'flex', gap: '8px' }}>
                             <Tag
-                                text={tenant.status}
+                                text={statusComponent[tenant.status]}
                                 color={getStatusColor(tenant.status)}
                                 size='small'
                                 radius='small'
                                 variant='subtle'
                             />
                             <Tag
-                                text={tenant.isActive ? 'Activo' : 'Inactivo'}
+                                text={tenant.isActive ? 'Sí' : 'No'}
                                 color={tenant.isActive ? 'success' : 'danger'}
                                 size='small'
                                 radius='small'
@@ -97,7 +89,7 @@ export default async function TenantPage({ params }: { params: { id: string } })
                         <div className={styles.cardContent}>
                             <div className={styles.row}>
                                 <span>Email</span>
-                                <span>{tenant.email}</span>
+                                <span>{tenant.email || "No especificado"}</span>
                             </div>
                             <div className={styles.row}>
                                 <span>Teléfono</span>
@@ -114,7 +106,7 @@ export default async function TenantPage({ params }: { params: { id: string } })
                         <div className={styles.cardContent}>
                             <div className={styles.rowInline}>
                                 <span>Subscription ID:</span>
-                                <span>{tenant.currentSubscriptionId}</span>
+                                <span>{tenant.currentSubscriptionId || "No asignado"}</span>
                             </div>
                             <div className={styles.rowInline}>
                                 <span>Creado el:</span>
@@ -123,6 +115,28 @@ export default async function TenantPage({ params }: { params: { id: string } })
                             <div className={styles.rowInline}>
                                 <span>Última modificación:</span>
                                 <span>{formatDateTimeLong(tenant.lastModifiedAt?.toString())}</span>
+                            </div>
+                        </div>
+                    </DetailCard>
+
+                    {/* ── Logo ── */}
+                    <DetailCard
+                        title="Logo"
+                        editAction={<EditSection sectionId={TENANT_SECTIONS.LOGO} />}
+                    >
+                        <div className={styles.cardContent}>
+                            <div className={styles.rowInline}>
+                                <span>Logo:</span>
+                                {tenant.logoUrl ? (
+                                    <Image
+                                        src={tenant.logoUrl}
+                                        alt={tenant.companyName}
+                                        width={100}
+                                        height={100}
+                                    />
+                                ) : (
+                                    <span>"No asignado"</span>
+                                )}
                             </div>
                         </div>
                     </DetailCard>

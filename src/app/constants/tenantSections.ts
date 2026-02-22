@@ -6,6 +6,7 @@ export const TENANT_SECTIONS = {
     GENERAL: 'tenant-general',
     CONTACT: 'tenant-contact',
     STATUS:  'tenant-status',
+    LOGO: 'tenant-logo',
 } as const;
 
 export type TenantSectionId = typeof TENANT_SECTIONS[keyof typeof TENANT_SECTIONS];

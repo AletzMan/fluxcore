@@ -23,7 +23,6 @@ export const TenantsView = ({ tenants, pagination, success }: TenantsViewProps) 
             success={success}
             actions={[
                 "view",
-                "edit",
                 "delete"
             ]}
             filters={[
@@ -37,9 +36,8 @@ export const TenantsView = ({ tenants, pagination, success }: TenantsViewProps) 
                 { id: '8', key: 'status', value: '3', label: 'Expirado', type: 'multiple-choice', nameGroup: 'Estado' },
                 { id: '9', key: 'status', value: '4', label: 'Suspensión', type: 'multiple-choice', nameGroup: 'Estado' },
                 { id: '10', key: 'status', value: '5', label: 'Cancelado', type: 'multiple-choice', nameGroup: 'Estado' },
-                { id: '11', key: 'isActive', value: 'true', label: 'Activo', optionalLabel: 'Inactivo', type: 'boolean', nameGroup: 'Acceso' },
-                { id: '12', key: 'createdFrom', value: '2022-01-01', label: 'Desde', type: 'date', nameGroup: 'Fecha de creación' },
-                { id: '13', key: 'createdTo', value: '2022-01-01', label: 'Hasta', type: 'date', nameGroup: 'Fecha de creación' },
+                { id: '11', key: 'createdFrom', value: '2022-01-01', label: 'Desde', type: 'date', nameGroup: 'Fecha de creación' },
+                { id: '12', key: 'createdTo', value: '2022-01-01', label: 'Hasta', type: 'date', nameGroup: 'Fecha de creación' },
             ]}
         />
     );
@@ -51,7 +49,7 @@ const columns: DataTableColumn<Tenant>[] = [
         sortKey: 'id',
         nameColumn: 'Id',
         type: 'number',
-        width: '75px',
+        width: '50px',
         align: 'center',
         isSortable: true,
         render: (tenant) => tenant.id,
@@ -60,40 +58,42 @@ const columns: DataTableColumn<Tenant>[] = [
         sortKey: 'companyName',
         nameColumn: 'Empresa',
         type: 'string',
-        width: '200px',
+        width: '180px',
         align: 'center',
         isSortable: true,
         render: (tenant) => tenant.companyName,
     },
     {
+        sortKey: 'email',
+        nameColumn: 'Email',
+        type: 'string',
+        width: '130px',
+        align: 'center',
+        isSortable: true,
+        render: (tenant) => tenant.email,
+    },
+    {
         sortKey: 'status',
         nameColumn: 'Estado',
         type: 'string',
-        width: '100px',
+        width: '80px',
         align: 'center',
         isSortable: true,
-        render: (tenant) => statusComponent(tenant),
-    },
-    {
-        sortKey: 'isActive',
-        nameColumn: 'Acceso',
-        type: 'boolean',
-        width: '100px',
-        align: 'center',
-        isSortable: true,
-        render: (tenant) => {
-            return (
-                tenant.isActive ?
-                    <Tag variant="subtle" color="success">Activo</Tag> :
-                    <Tag variant="subtle" color="danger">Inactivo</Tag>
-            )
-        },
+        render: (tenant) => (
+            <Tag
+                text={statusComponent[tenant.status]}
+                color={getStatusColor(tenant.status)}
+                size='tiny'
+                radius='small'
+                variant='subtle'
+            />
+        ),
     },
     {
         sortKey: 'createdAt',
         nameColumn: 'Creado',
         type: 'date',
-        width: '125px',
+        width: '80px',
         align: 'center',
         isSortable: true,
         render: (tenant) => formatDateTimeShort(tenant.createdAt),
@@ -102,29 +102,31 @@ const columns: DataTableColumn<Tenant>[] = [
         sortKey: 'lastModifiedAt',
         nameColumn: 'Actualizado',
         type: 'date',
-        width: '125px',
+        width: '80px',
         align: 'center',
         isSortable: true,
         render: (tenant) => formatDateTimeShort(tenant.lastModifiedAt),
     }
 ]
 
-
-
-
-const statusComponent = (tenant: Tenant) => {
-    switch (tenant.status) {
-        case PlanStatusType.ACTIVE:
-            return <Tag variant="subtle" color="success">Activo</Tag>
-        case PlanStatusType.TRIAL:
-            return <Tag variant="subtle" color="warning">Trial</Tag>
+export function getStatusColor(status: PlanStatusType): 'success' | 'warning' | 'danger' | 'primary' | 'neutral' | 'secondary' | 'info' {
+    switch (status) {
+        case PlanStatusType.ACTIVE: return 'success';
+        case PlanStatusType.TRIAL: return 'primary';
+        case PlanStatusType.SUSPENDED: return 'warning';
         case PlanStatusType.EXPIRED:
-            return <Tag variant="subtle" color="danger">Expirado</Tag>
-        case PlanStatusType.SUSPENDED:
-            return <Tag variant="subtle" color="danger">Suspensión</Tag>
-        case PlanStatusType.CANCELLED:
-            return <Tag variant="subtle" color="danger">Cancelado</Tag>
-        default:
-            return <Tag variant="subtle" color="danger">Inactivo</Tag>
+        case PlanStatusType.CANCELLED: return 'danger';
+        default: return 'neutral';
     }
 }
+
+export const statusComponent = {
+    ACTIVE: 'Activo',
+    TRIAL: 'Trial',
+    SUSPENDED: 'Suspendido',
+    EXPIRED: 'Expirado',
+    CANCELLED: 'Cancelado',
+    DEFAULT: 'Inactivo',
+}
+
+

@@ -206,14 +206,29 @@ export const EditForm = <T extends Record<string, any>>({
                                         }
 
                                         if (field.type === 'file') {
-                                            // Extraemos 'value' de rhfField porque el type='file' no puede recibir value (provoca error en react-hook-form)
-                                            const { value, ...restRhfField } = rhfField;
+                                            // Extraemos 'value' y 'onChange' de rhfField
+                                            const { value, onChange, ...restRhfField } = rhfField;
+
+                                            // Asegurarnos de que files sea siempre un arreglo de File
+                                            let filesArray: File[] = [];
+                                            if (Array.isArray(value)) {
+                                                filesArray = value;
+                                            } else if (typeof window !== 'undefined' && (value as any) instanceof FileList) {
+                                                filesArray = Array.from(value as any);
+                                            } else if (value) {
+                                                filesArray = [value as any];
+                                            }
+
                                             return (
                                                 <FileUpload
                                                     {...restRhfField}
                                                     id={key}
                                                     label={field.label}
                                                     size="small"
+                                                    files={filesArray}
+                                                    onChangeFiles={(files) => {
+                                                        onChange(files.length > 0 ? files[0] : '');
+                                                    }}
                                                     errorMessage={error}
                                                     invalid={!!error}
                                                 />

@@ -25,11 +25,16 @@ const StatusSchema = z.object({
     isActive: z.boolean(),
 });
 
+const LogoSchema = z.object({
+    logoFile: z.file().optional().or(z.literal('')),
+});
+
 // ─── Field definitions por sección ────────────────────────────────────────────
 
 type GeneralValues = z.infer<typeof GeneralSchema>;
 type ContactValues = z.infer<typeof ContactSchema>;
 type StatusValues = z.infer<typeof StatusSchema>;
+type LogoValues = z.infer<typeof LogoSchema>;
 
 const generalFields: EditFormField<GeneralValues>[] = [
     { key: 'companyName', label: 'Compañía', type: 'text', placeholder: 'Ej. Acme Corp' },
@@ -58,6 +63,10 @@ const statusFields: EditFormField<StatusValues>[] = [
     { key: 'isActive', label: 'Habilitado (Acceso permitido)', type: 'boolean' },
 ];
 
+const logoFields: EditFormField<LogoValues>[] = [
+    { key: 'logoFile', label: 'Logo', type: 'file' },
+];
+
 // ─── Wrapper ──────────────────────────────────────────────────────────────────
 
 interface EditTenantFormWrapperProps {
@@ -84,7 +93,8 @@ export const EditTenantFormWrapper = ({ tenantId, tenant }: EditTenantFormWrappe
                 }}
                 schema={GeneralSchema}
                 apiUrl={apiUrl}
-                method='PATCH' isMultipart
+                method='PATCH'
+                isMultipart
                 title="Información General"
                 description="Modifica los datos principales del Tenant."
                 isOpen={activeSection === TENANT_SECTIONS.GENERAL}
@@ -104,6 +114,7 @@ export const EditTenantFormWrapper = ({ tenantId, tenant }: EditTenantFormWrappe
                 apiUrl={apiUrl}
                 method='PATCH'
                 title="Contacto"
+                isMultipart
                 description="Actualiza la información de contacto principal."
                 isOpen={activeSection === TENANT_SECTIONS.CONTACT}
                 onClose={closeSection}
@@ -121,9 +132,28 @@ export const EditTenantFormWrapper = ({ tenantId, tenant }: EditTenantFormWrappe
                 schema={StatusSchema}
                 apiUrl={apiUrl}
                 method='PATCH'
+                isMultipart
                 title="Suscripción & Estado"
                 description="Cambia el estado administrativo del Tenant."
                 isOpen={activeSection === TENANT_SECTIONS.STATUS}
+                onClose={closeSection}
+                id={tenantId}
+                onSubmitAction={updateTenantAction}
+            />
+
+            {/* ── Sección: Logo ── */}
+            <EditForm<LogoValues>
+                fields={logoFields}
+                defaultValues={{
+                    logoFile: new File([], tenant.logoUrl ?? '', { type: 'image/png' }),
+                }}
+                schema={LogoSchema}
+                apiUrl={apiUrl}
+                method='PATCH'
+                isMultipart
+                title="Logo"
+                description="Actualiza el logo del Tenant."
+                isOpen={activeSection === TENANT_SECTIONS.LOGO}
                 onClose={closeSection}
                 id={tenantId}
                 onSubmitAction={updateTenantAction}
