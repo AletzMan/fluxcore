@@ -10,18 +10,22 @@ interface TableErrorProps {
     isSearch: boolean;
     isEmptyResponse: boolean;
     isError: boolean;
+    isNotFound: boolean;
     onCreate?: () => void;
     onResetFilters?: () => void;
     onRetry?: () => void;
+    urlBack?: string;
 }
 
 export const TableError = ({
     isSearch,
     isEmptyResponse,
     isError,
+    isNotFound,
     onCreate,
     onResetFilters,
-    onRetry
+    onRetry,
+    urlBack
 }: TableErrorProps) => {
 
     const router = useRouter();
@@ -34,7 +38,7 @@ export const TableError = ({
     if (!isError && !isSearch && !isEmptyResponse) return null;
 
 
-    const stateConfig = getStateConfig(isError, isEmptyResponse, isSearch);
+    const stateConfig = getStateConfig(isError, isEmptyResponse, isSearch, isNotFound);
 
 
     if (!stateConfig) return null;
@@ -44,6 +48,7 @@ export const TableError = ({
             case 'retry': return handleRetry();
             case 'reset': return handleReset();
             case 'create': return handleCreate();
+            case 'back': return urlBack ? router.push(urlBack) : router.back();
         }
     };
 
@@ -88,28 +93,16 @@ interface StateConfig {
     title: string;
     message: string;
     showButton: boolean;
-    actionType: 'retry' | 'reset' | 'create';
+    actionType: 'retry' | 'reset' | 'create' | 'back';
     btnLabel: string;
     btnIcon: ReactNode;
     btnVariant: "solid" | "outline" | "soft" | "subtle";
     btnColor: "primary" | "secondary" | "neutral" | "info" | "success" | "danger" | "warning";
 }
 
-const getStateConfig = (isError: boolean, isEmptyResponse: boolean, isSearch: boolean): StateConfig | undefined => {
+const getStateConfig = (isError: boolean, isEmptyResponse: boolean, isSearch: boolean, isNotFound: boolean): StateConfig | undefined => {
 
-    if (isError) {
-        return {
-            icon: <TriangleAlert size={120} strokeWidth={1.5} />,
-            title: "No pudimos cargar la información",
-            message: "Ocurrió un problema técnico. Por favor, intenta recargar la página.",
-            showButton: true,
-            actionType: 'retry',
-            btnLabel: "Reintentar conexión",
-            btnIcon: <RefreshCcw size={16} />,
-            btnVariant: "soft",
-            btnColor: "danger"
-        };
-    }
+    console.log(isError, isEmptyResponse, isSearch, isNotFound);
 
     if (isSearch && isEmptyResponse) {
         return {
@@ -125,7 +118,7 @@ const getStateConfig = (isError: boolean, isEmptyResponse: boolean, isSearch: bo
         };
     }
 
-    if (isEmptyResponse) {
+    if (isEmptyResponse && !isError) {
         return {
             icon: <PackageOpen size={120} strokeWidth={1.5} />,
             title: "Comienza a agregar contenido",
@@ -138,4 +131,33 @@ const getStateConfig = (isError: boolean, isEmptyResponse: boolean, isSearch: bo
             btnColor: "primary"
         };
     }
+
+    if (isNotFound) {
+        return {
+            icon: <TriangleAlert size={120} strokeWidth={1.5} />,
+            title: "No se encontró el registro",
+            message: "El registro que buscas no existe o ha sido eliminado.",
+            showButton: true,
+            actionType: 'back',
+            btnLabel: "Volver a la lista",
+            btnIcon: <RefreshCcw size={16} />,
+            btnVariant: "soft",
+            btnColor: "danger"
+        };
+    }
+
+    if (isError) {
+        return {
+            icon: <TriangleAlert size={120} strokeWidth={1.5} />,
+            title: "No pudimos cargar la información",
+            message: "Ocurrió un problema técnico. Por favor, intenta recargar la página.",
+            showButton: true,
+            actionType: 'retry',
+            btnLabel: "Reintentar conexión",
+            btnIcon: <RefreshCcw size={16} />,
+            btnVariant: "soft",
+            btnColor: "danger"
+        };
+    }
+
 }

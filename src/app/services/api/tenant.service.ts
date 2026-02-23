@@ -19,11 +19,11 @@ class TenantService {
         }
     }
 
-    async getTenantById(id: number) {
+    async getTenantById(id: number): Promise<ApiResponse<Tenant | null> | undefined> {
         try {
             const config = { cache: true, ttl: 120 };
             const response = await apiFluxCoreServerGet<ApiResponse<Tenant>>(`/tenants/${id}`, config as any);
-            return response.data;
+            return response;
         } catch (error) { 
             if (axios.isAxiosError(error)) {
                 return undefined;

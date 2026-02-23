@@ -13,21 +13,19 @@ class PlanService {
             const config = { params, cache: true, ttl: 120 };
             const response = await apiFluxCoreServerGet<PagedResponse<Plan>>(`/plans`, config as any);
             return response;
-        } catch (error) {
-            console.warn("Error al obtener los planes:", error);
+        } catch (error) { 
             if (axios.isAxiosError(error)) {
                 return error.response?.data;
             }
         }
     }
 
-    async getPlanById(id: number): Promise<Plan | undefined | null> {
+    async getPlanById(id: number) : Promise<ApiResponse<Plan | null> | undefined> {
         try {
-            const config = { cache: true, ttl: 120 }; 
-            const response = await apiFluxCoreServerGet<ApiResponse<Plan>>(`/plans/${id}`, config as any);
-            return response.data;
-        } catch (error) {
-            console.warn("Error al obtener el plan:", error);
+            const config = { cache: true, ttl: 120 };
+            const response = await apiFluxCoreServerGet<ApiResponse<Plan>>(`/plans/${id}`, config as any); 
+            return response;
+        } catch (error) { 
             if (axios.isAxiosError(error)) {
                 return error.response?.data;
             }

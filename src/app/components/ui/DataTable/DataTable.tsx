@@ -267,6 +267,7 @@ export const DataTable = <T extends { id: string | number, isActive?: boolean }>
         return active;
     }
 
+    console.log("data", data)
 
     return (
         <div className={styles.datatable} >
@@ -476,6 +477,7 @@ export const DataTable = <T extends { id: string | number, isActive?: boolean }>
                 isSearch={isSearchActive}
                 isEmptyResponse={data?.length === 0}
                 isError={!success}
+                isNotFound={false}
                 onResetFilters={() => {
                     setSearch('');
                     router.replace(`${pathname}?page=1`);

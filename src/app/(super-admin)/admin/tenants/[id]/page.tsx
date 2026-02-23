@@ -22,31 +22,33 @@ export default async function TenantPage({ params }: { params: { id: string } })
     const param = await params;
     const tenant = await getTenant(Number(param.id));
 
-    if (!tenant) {
+    if (!tenant?.data) {
         return <TableError
             isSearch={false}
             isEmptyResponse={true}
             isError={true}
+            isNotFound={tenant?.errorCode === "TENANT_NOT_FOUND"}
+            urlBack="/admin/tenants"
         />;
     }
 
     return (
         <ContainerSection
             title="Detalles del Tenant"
-            description={`Información detallada sobre el tenant ${tenant.companyName}`}
+            description={`Información detallada sobre el tenant ${tenant.data?.companyName}`}
         >
             <div className={styles.tenantpage}>
                 <header>
                     <div className={styles.titleSection}>
-                        <h1>{tenant.companyName}</h1>
+                        <h1>{tenant.data?.companyName}</h1>
                         <div className={styles.headerInfo}>
                             <div className={styles.rowHeader}>
                                 <span>Creado el:</span>
-                                <span>{formatDateTimeShort(tenant.createdAt?.toString())}</span>
+                                <span>{formatDateTimeShort(tenant.data?.createdAt?.toString())}</span>
                             </div>
                             <div className={styles.rowHeader}>
                                 <span>Última modificación:</span>
-                                <span>{formatDateTimeShort(tenant.lastModifiedAt?.toString())}</span>
+                                <span>{formatDateTimeShort(tenant.data?.lastModifiedAt?.toString())}</span>
                             </div>
                         </div>
                     </div>
@@ -61,15 +63,15 @@ export default async function TenantPage({ params }: { params: { id: string } })
                         <div className={styles.cardContent}>
                             <div className={styles.row}>
                                 <span>Compañía</span>
-                                <span>{tenant.companyName}</span>
+                                <span>{tenant.data?.companyName}</span>
                             </div>
                             <div className={styles.row}>
                                 <span>RFC / Tax ID</span>
-                                <span>{tenant.taxId || "N/A"}</span>
+                                <span>{tenant.data?.taxId || "N/A"}</span>
                             </div>
                             <div className={styles.row}>
                                 <span>Dirección</span>
-                                <span>{tenant.address || "No especificada"}</span>
+                                <span>{tenant.data?.address || "No especificada"}</span>
                             </div>
                         </div>
                     </DetailCard>
@@ -82,11 +84,11 @@ export default async function TenantPage({ params }: { params: { id: string } })
                         <div className={styles.cardContent}>
                             <div className={styles.row}>
                                 <span>Email</span>
-                                <span>{tenant.email || "No especificado"}</span>
+                                <span>{tenant.data?.email || "No especificado"}</span>
                             </div>
                             <div className={styles.row}>
                                 <span>Teléfono</span>
-                                <span>{tenant.phone || "No especificado"}</span>
+                                <span>{tenant.data?.phone || "No especificado"}</span>
                             </div>
                         </div>
                     </DetailCard>
@@ -99,13 +101,13 @@ export default async function TenantPage({ params }: { params: { id: string } })
                         <div className={styles.cardContent}>
                             <div className={styles.rowInline}>
                                 <span>Subscription ID:</span>
-                                <span>{tenant.currentSubscriptionId || "No asignado"}</span>
+                                <span>{tenant.data?.currentSubscriptionId || "No asignado"}</span>
                             </div>
                             <div className={styles.rowInline}>
                                 <span>Status:</span>
                                 <Tag
-                                    text={statusComponent[tenant.status]}
-                                    color={getStatusColor(tenant.status)}
+                                    text={statusComponent[tenant.data?.status]}
+                                    color={getStatusColor(tenant.data?.status)}
                                     size='small'
                                     radius='small'
                                     variant='subtle'
@@ -114,8 +116,8 @@ export default async function TenantPage({ params }: { params: { id: string } })
                             <div className={styles.rowInline}>
                                 <span>Disponibilidad:</span>
                                 <Tag
-                                    text={tenant.isActive ? 'Disponible' : 'Eliminado'}
-                                    color={tenant.isActive ? 'success' : 'danger'}
+                                    text={tenant.data?.isActive ? 'Disponible' : 'Eliminado'}
+                                    color={tenant.data?.isActive ? 'success' : 'danger'}
                                     size='small'
                                     radius='small'
                                     variant='subtle'
@@ -132,10 +134,10 @@ export default async function TenantPage({ params }: { params: { id: string } })
                         <div className={styles.cardContent}>
                             <div className={styles.rowInline}>
                                 <span>Logo:</span>
-                                {tenant.logoUrl ? (
+                                {tenant.data?.logoUrl ? (
                                     <Image
-                                        src={tenant.logoUrl}
-                                        alt={tenant.companyName}
+                                        src={tenant.data?.logoUrl}
+                                        alt={tenant.data?.companyName}
                                         width={100}
                                         height={100}
                                     />
@@ -147,7 +149,7 @@ export default async function TenantPage({ params }: { params: { id: string } })
                     </DetailCard>
                 </div>
             </div>
-            <EditTenantFormWrapper tenantId={tenant.id} tenant={tenant} />
+            <EditTenantFormWrapper tenantId={tenant.data?.id} tenant={tenant.data} />
         </ContainerSection>
     );
 }

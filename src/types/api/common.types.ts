@@ -13,7 +13,7 @@ export interface ApiResponse<T> {
     traceId?: string;
     data?: T;
     errors?: ApiError[];
-    code?: keyof typeof ErrorMessages;
+    errorCode?: keyof typeof ErrorMessages;
 }
 
 export interface PagedResponse<T> extends ApiResponse<T[]> {

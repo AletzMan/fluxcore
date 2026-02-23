@@ -38,27 +38,29 @@ export default async function PlanPage({ params }: { params: { id: string } }) {
     const param = await params;
     const plan = await getPlan(Number(param.id));
 
-    if (!plan) {
+    if (!plan?.data) {
         return <TableError
             isSearch={false}
-            isEmptyResponse={true}
+            isEmptyResponse={false}
             isError={true}
+            isNotFound={plan?.errorCode === "PLAN_NOT_FOUND"}
+            urlBack="/admin/plans"
         />;
     }
 
     return (
         <ContainerSection
             title="Detalles del Plan"
-            description={`Información detallada sobre el plan ${plan.name}`}
+            description={`Información detallada sobre el plan ${plan.data!.name}`}
         >
             <div className={styles.planpage}>
                 <header>
                     <div className={styles.titleSection}>
-                        <h1>{plan.name}</h1>
+                        <h1>{plan.data!.name}</h1>
                         <div>
                             <Tag
-                                text={plan.isActive ? 'Activo' : 'Inactivo'}
-                                color={plan.isActive ? 'success' : 'danger'}
+                                text={plan.data!.isActive ? 'Activo' : 'Inactivo'}
+                                color={plan.data!.isActive ? 'success' : 'danger'}
                                 size='small'
                                 radius='small'
                                 variant='subtle'
@@ -75,18 +77,18 @@ export default async function PlanPage({ params }: { params: { id: string } }) {
                         fullWidth
                     >
                         <div className={styles.cardContent}>
-                            <p>{plan.description || "Sin descripción disponible."}</p>
+                            <p>{plan.data!.description || "Sin descripción disponible."}</p>
                             <div className={styles.row}>
                                 <span>Días de prueba:</span>
-                                <span>{plan.trialDays} días</span>
+                                <span>{plan.data!.trialDays} días</span>
                             </div>
                             <div className={styles.row}>
                                 <span>Creado el:</span>
-                                <span>{formatDateTimeLong(plan.createdAt?.toString())}</span>
+                                <span>{formatDateTimeLong(plan.data!.createdAt?.toString())}</span>
                             </div>
                             <div className={styles.row}>
                                 <span>Última modificación:</span>
-                                <span>{formatDateTimeLong(plan.lastModifiedAt?.toString())}</span>
+                                <span>{formatDateTimeLong(plan.data!.lastModifiedAt?.toString())}</span>
                             </div>
                         </div>
                     </DetailCard>
@@ -97,10 +99,10 @@ export default async function PlanPage({ params }: { params: { id: string } }) {
                         editAction={<EditSection sectionId={PLAN_SECTIONS.PRICING} />}
                     >
                         <div className={styles.priceGrid}>
-                            <PriceItem label="Mensual" price={plan.monthlyPrice} />
-                            <PriceItem label="Trimestral" price={plan.quarterlyPrice} />
-                            <PriceItem label="Semestral" price={plan.semiannualPrice} />
-                            <PriceItem label="Anual" price={plan.annualPrice} />
+                            <PriceItem label="Mensual" price={plan.data!.monthlyPrice} />
+                            <PriceItem label="Trimestral" price={plan.data!.quarterlyPrice} />
+                            <PriceItem label="Semestral" price={plan.data!.semiannualPrice} />
+                            <PriceItem label="Anual" price={plan.data!.annualPrice} />
                         </div>
                     </DetailCard>
 
@@ -112,15 +114,15 @@ export default async function PlanPage({ params }: { params: { id: string } }) {
                         <div className={styles.cardContent}>
                             <div className={styles.row}>
                                 <span>Usuarios máximos:</span>
-                                <span>{plan.maxUsers === -1 ? 'Ilimitados' : plan.maxUsers}</span>
+                                <span>{plan.data!.maxUsers === -1 ? 'Ilimitados' : plan.data!.maxUsers}</span>
                             </div>
                             <div className={styles.row}>
                                 <span>Productos máximos:</span>
-                                <span>{plan.maxProducts === -1 ? 'Ilimitados' : plan.maxProducts}</span>
+                                <span>{plan.data!.maxProducts === -1 ? 'Ilimitados' : plan.data!.maxProducts}</span>
                             </div>
                             <div className={styles.row}>
                                 <span>Sucursales máximas:</span>
-                                <span>{plan.maxBranches === -1 ? 'Ilimitadas' : plan.maxBranches}</span>
+                                <span>{plan.data!.maxBranches === -1 ? 'Ilimitadas' : plan.data!.maxBranches}</span>
                             </div>
                         </div>
                     </DetailCard>
@@ -131,12 +133,12 @@ export default async function PlanPage({ params }: { params: { id: string } }) {
                         editAction={<EditSection sectionId={PLAN_SECTIONS.MODULES} />}
                     >
                         <div className={styles.featureList}>
-                            <FeatureItem name="Gestión de Inventario" enabled={plan.hasInventoryManagement} />
-                            <FeatureItem name="Reportes de Ventas" enabled={plan.hasSalesReports} />
-                            <FeatureItem name="Reportes Avanzados" enabled={plan.hasAdvancedReports} />
-                            <FeatureItem name="Multi-Moneda" enabled={plan.hasMultiCurrency} />
-                            <FeatureItem name="Acceso API" enabled={plan.hasApiAccess} />
-                            <FeatureItem name="Soporte Prioritario" enabled={plan.hasPrioritySupport} />
+                            <FeatureItem name="Gestión de Inventario" enabled={plan.data!.hasInventoryManagement} />
+                            <FeatureItem name="Reportes de Ventas" enabled={plan.data!.hasSalesReports} />
+                            <FeatureItem name="Reportes Avanzados" enabled={plan.data!.hasAdvancedReports} />
+                            <FeatureItem name="Multi-Moneda" enabled={plan.data!.hasMultiCurrency} />
+                            <FeatureItem name="Acceso API" enabled={plan.data!.hasApiAccess} />
+                            <FeatureItem name="Soporte Prioritario" enabled={plan.data!.hasPrioritySupport} />
                         </div>
                     </DetailCard>
 
@@ -147,9 +149,9 @@ export default async function PlanPage({ params }: { params: { id: string } }) {
                         fullWidth
                     >
                         <div className={styles.cardContent}>
-                            {plan.features && plan.features.length > 0 ? (
+                            {plan.data!.features && plan.data!.features.length > 0 ? (
                                 <div className={`${styles.featureList} ${styles.featureListWrap}`}>
-                                    {plan.features.map((feature: any) => (
+                                    {plan.data!.features.map((feature: any) => (
                                         <FeatureItem
                                             key={feature.id ?? feature.name}
                                             name={feature.name}
@@ -167,7 +169,7 @@ export default async function PlanPage({ params }: { params: { id: string } }) {
                     </DetailCard>
                 </div>
             </div>
-            <EditFormWrapper planId={plan.id} plan={plan} />
+            <EditFormWrapper planId={plan.data!.id} plan={plan.data!} />
         </ContainerSection>
     );
 }

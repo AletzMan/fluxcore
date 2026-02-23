@@ -16,7 +16,7 @@ export const PlansView = ({ plans, pagination, success }: PlansViewProps) => {
 
     return (
         <DataTable<Plan>
-            data={plans || []}
+            data={plans}
             columns={columns}
             pagination={pagination}
             success={success}

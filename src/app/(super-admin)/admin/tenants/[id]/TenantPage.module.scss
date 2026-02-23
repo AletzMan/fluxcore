@@ -96,6 +96,7 @@
     }
 
     span:last-child {
+
         font-weight: var(--font-weight-medium);
         font-size: var(--font-size-sm);
         background-color: var(--surface-b);
@@ -116,6 +117,7 @@
     }
 
     span:last-child {
+        color: var(--foreground-color);
         font-weight: var(--font-weight-medium);
         font-size: var(--font-size-sm);
     }
