@@ -1,0 +1,91 @@
+.subscriptionpage {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 0;
+    max-width: 1200px;
+    width: 100%;
+
+    header {
+        .titleSection {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 16px;
+
+            h1 {
+                margin: 0;
+                font-size: 24px;
+                color: var(--lc-color-text-title);
+                font-weight: 500;
+            }
+
+            .headerInfo {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+
+                .rowHeader {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+
+                    span:first-child {
+                        color: var(--lc-color-text-body);
+                        font-size: 14px;
+                    }
+
+                    span:last-child {
+                        color: var(--lc-color-text-title);
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 24px;
+        align-items: start;
+    }
+
+    .cardContent {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding-top: 10px;
+
+        .row {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+
+            span:first-child {
+                color: var(--lc-color-text-body);
+                font-size: 14px;
+            }
+
+            span:last-child {
+                color: var(--lc-color-text-title);
+                font-size: 16px;
+                font-weight: 400;
+            }
+        }
+
+        .rowInline {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            span:first-child {
+                color: var(--lc-color-text-body);
+                font-size: 14px;
+                min-width: 150px;
+            }
+        }
+    }
+}
