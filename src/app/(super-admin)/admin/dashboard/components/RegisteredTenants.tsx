@@ -6,10 +6,13 @@ import { ExternalLink } from "lucide-react";
 
 export interface TableData {
     id: number;
-    tenant: string;
-    plan: string;
+    tenantName: string;
+    planName: string;
     status: string;
-    revenue: number;
+    billingCycle: string;
+    price: number;
+    startDate: string;
+    endDate: string;
 }
 
 interface RegisteredTenantsProps {
@@ -40,7 +43,7 @@ export function RegisteredTenants({ data }: RegisteredTenantsProps) {
             }
         >
             {data.map((row) => (
-                <ButtonData key={row.id} id={row.id} title={row.tenant} description={row.plan} extraData={row.status} />
+                <ButtonData key={row.id} id={row.id} title={row.tenantName} description={row.planName} extraData={row.status} />
             ))}
         </DashboardCard>
     );

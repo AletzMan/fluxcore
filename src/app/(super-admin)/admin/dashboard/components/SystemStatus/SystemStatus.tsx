@@ -1,50 +1,60 @@
 import { DashboardCard } from "@/pp/components/ui/DashboardCard/DashboardCard";
 import { Divider, Link, Progress, Tooltip } from "lambda-ui-components";
 import styles from "./SystemStatus.module.scss";
-import { BarChart } from "@/pp/components/ui/BarChart/BarChart";
-import { ChartGroup } from "@/typesComponents/chart";
 import { ExternalLink } from "lucide-react";
+import { ApiErrorRate } from "@/typesAPI/summary";
 
 interface SystemStatusProps {
     uptime: number;
     latencyAverage: number;
     latencyMax: number;
     latencyMin: number;
+    errorRate: ApiErrorRate;
 }
 
-export const SystemStatus = ({ uptime, latencyAverage, latencyMax, latencyMin }: SystemStatusProps) => {
+const latencyColor = (ms: number) => {
+    if (ms < 100) return "var(--success-base-color)";
+    if (ms < 500) return "var(--warning-base-color)";
+    return "var(--danger-base-color)";
+};
 
-    const latecyColor = (latency: number) => {
-        if (latency < 100) {
-            return "var(--success-base-color)";
-        } else if (latency < 200) {
-            return "var(--warning-base-color)";
-        } else {
-            return "var(--danger-base-color)";
-        }
-    }
+const rateColor = (rate: number) => {
+    if (rate === 0) return "var(--success-base-color)";
+    if (rate < 0.05) return "var(--warning-base-color)";
+    return "var(--danger-base-color)";
+};
+
+export const SystemStatus = ({
+    uptime,
+    latencyAverage,
+    latencyMax,
+    latencyMin,
+    errorRate,
+}: SystemStatusProps) => {
+    const clientPct = (errorRate.clientErrorRate * 100).toFixed(2);
+    const serverPct = (errorRate.serverErrorRate * 100).toFixed(2);
+
     return (
         <DashboardCard
             title="Estado del sistema"
             description="Salud de la infraestructura"
             headerActions={
-                <Tooltip
-                    content="Ver todas las analíticas" offset={10}
-                    color="info"
-                >
+                <Tooltip content="Ver todas las analíticas" offset={10} color="info">
                     <Link
                         href="/admin/system-logs"
                         icon={<ExternalLink absoluteStrokeWidth />}
                         size="small"
                         color="info"
                         type="button"
-                        variant="subtle" />
+                        variant="subtle"
+                    />
                 </Tooltip>
             }
         >
+            {/* ── Uptime ── */}
             <div className={styles.container}>
                 <div className={styles.uptime}>
-                    <h3>Estado del servidor</h3>
+                    <h3>Uptime</h3>
                     <Progress
                         value={uptime}
                         variant="circle"
@@ -54,48 +64,64 @@ export const SystemStatus = ({ uptime, latencyAverage, latencyMax, latencyMin }:
                         color="success"
                     />
                 </div>
-                <BarChart
-                    data={errorData}
-                    title="Tasa de errores 4xx y 5xx"
-                    description="Tasa de errores por hora"
-                    type="number"
-                    barSize={15}
-                    showTooltip
-                    colors={["var(--lambda-color-yellow-600)", "var(--danger-base-color)"]}
-                    width={"100%"}
-                />
+
+                {/* ── Latency ── */}
+                <div className={styles.latency}>
+                    <h3>Latencia</h3>
+                    <div className={styles.latency_container}>
+                        <div className={styles.latency_item}>
+                            <span>Máxima:</span>
+                            <span style={{ color: latencyColor(latencyMax) }}>{latencyMax.toFixed(0)} ms</span>
+                        </div>
+                        <div className={styles.latency_item}>
+                            <span>Promedio:</span>
+                            <span style={{ color: latencyColor(latencyAverage) }}>{latencyAverage.toFixed(0)} ms</span>
+                        </div>
+                        <div className={styles.latency_item}>
+                            <span>Mínima:</span>
+                            <span style={{ color: latencyColor(latencyMin) }}>{latencyMin.toFixed(0)} ms</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+
             <Divider spacing={1} />
-            <div className={styles.latency}>
-                <h3>Latencia</h3>
-                <div className={styles.latency_container}>
-                    <div className={styles.latency_item}>
-                        <span>Máxima: </span>
-                        <span style={{ color: latecyColor(latencyMax) }}>{latencyMax}ms</span>
+
+            {/* ── Error Rate ── */}
+            <div className={styles.errors}>
+                <div className={styles.errors_header}>
+                    <h3>Tasa de errores</h3>
+                    <span className={styles.errors_total}>
+                        {errorRate.totalRequests} requests
+                    </span>
+                </div>
+                <div className={styles.errors_grid}>
+                    <div className={styles.error_card}>
+                        <span className={styles.error_label}>4xx — Cliente</span>
+                        <span
+                            className={styles.error_rate}
+                            style={{ color: rateColor(errorRate.clientErrorRate) }}
+                        >
+                            {clientPct}%
+                        </span>
+                        <span className={styles.error_count}>
+                            {errorRate.totalClientErrors} errores
+                        </span>
                     </div>
-                    <div className={styles.latency_item}>
-                        <span>Promedio: </span>
-                        <span style={{ color: latecyColor(latencyAverage) }}>{latencyAverage}ms</span>
-                    </div>
-                    <div className={styles.latency_item}>
-                        <span>Mínima: </span>
-                        <span style={{ color: latecyColor(latencyMin) }}>{latencyMin}ms</span>
+                    <div className={styles.error_card}>
+                        <span className={styles.error_label}>5xx — Servidor</span>
+                        <span
+                            className={styles.error_rate}
+                            style={{ color: rateColor(errorRate.serverErrorRate) }}
+                        >
+                            {serverPct}%
+                        </span>
+                        <span className={styles.error_count}>
+                            {errorRate.totalServerErrors} errores
+                        </span>
                     </div>
                 </div>
             </div>
         </DashboardCard>
     );
-}
-
-const errorData: ChartGroup = {
-    data: [
-        { name: '08:00', "400": 12, "500": 2, label: "08:00 AM" },
-        { name: '10:00', "400": 45, "500": 5, label: "10:00 AM" },
-        { name: '12:00', "400": 118, "500": 12, label: "12:00 PM" },
-        { name: '14:00', "400": 84, "500": 35, label: "02:00 PM" },
-        { name: '16:00', "400": 40, "500": 8, label: "04:00 PM" },
-        { name: '18:00', "400": 15, "500": 2, label: "06:00 PM" },
-        { name: '20:00', "400": 5, "500": 0, label: "08:00 PM" },
-    ],
-    groups: ["400", "500"]
 };

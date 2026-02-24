@@ -6,10 +6,16 @@ import { ExternalLink } from "lucide-react";
 
 interface UsageTenantsProps {
     data: {
-        id: number;
-        title: string;
-        usage: number;
-        limit: number;
+        tenantId: number;
+        tenantName: string;
+        planName: string;
+        usersUsed: number;
+        usersMax: number;
+        usersPercent: number;
+        productsUsed: number;
+        productsMax: number;
+        productsPercent: number;
+        branchesMax: number;
     }[];
 }
 
@@ -34,7 +40,7 @@ export const UsageTenants = ({ data }: UsageTenantsProps) => {
             }
         >
             {data.map((item) => (
-                <UsageBar key={item.id} id={item.id} title={item.title} usage={item.usage} limit={item.limit} />
+                <UsageBar key={item.tenantId} id={item.tenantId} title={item.tenantName} usage={item.usersUsed} limit={item.usersMax} />
             ))}
         </DashboardCard>
     );
