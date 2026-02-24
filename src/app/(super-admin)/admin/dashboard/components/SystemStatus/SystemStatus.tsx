@@ -44,7 +44,7 @@ export const SystemStatus = ({
                         href="/admin/system-logs"
                         icon={<ExternalLink absoluteStrokeWidth />}
                         size="small"
-                        color="info"
+                        color="neutral"
                         type="button"
                         variant="subtle"
                     />
@@ -54,7 +54,6 @@ export const SystemStatus = ({
             {/* ── Uptime ── */}
             <div className={styles.container}>
                 <div className={styles.uptime}>
-                    <h3>Uptime</h3>
                     <Progress
                         value={uptime}
                         variant="circle"

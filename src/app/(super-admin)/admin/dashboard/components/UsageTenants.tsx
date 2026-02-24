@@ -33,7 +33,7 @@ export const UsageTenants = ({ data }: UsageTenantsProps) => {
                         href="/admin/tenants/usage"
                         icon={<ExternalLink absoluteStrokeWidth />}
                         size="small"
-                        color="info"
+                        color="neutral"
                         type="button"
                         variant="subtle" />
                 </Tooltip>

@@ -35,7 +35,7 @@ export function RegisteredTenants({ data }: RegisteredTenantsProps) {
                         href="/admin/dashboard/tenants"
                         size="small"
                         type="button"
-                        color="info"
+                        color="neutral"
                         variant="subtle"
                         icon={<ExternalLink absoluteStrokeWidth />}
                     />

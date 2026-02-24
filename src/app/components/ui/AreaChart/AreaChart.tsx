@@ -38,7 +38,7 @@ export const AreaChart = ({ data, type, title, description, curveType }: AreaCha
                         variant="subtle"
                         size="small"
                         type="button"
-                        color="info"
+                        color="neutral"
                         icon={<ExternalLink />}
                     />
                 </TooltipLambda>

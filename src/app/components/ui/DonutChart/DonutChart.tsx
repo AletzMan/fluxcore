@@ -134,7 +134,7 @@ export const DonutChart = (props: DonutChartProps) => {
                         variant="subtle"
                         size="small"
                         type="button"
-                        color="info"
+                        color="neutral"
                         icon={<ExternalLink absoluteStrokeWidth />}
                     />
                 </Tooltip>
