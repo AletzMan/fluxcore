@@ -1,3 +1,25 @@
-.system-logs {
+.system_logs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    width: 100%;
+}
 
+.top_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-sm);
+    width: 100%;
+
+    @media (width < 1400px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (width < 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.bottom {
+    width: 100%;
 }
