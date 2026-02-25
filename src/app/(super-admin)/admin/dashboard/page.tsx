@@ -108,10 +108,10 @@ export default async function AdminPage() {
     return (
         <ContainerSection title="Panel de control global" description="Vista general del rendimiento del ecosistema FluxCore">
             <div className={styles.kips}>
-                <KipCard type="revenue" value={kpis.mrr} percentage={kpis.mrrChangePercent} trend="up" />
-                <KipCard type="tenants" value={kpis.totalTenants} percentage={kpis.tenantChangePercent} trend="down" />
-                <KipCard type="subscriptions" value={kpis.activeSubscriptions} percentage={kpis.subscriptionChangePercent} trend="up" />
-                <KipCard type="churnRate" value={kpis.churnRate} percentage={kpis.churnChangePercent} trend="down" />
+                <KipCard type="revenue" value={kpis.mrr} percentage={kpis.mrrChangePercent} trend={kpis.mrrChangePercent === 0 ? "neutral" : kpis.mrrChangePercent > 0 ? "up" : "down"} />
+                <KipCard type="tenants" value={kpis.totalTenants} percentage={kpis.tenantChangePercent} trend={kpis.tenantChangePercent === 0 ? "neutral" : kpis.tenantChangePercent > 0 ? "up" : "down"} />
+                <KipCard type="subscriptions" value={kpis.activeSubscriptions} percentage={kpis.subscriptionChangePercent} trend={kpis.subscriptionChangePercent === 0 ? "neutral" : kpis.subscriptionChangePercent > 0 ? "up" : "down"} />
+                <KipCard type="churnRate" value={kpis.churnRate} percentage={kpis.churnChangePercent} trend={kpis.churnChangePercent === 0 ? "neutral" : kpis.churnChangePercent > 0 ? "up" : "down"} />
                 <KipCard type="apiCalls" value={kpis.apiCallTenants} />
             </div>
             <Divider spacing={10} />
@@ -133,7 +133,7 @@ export default async function AdminPage() {
                             data={donutData}
                             dataKey="value"
                             fill="var(--surface-d)"
-                            innerRadius={50}
+                            innerRadius={45}
                             outerRadius={70}
                             title="Distribución de Suscripciones"
                             description="Desglose de tenants activos por nivel de servicio"

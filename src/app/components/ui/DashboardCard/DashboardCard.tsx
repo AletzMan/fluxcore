@@ -72,7 +72,7 @@ export const DashboardCard = ({ title, description, headerActions, children }: D
                         color="info"
                         position="top-right"
                     >
-                        <Dropdown icon={<DownloadIcon strokeWidth={1.8} absoluteStrokeWidth />} size="small">
+                        <Dropdown icon={<DownloadIcon strokeWidth={1.8} absoluteStrokeWidth />} size="tiny">
                             <Dropdown.Item icon={<SaveIcon />} text="Save as PNG" onSelectOption={() => handleDownload("png")} />
                             <Dropdown.Item icon={<SaveIcon />} text="Save as JPEG" onSelectOption={() => handleDownload("jpeg")} />
                             <Dropdown.Item icon={<SaveIcon />} text="Save as SVG" onSelectOption={() => handleDownload("svg")} />

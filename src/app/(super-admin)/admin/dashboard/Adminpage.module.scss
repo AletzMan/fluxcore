@@ -2,8 +2,6 @@
      display: grid;
      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
      gap: var(--spacing-sm);
-     height: 15%;
-     min-height: max-content;
  }
 
  .wrapper {
@@ -44,7 +42,7 @@
          height: 100%;
 
          @media (width < 1400px) {
-             min-height: 380px;
+             min-height: 360px;
          }
      }
  }
@@ -71,6 +69,12 @@
          display: flex;
          flex-direction: column;
          height: 100%;
+         min-height: 920px;
+     }
+
+     @media (width < 600px) {
+         height: 100%;
+         min-height: 100%;
      }
 
  }

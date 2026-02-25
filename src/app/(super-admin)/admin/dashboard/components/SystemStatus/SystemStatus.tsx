@@ -43,7 +43,7 @@ export const SystemStatus = ({
                     <Link
                         href="/admin/system-logs"
                         icon={<ExternalLink absoluteStrokeWidth />}
-                        size="small"
+                        size="tiny"
                         color="neutral"
                         type="button"
                         variant="subtle"
@@ -53,71 +53,71 @@ export const SystemStatus = ({
         >
             {/* ── Uptime ── */}
             <div className={styles.container}>
-                <div className={styles.uptime}>
-                    <Progress
-                        value={uptime}
-                        variant="circle"
-                        size="large"
-                        showValue
-                        label="Uptime"
-                        color="success"
-                    />
-                </div>
+                <div className={styles.uptime_container}>
+                    <div className={styles.uptime}>
+                        <h3>Tiempo de actividad</h3>
+                        <Progress
+                            value={uptime}
+                            variant="circle"
+                            size="large"
+                            showValue
+                            color="success"
+                        />
+                    </div>
 
-                {/* ── Latency ── */}
-                <div className={styles.latency}>
-                    <h3>Latencia</h3>
-                    <div className={styles.latency_container}>
-                        <div className={styles.latency_item}>
-                            <span>Máxima:</span>
-                            <span style={{ color: latencyColor(latencyMax) }}>{latencyMax.toFixed(0)} ms</span>
-                        </div>
-                        <div className={styles.latency_item}>
-                            <span>Promedio:</span>
-                            <span style={{ color: latencyColor(latencyAverage) }}>{latencyAverage.toFixed(0)} ms</span>
-                        </div>
-                        <div className={styles.latency_item}>
-                            <span>Mínima:</span>
-                            <span style={{ color: latencyColor(latencyMin) }}>{latencyMin.toFixed(0)} ms</span>
+                    {/* ── Latency ── */}
+                    <div className={styles.latency}>
+                        <h3>Latencia</h3>
+                        <div className={styles.latency_container}>
+                            <div className={styles.latency_item}>
+                                <span>Máxima:</span>
+                                <span style={{ color: latencyColor(latencyMax) }}>{latencyMax.toFixed(0)} ms</span>
+                            </div>
+                            <div className={styles.latency_item}>
+                                <span>Promedio:</span>
+                                <span style={{ color: latencyColor(latencyAverage) }}>{latencyAverage.toFixed(0)} ms</span>
+                            </div>
+                            <div className={styles.latency_item}>
+                                <span>Mínima:</span>
+                                <span style={{ color: latencyColor(latencyMin) }}>{latencyMin.toFixed(0)} ms</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <Divider spacing={1} />
-
-            {/* ── Error Rate ── */}
-            <div className={styles.errors}>
-                <div className={styles.errors_header}>
-                    <h3>Tasa de errores</h3>
-                    <span className={styles.errors_total}>
-                        {errorRate.totalRequests} requests
-                    </span>
-                </div>
-                <div className={styles.errors_grid}>
-                    <div className={styles.error_card}>
-                        <span className={styles.error_label}>4xx — Cliente</span>
-                        <span
-                            className={styles.error_rate}
-                            style={{ color: rateColor(errorRate.clientErrorRate) }}
-                        >
-                            {clientPct}%
-                        </span>
-                        <span className={styles.error_count}>
-                            {errorRate.totalClientErrors} errores
+                {/* ── Error Rate ── */}
+                <div className={styles.errors}>
+                    <div className={styles.errors_header}>
+                        <h3>Tasa de errores</h3>
+                        <span className={styles.errors_total}>
+                            {errorRate.totalRequests} requests
                         </span>
                     </div>
-                    <div className={styles.error_card}>
-                        <span className={styles.error_label}>5xx — Servidor</span>
-                        <span
-                            className={styles.error_rate}
-                            style={{ color: rateColor(errorRate.serverErrorRate) }}
-                        >
-                            {serverPct}%
-                        </span>
-                        <span className={styles.error_count}>
-                            {errorRate.totalServerErrors} errores
-                        </span>
+                    <div className={styles.errors_grid}>
+                        <div className={styles.error_card}>
+                            <span className={styles.error_label}>4xx — Cliente</span>
+                            <span
+                                className={styles.error_rate}
+                                style={{ color: rateColor(errorRate.clientErrorRate) }}
+                            >
+                                {clientPct}%
+                            </span>
+                            <span className={styles.error_count}>
+                                {errorRate.totalClientErrors} errores
+                            </span>
+                        </div>
+                        <div className={styles.error_card}>
+                            <span className={styles.error_label}>5xx — Servidor</span>
+                            <span
+                                className={styles.error_rate}
+                                style={{ color: rateColor(errorRate.serverErrorRate) }}
+                            >
+                                {serverPct}%
+                            </span>
+                            <span className={styles.error_count}>
+                                {errorRate.totalServerErrors} errores
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

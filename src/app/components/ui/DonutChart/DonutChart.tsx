@@ -132,7 +132,7 @@ export const DonutChart = (props: DonutChartProps) => {
                     <Link
                         href="/admin/dashboard/plans"
                         variant="subtle"
-                        size="small"
+                        size="tiny"
                         type="button"
                         color="neutral"
                         icon={<ExternalLink absoluteStrokeWidth />}

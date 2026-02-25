@@ -36,7 +36,7 @@ export const AreaChart = ({ data, type, title, description, curveType }: AreaCha
                     <Link
                         href="/admin/dashboard/mrr"
                         variant="subtle"
-                        size="small"
+                        size="tiny"
                         type="button"
                         color="neutral"
                         icon={<ExternalLink />}

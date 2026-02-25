@@ -33,7 +33,7 @@ export function RegisteredTenants({ data }: RegisteredTenantsProps) {
                 >
                     <Link
                         href="/admin/dashboard/tenants"
-                        size="small"
+                        size="tiny"
                         type="button"
                         color="neutral"
                         variant="subtle"
