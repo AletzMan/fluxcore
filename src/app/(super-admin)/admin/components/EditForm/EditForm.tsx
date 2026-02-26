@@ -8,8 +8,6 @@ import type { ZodType } from 'zod';
 import { apiFluxCorePatch, apiFluxCorePut } from '@/app/services/api/axios-instance';
 import { EditIcon } from 'lucide-react';
 
-// ─── Field Definitions ────────────────────────────────────────────────────────
-
 export type EditFieldType = 'text' | 'textarea' | 'number' | 'boolean' | 'select' | 'file';
 
 export interface SelectOption {
@@ -31,8 +29,6 @@ export interface EditFormField<T extends Record<string, any> = Record<string, an
     min?: number;
     max?: number;
 }
-
-// ─── Component Props ──────────────────────────────────────────────────────────
 
 export interface EditFormProps<T extends Record<string, any>> {
     /** Campos del formulario */
@@ -62,8 +58,6 @@ export interface EditFormProps<T extends Record<string, any>> {
     /** Si es true, enviará los datos como FormData lugar de JSON (útil para subir archivos) */
     isMultipart?: boolean;
 }
-
-// ─── EditForm Component ───────────────────────────────────────────────────────
 
 export const EditForm = <T extends Record<string, any>>({
     fields,
@@ -98,7 +92,7 @@ export const EditForm = <T extends Record<string, any>>({
         setIsLoading(true);
         setStatus(null);
         try {
-            // Construye el payload: JSON por defecto o FormData si es multipart
+            // Payload: JSON por defecto o FormData si es multipart
             let payload: any;
 
             if (isMultipart) {

@@ -7,8 +7,6 @@ import { TENANT_SECTIONS } from '@/app/constants/tenantSections';
 import { updateTenantAction } from '@/app/actions/tenant.actions';
 import { PlanStatusType } from '@/enums/common.enums';
 
-// ─── Schemas por sección ──────────────────────────────────────────────────────
-
 const GeneralSchema = z.object({
     companyName: z.string().min(3, 'Mínimo 3 caracteres').max(100),
     taxId: z.string().min(12, 'RFC inválido').max(13).optional().or(z.literal('')),
@@ -28,8 +26,6 @@ const StatusSchema = z.object({
 const LogoSchema = z.object({
     logoFile: z.file().optional().or(z.literal('')),
 });
-
-// ─── Field definitions por sección ────────────────────────────────────────────
 
 type GeneralValues = z.infer<typeof GeneralSchema>;
 type ContactValues = z.infer<typeof ContactSchema>;

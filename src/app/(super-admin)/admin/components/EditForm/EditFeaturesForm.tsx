@@ -9,7 +9,6 @@ import { Trash2, Plus } from 'lucide-react';
 import { updatePlanAction } from '@/app/actions/plan.actions';
 import { PlanFeature } from '@/typesAPI/plan.types';
 
-// ─── Schema ───────────────────────────────────────────────────────────────────
 
 const FeatureSchema = z.object({
     features: z.array(z.object({
@@ -23,16 +22,12 @@ const FeatureSchema = z.object({
 
 type FeaturesFormValues = z.infer<typeof FeatureSchema>;
 
-// ─── Props ────────────────────────────────────────────────────────────────────
-
 interface EditFeaturesFormProps {
     planId: number;
     features: PlanFeature[];
     isOpen: boolean;
     onClose: () => void;
 }
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export const EditFeaturesForm = ({ planId, features, isOpen, onClose }: EditFeaturesFormProps) => {
     const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
