@@ -1,6 +1,6 @@
 
 "use client";
-import { Avatar, Button, ButtonTheme, Divider, SwitchTheme } from 'lambda-ui-components';
+import { Avatar, Button, Divider, SwitchTheme } from 'lambda-ui-components';
 import { LogoFluxCoreLarge } from '../../logos/LogoFluxCoreLarge';
 import styles from './HeaderSection.module.scss';
 import { useAuth } from '@/hooks/useAuth';

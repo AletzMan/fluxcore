@@ -1,4 +1,4 @@
-import { formatDateTimeLong, formatDateTimeShort } from '@/utils/common-utils';
+import { formatDateTimeShort } from '@/utils/common-utils';
 import styles from './TenantPage.module.scss';
 import { tenantService } from '@/app/services/api/tenant.service';
 import { TableError } from '@/pp/components/ui/TableError/TableError';

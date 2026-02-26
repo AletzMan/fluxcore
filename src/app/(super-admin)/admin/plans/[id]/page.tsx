@@ -4,7 +4,7 @@ import { planService } from '@/app/services/api/plan.service';
 import { TableError } from '@/pp/components/ui/TableError/TableError';
 import { ContainerSection } from '@/pp/components/layout/ContainerSection/ContainerSection';
 import { Check, X } from 'lucide-react';
-import { Divider, Tag } from 'lambda-ui-components';
+import { Tag } from 'lambda-ui-components';
 import { DetailCard } from '../../components/DetailCard/DetailCard';
 import { EditSection } from '../../components/EditSection/EditSection';
 import { EditFormWrapper } from '../../components/EditForm/EditFormWrapper';
