@@ -7,51 +7,22 @@ import { RequestMetricsCard } from './components/RequestMetricsCard/RequestMetri
 import { HealthStatusCard } from './components/HealthStatusCard/HealthStatusCard';
 import { RecentRequestsTable } from './components/RecentRequestsTable/RecentRequestsTable';
 import { SystemLog } from '@/typesModels/SystemLog';
-
-// ─── Fallback ─────────────────────────────────────────────────────────────────
-
-const FALLBACK: SystemLog = {
-    process: {
-        startedAt: new Date(),
-        uptime: "0d 0h 0m",
-        uptimeSeconds: 0,
-        memoryUsedMb: 0,
-        threadCount: 0,
-        cpuTimeSeconds: 0,
-    },
-    environment: {
-        applicationName: "—",
-        environmentName: "—",
-        dotnetVersion: "—",
-        osDescription: "—",
-        machineName: "—",
-        processorCount: 0,
-    },
-    requestMetrics: {
-        totalRequests: 0,
-        totalClientErrors: 0,
-        totalServerErrors: 0,
-        clientErrorRate: 0,
-        serverErrorRate: 0,
-        latencyAverageMs: 0,
-        latencyMaxMs: 0,
-        latencyMinMs: 0,
-        uptimePercent: 0,
-    },
-    health: {
-        status: "Unhealthy",
-        checks: [],
-    },
-    recentRequests: [],
-};
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
+import { TableError } from '@/pp/components/ui/TableError/TableError';
 
 export default async function SystemLogsPage() {
     const result = await systemLogService.getSystemLogs();
-    const data: SystemLog =
-        result?.success && result.data ? result.data : FALLBACK;
 
+    if (!result?.success || !result?.data) {
+        return (
+            <TableError
+                isError={true}
+                isNotFound={false}
+                isEmptyResponse={false}
+                isSearch={false} />
+        );
+    }
+
+    const data: SystemLog = result?.data;
     return (
         <ContainerSection
             title="Trazabilidad Técnica"

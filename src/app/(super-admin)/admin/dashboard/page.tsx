@@ -11,6 +11,7 @@ import { ContainerSection } from "@/pp/components/layout/ContainerSection/Contai
 import { summaryService } from "@/app/services/api/summary.service";
 import { DashboardSummary } from "@/typesModels/summary";
 import { MrrDataPoint, PlanDistribution } from "@/typesAPI/summary";
+import { TableError } from "@/pp/components/ui/TableError/TableError";
 
 // ─── Helpers de transformación ───────────────────────────────────────────────
 
@@ -89,9 +90,7 @@ const FALLBACK_SUMMARY: DashboardSummary = {
 
 const getSummary = async () => {
     const result = await summaryService.getDashboardSummary();
-    const summary: DashboardSummary =
-        result?.success && result.data ? result.data : FALLBACK_SUMMARY;
-    return summary;
+    return result;
 }
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -99,8 +98,18 @@ const getSummary = async () => {
 export default async function AdminPage() {
 
     const summary = await getSummary();
-    console.log("summary", summary);
-    const { kpis, mrrChart, planDistribution, systemStatus, recentSubscriptions, tenantStorageUsage } = summary;
+
+    if (!summary?.success || !summary?.data) {
+        return (
+            <TableError
+                isError={true}
+                isNotFound={false}
+                isEmptyResponse={false}
+                isSearch={false} />
+        );
+    }
+
+    const { kpis, mrrChart, planDistribution, systemStatus, recentSubscriptions, tenantStorageUsage } = summary.data;
 
     const areaData = buildAreaChart(mrrChart);
     const donutData = buildDonutData(planDistribution);
