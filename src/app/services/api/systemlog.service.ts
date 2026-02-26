@@ -7,7 +7,7 @@ class SystemLogService {
     async getSystemLogs(): Promise<ApiResponse<SystemLog | null> | undefined> {
         const config = { cache: false }; // Siempre datos frescos en tiempo real
         const response = await apiFluxCoreServerGet<ApiResponse<SystemLog>>(
-            `/admin/system-logs`,
+            `/admin/system/logs`,
             config as any
         );
         return response;
