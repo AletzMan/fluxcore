@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { PlanStatusType } from '@/enums/common.enums';
 import { ErrorMessages } from '../lib/errors/message-errors';
 
 
@@ -22,3 +23,28 @@ export const RegisterTenantSchema = z.object({
     message: ErrorMessages.TENANT_PASSWORDS_DO_NOT_MATCH,
     path: ["confirmPassword"],
 });
+
+export const GeneralSchema = z.object({
+    companyName: z.string().min(3, 'Mínimo 3 caracteres').max(100),
+    taxId: z.string().min(12, 'RFC inválido').max(13).optional().or(z.literal('')),
+    address: z.string().max(200).optional().or(z.literal('')),
+});
+
+export const ContactSchema = z.object({
+    email: z.string().email('Email inválido'),
+    phone: z.string().min(10, 'Debe tener 10 dígitos').max(10).optional().or(z.literal('')),
+});
+
+export const StatusSchema = z.object({
+    status: z.enum(PlanStatusType as any),
+    isActive: z.boolean(),
+});
+
+export const LogoSchema = z.object({
+    logoFile: z.file().optional().or(z.literal('')),
+});
+
+export type GeneralValues = z.infer<typeof GeneralSchema>;
+export type ContactValues = z.infer<typeof ContactSchema>;
+export type StatusValues = z.infer<typeof StatusSchema>;
+export type LogoValues = z.infer<typeof LogoSchema>;

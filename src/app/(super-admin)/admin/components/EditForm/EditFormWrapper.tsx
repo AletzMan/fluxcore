@@ -1,5 +1,5 @@
 "use client";
-import { z } from 'zod';
+import { GeneralSchema, PricingSchema, LimitsSchema, ModulesSchema, GeneralValues, PricingValues, LimitsValues, ModulesValues } from '@/validations/plan.schema';
 import { EditForm, EditFormField } from './EditForm';
 import { EditFeaturesForm } from './EditFeaturesForm';
 import { useEditSectionStore } from '@/app/store/editsection.store';
@@ -7,43 +7,7 @@ import { Plan } from '@/typesModels/Plan';
 import { PLAN_SECTIONS } from '@/pp/constants/planSections';
 import { updatePlanAction } from '@/app/actions/plan.actions';
 
-// ─── Schemas por sección ──────────────────────────────────────────────────────
 
-const GeneralSchema = z.object({
-    name: z.string().min(3, 'Mínimo 3 caracteres').max(100),
-    description: z.string().min(10, 'Mínimo 10 caracteres').max(500),
-    isActive: z.boolean(),
-    trialDays: z.coerce.number().min(0, 'Debe ser ≥ 0'),
-});
-
-const PricingSchema = z.object({
-    monthlyPrice: z.coerce.number().min(0, 'Debe ser ≥ 0'),
-    quarterlyPrice: z.coerce.number().min(0, 'Debe ser ≥ 0'),
-    semiannualPrice: z.coerce.number().min(0, 'Debe ser ≥ 0'),
-    annualPrice: z.coerce.number().min(0, 'Debe ser ≥ 0'),
-});
-
-const LimitsSchema = z.object({
-    maxUsers: z.coerce.number().min(1, 'Mínimo 1'),
-    maxProducts: z.coerce.number().min(1, 'Mínimo 1'),
-    maxBranches: z.coerce.number().min(1, 'Mínimo 1'),
-});
-
-const ModulesSchema = z.object({
-    hasInventoryManagement: z.boolean(),
-    hasSalesReports: z.boolean(),
-    hasAdvancedReports: z.boolean(),
-    hasMultiCurrency: z.boolean(),
-    hasApiAccess: z.boolean(),
-    hasPrioritySupport: z.boolean(),
-});
-
-// ─── Field definitions por sección ────────────────────────────────────────────
-
-type GeneralValues = z.infer<typeof GeneralSchema>;
-type PricingValues = z.infer<typeof PricingSchema>;
-type LimitsValues = z.infer<typeof LimitsSchema>;
-type ModulesValues = z.infer<typeof ModulesSchema>;
 
 const generalFields: EditFormField<GeneralValues>[] = [
     { key: 'name', label: 'Nombre del plan', type: 'text', placeholder: 'Ej. Plan Empresarial' },

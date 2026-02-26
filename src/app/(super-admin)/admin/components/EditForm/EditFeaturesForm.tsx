@@ -2,25 +2,13 @@
 import styles from './EditFeaturesForm.module.scss';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { FeatureSchema, FeaturesFormValues } from '@/validations/plan.schema';
 import { Alert, Button, Checkbox, Dialog, Divider, Input, TextArea } from 'lambda-ui-components';
 import { useState } from 'react';
 import { Trash2, Plus } from 'lucide-react';
 import { updatePlanAction } from '@/app/actions/plan.actions';
 import { PlanFeature } from '@/typesAPI/plan.types';
 
-
-const FeatureSchema = z.object({
-    features: z.array(z.object({
-        id: z.number().optional(),
-        name: z.string().min(1, 'El nombre es requerido'),
-        description: z.string().min(1, 'La descripción es requerida'),
-        isEnabled: z.boolean(),
-        displayOrder: z.number(),
-    })),
-});
-
-type FeaturesFormValues = z.infer<typeof FeatureSchema>;
 
 interface EditFeaturesFormProps {
     planId: number;

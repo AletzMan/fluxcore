@@ -1,5 +1,5 @@
 "use client";
-import { z } from 'zod';
+import { GeneralSchema, ContactSchema, StatusSchema, LogoSchema, GeneralValues, ContactValues, StatusValues, LogoValues } from '@/validations/tenant.schema';
 import { EditForm, EditFormField } from '../../../components/EditForm/EditForm';
 import { useEditSectionStore } from '@/app/store/editsection.store';
 import { Tenant } from '@/typesModels/Tenant';
@@ -7,30 +7,6 @@ import { TENANT_SECTIONS } from '@/app/constants/tenantSections';
 import { updateTenantAction } from '@/app/actions/tenant.actions';
 import { PlanStatusType } from '@/enums/common.enums';
 
-const GeneralSchema = z.object({
-    companyName: z.string().min(3, 'Mínimo 3 caracteres').max(100),
-    taxId: z.string().min(12, 'RFC inválido').max(13).optional().or(z.literal('')),
-    address: z.string().max(200).optional().or(z.literal('')),
-});
-
-const ContactSchema = z.object({
-    email: z.string().email('Email inválido'),
-    phone: z.string().min(10, 'Debe tener 10 dígitos').max(10).optional().or(z.literal('')),
-});
-
-const StatusSchema = z.object({
-    status: z.enum(PlanStatusType),
-    isActive: z.boolean(),
-});
-
-const LogoSchema = z.object({
-    logoFile: z.file().optional().or(z.literal('')),
-});
-
-type GeneralValues = z.infer<typeof GeneralSchema>;
-type ContactValues = z.infer<typeof ContactSchema>;
-type StatusValues = z.infer<typeof StatusSchema>;
-type LogoValues = z.infer<typeof LogoSchema>;
 
 const generalFields: EditFormField<GeneralValues>[] = [
     { key: 'companyName', label: 'Compañía', type: 'text', placeholder: 'Ej. Acme Corp' },
