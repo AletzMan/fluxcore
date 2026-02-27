@@ -12,23 +12,17 @@ import { TableError } from '@/pp/components/ui/TableError/TableError';
 export default async function SystemLogsPage() {
     const result = await systemLogService.getSystemLogs();
 
-    if (!result?.success || !result?.data) {
-        return (
-            <TableError
-                isError={true}
-                isNotFound={false}
-                isEmptyResponse={false}
-                isSearch={false} />
-        );
-    }
-
-    const data: SystemLog = result?.data;
+    const data: SystemLog = result?.data || {} as SystemLog;
     return (
         <ContainerSection
             title="Trazabilidad Técnica"
             description="Auditoría de eventos, registro de excepciones y actividad crítica de la API en tiempo real."
         >
-            <div className={styles.system_logs}>
+            {!result?.success || !result?.data ? <TableError
+                isError={true}
+                isNotFound={false}
+                isEmptyResponse={false}
+                isSearch={false} /> : <div className={styles.system_logs}>
                 {/* Fila 1 — Proceso · Entorno · Métricas · Health */}
                 <div className={styles.top_grid}>
                     <ProcessInfoCard data={data.process} />
@@ -41,7 +35,7 @@ export default async function SystemLogsPage() {
                 <div className={styles.bottom}>
                     <RecentRequestsTable data={data.recentRequests} />
                 </div>
-            </div>
+            </div>}
         </ContainerSection>
     );
 }
