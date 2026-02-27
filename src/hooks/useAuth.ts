@@ -19,7 +19,7 @@ export function useAuth() {
         const response = await authService.login(credentials);
 
         if (response && response.success) {
-            router.push('/admin');
+            router.push('/admin/dashboard');
         } else {
             setError(response?.message || "Ocurrió un error al iniciar sesión");
         }
@@ -33,7 +33,7 @@ export function useAuth() {
         const response = await authService.register(data);
 
         if (response && response.success) {
-            router.push('/dashboard');
+            router.push('/admin/dashboard');
         } else {
             setError(response?.message || "Ocurrió un error en el registro");
         }
