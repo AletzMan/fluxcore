@@ -10,6 +10,7 @@ export const apiFluxCore = axios.create({
 
 const handleAxiosError = (error: unknown) => {
     if (axios.isAxiosError(error)) {
+        console.log("error", error);
         let errorCode = error.response?.data?.code || "UNKNOWN_ERROR";
         console.log("errorCode", errorCode);
         let message = ErrorMessages[errorCode] || "Error inesperado.";
@@ -86,10 +87,8 @@ export const apiFluxCorePut = async <T>(url: string, data?: any, config?: AxiosR
 export const apiFluxCorePatch = async <T>(url: string, data?: any, config?: AxiosRequestConfig) => {
     try {
         const response = await apiFluxCore.patch<T>(url, data, config);
-        console.log("responsePatch", response);
         return response.data;
     } catch (error) {
-        console.log("error", error);
         return handleAxiosError(error);
     }
 };
@@ -123,12 +122,9 @@ export const apiFluxCoreServer = async () => {
     instance.interceptors.request.use(async (config) => {
         if ((config as any).cache) {
             const key = cacheService.generateKey(config);
-            console.log("key", key);
             const cachedData = await cacheService.get(key);
-            console.log("cachedData", cachedData);
 
             if (cachedData) {
-                // Return a special error object to be caught by the response interceptor
                 throw {
                     __isCache: true,
                     data: cachedData,
@@ -145,7 +141,6 @@ export const apiFluxCoreServer = async () => {
         (response) => {
             if ((response.config as any).cache) {
                 const key = cacheService.generateKey(response.config);
-                console.log("key", key.toString());
                 const ttl = (response.config as any).ttl || 60; // Default 60s
                 cacheService.set(key, response.data, ttl);
             }
@@ -172,10 +167,8 @@ export const apiFluxCoreServer = async () => {
 
 export const apiFluxCoreServerGet = async <T>(url: string, config?: AxiosRequestConfig) => {
     try {
-        console.log("url", url);
         const api = await apiFluxCoreServer();
         const response = await api.get<T>(url, config);
-        console.log("response apiFluxCoreServerGet", response.data);
         return response.data;
     } catch (error) {
         return handleAxiosError(error);
@@ -186,7 +179,6 @@ export const apiFluxCoreServerPost = async <T>(url: string, data?: any, config?:
     try {
         const api = await apiFluxCoreServer();
         const response = await api.post<T>(url, data, config);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         return handleAxiosError(error);
@@ -207,13 +199,9 @@ export const apiFluxCoreServerPatch = async <T>(url: string, data?: any, config?
     try {
         const api = await apiFluxCoreServer();
         console.log("urlPATCH", url);
-        console.log("dataPATCH", data);
-        console.log("configPATCH", config);
         const response = await api.patch<T>(url, data, config);
-        console.log("responsePATCH", response.data);
         return response.data;
     } catch (error) {
-        console.log("errorPATCH", error);
         return handleAxiosError(error);
     }
 };
