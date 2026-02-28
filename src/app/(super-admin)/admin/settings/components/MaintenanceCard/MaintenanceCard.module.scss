@@ -1,0 +1,81 @@
+.maintenance {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+}
+
+.status_badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-2xs) var(--spacing-sm);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    width: fit-content;
+
+    &__active {
+        background-color: color-mix(in srgb, var(--warning-color) 15%, transparent);
+        color: var(--warning-color);
+        border: var(--border-width) solid color-mix(in srgb, var(--warning-color) 30%, transparent);
+    }
+
+    &__inactive {
+        background-color: color-mix(in srgb, var(--success-color) 15%, transparent);
+        color: var(--success-color);
+        border: var(--border-width) solid color-mix(in srgb, var(--success-color) 30%, transparent);
+    }
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2xs);
+    padding: var(--spacing-sm);
+    background-color: var(--surface-b);
+    border-radius: var(--radius-md);
+    border: var(--border-width) solid var(--border-color);
+}
+
+.info_item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+    color: var(--foreground-secondary-color);
+
+    strong {
+        color: var(--foreground-primary-color);
+        font-weight: var(--font-weight-medium);
+    }
+}
+
+.info_message {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2xs);
+    padding-top: var(--spacing-2xs);
+    font-size: var(--font-size-sm);
+    color: var(--foreground-secondary-color);
+
+    p {
+        margin: 0;
+        padding: var(--spacing-2xs) var(--spacing-xs);
+        background-color: var(--surface-a);
+        border-radius: var(--radius-sm);
+        color: var(--foreground-primary-color);
+        font-style: italic;
+    }
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+}

@@ -303,4 +303,8 @@ export const ErrorMessages: Record<string, string> = {
 
     // Rate Limit
     RATE_LIMIT: "Has realizado demasiadas solicitudes. Por favor, intenta de nuevo más tarde.",
+
+    //Settings
+    MAINTENANCE_ENABLE_REQUIRED: "El campo 'enable' es requerido",
+    MAINTENANCE_MESSAGE_TOO_LONG: "El mensaje de mantenimiento no debe exceder los 500 caracteres",
 };
