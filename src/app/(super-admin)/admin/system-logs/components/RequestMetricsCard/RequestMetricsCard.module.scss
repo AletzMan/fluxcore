@@ -1,8 +1,8 @@
 .kpis {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-xs);
-    padding: var(--spacing-xs) var(--spacing-sm);
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-sm);
 }
 
 .kpi {
@@ -10,17 +10,18 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2px;
+    gap: var(--spacing-2xs);
     padding: var(--spacing-sm) var(--spacing-xs);
     background-color: var(--surface-b);
     border-radius: var(--radius-md);
-    border: 1px solid var(--border-color);
+    border: var(--border-width) solid var(--border-color);
     text-align: center;
 
     &_num {
         font-size: var(--font-size-2xl);
         font-weight: var(--font-weight-bold);
         line-height: 1;
+        color: var(--primary-hover-color);
     }
 
     &_label {
@@ -30,7 +31,7 @@
 
     &_sub {
         font-size: var(--font-size-xs);
-        color: var(--foreground-tertiary-color);
+        color: var(--surface-g);
     }
 }
 

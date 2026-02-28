@@ -14,7 +14,7 @@
 
     th {
         padding: var(--spacing-2xs) var(--spacing-xs);
-        text-align: left;
+        text-align: center;
         font-size: var(--font-size-xs);
         font-weight: var(--font-weight-medium);
         color: var(--foreground-tertiary-color);
@@ -37,6 +37,7 @@
     td {
         padding: var(--spacing-2xs) var(--spacing-xs);
         vertical-align: middle;
+        text-align: center;
     }
 }
 
