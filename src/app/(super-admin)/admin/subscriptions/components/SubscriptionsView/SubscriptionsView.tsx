@@ -13,9 +13,10 @@ interface SubscriptionsViewProps {
     subscriptions: Subscription[];
     pagination: Pagination;
     success?: boolean;
+    isMaintenance: boolean;
 }
 
-export const SubscriptionsView = ({ subscriptions, pagination, success }: SubscriptionsViewProps) => {
+export const SubscriptionsView = ({ subscriptions, pagination, success, isMaintenance }: SubscriptionsViewProps) => {
     const { showNotification } = useNotification();
 
     const deleteSubscription = async (id: number) => {
@@ -50,6 +51,7 @@ export const SubscriptionsView = ({ subscriptions, pagination, success }: Subscr
             columns={columns}
             pagination={pagination}
             success={success}
+            isMaintenance={isMaintenance}
             onDelete={(id) => deleteSubscription(Number(id))}
             actions={[
                 "view",

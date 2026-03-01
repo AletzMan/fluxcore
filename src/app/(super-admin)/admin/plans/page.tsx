@@ -32,6 +32,7 @@ export default async function PlansPage({ searchParams }: { searchParams: GetPla
                         plans={plans!.data || []}
                         pagination={plans!.pagination!}
                         success={plans!.success}
+                        isMaintenance={plans!.errorCode === "SERVICE_UNAVAILABLE"}
                     />
                 </Suspense>
             </div>

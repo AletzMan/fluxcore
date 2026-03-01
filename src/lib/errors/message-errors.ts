@@ -307,4 +307,5 @@ export const ErrorMessages: Record<string, string> = {
     //Settings
     MAINTENANCE_ENABLE_REQUIRED: "El campo 'enable' es requerido",
     MAINTENANCE_MESSAGE_TOO_LONG: "El mensaje de mantenimiento no debe exceder los 500 caracteres",
+    SERVICE_UNAVAILABLE: "El sitio está en mantenimiento",
 };

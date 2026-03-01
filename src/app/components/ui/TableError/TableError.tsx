@@ -11,6 +11,7 @@ interface TableErrorProps {
     isEmptyResponse: boolean;
     isError: boolean;
     isNotFound: boolean;
+    isMaintenance: boolean;
     onCreate?: () => void;
     onResetFilters?: () => void;
     onRetry?: () => void;
@@ -22,6 +23,7 @@ export const TableError = ({
     isEmptyResponse,
     isError,
     isNotFound,
+    isMaintenance,
     onCreate,
     onResetFilters,
     onRetry,
@@ -38,7 +40,7 @@ export const TableError = ({
     if (!isError && !isSearch && !isEmptyResponse) return null;
 
 
-    const stateConfig = getStateConfig(isError, isEmptyResponse, isSearch, isNotFound);
+    const stateConfig = getStateConfig(isError, isEmptyResponse, isSearch, isNotFound, isMaintenance);
 
 
     if (!stateConfig) return null;
@@ -100,9 +102,9 @@ interface StateConfig {
     btnColor: "primary" | "secondary" | "neutral" | "info" | "success" | "danger" | "warning";
 }
 
-const getStateConfig = (isError: boolean, isEmptyResponse: boolean, isSearch: boolean, isNotFound: boolean): StateConfig | undefined => {
+const getStateConfig = (isError: boolean, isEmptyResponse: boolean, isSearch: boolean, isNotFound: boolean, isMaintenance: boolean): StateConfig | undefined => {
 
-    console.log(isError, isEmptyResponse, isSearch, isNotFound);
+    console.log(isError, isEmptyResponse, isSearch, isNotFound, isMaintenance);
 
     if (isSearch && isEmptyResponse) {
         return {
@@ -146,6 +148,19 @@ const getStateConfig = (isError: boolean, isEmptyResponse: boolean, isSearch: bo
         };
     }
 
+    if (isMaintenance) {
+        return {
+            icon: <TriangleAlert size={120} strokeWidth={1.5} />,
+            title: "El sitio está en mantenimiento",
+            message: "Lo sentimos, el sitio está en mantenimiento. Por favor, intenta recargar la página.",
+            showButton: true,
+            actionType: 'reset',
+            btnLabel: "Reintentar conexión",
+            btnIcon: <RefreshCcw size={16} />,
+            btnVariant: "soft",
+            btnColor: "neutral"
+        };
+    }
     if (isError) {
         return {
             icon: <TriangleAlert size={120} strokeWidth={1.5} />,
@@ -159,5 +174,6 @@ const getStateConfig = (isError: boolean, isEmptyResponse: boolean, isSearch: bo
             btnColor: "danger"
         };
     }
+
 
 }

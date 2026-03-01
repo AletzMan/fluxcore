@@ -103,7 +103,7 @@ apiFluxCore.interceptors.response.use(
         if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
             const errorResponse: ApiResponse<any> = {
                 success: false,
-                code: "DOMAIN_ERROR",
+                 errorCode: "DOMAIN_ERROR",
                 message: 'Error al conectar con el servidor',
                 data: null,
                 timestamp: new Date(),

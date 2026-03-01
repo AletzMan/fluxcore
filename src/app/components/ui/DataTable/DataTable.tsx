@@ -69,6 +69,10 @@ interface DataTableProps<T> {
      * Función que se ejecuta al confirmar la eliminación de un registro
      */
     onDelete?: (id: string | number) => void;
+    /**
+     * Indica si el sitio está en mantenimiento
+     */
+    isMaintenance: boolean;
 }
 
 export const DataTable = <T extends { id: string | number, isActive?: boolean }>({
@@ -78,7 +82,8 @@ export const DataTable = <T extends { id: string | number, isActive?: boolean }>
     success,
     actions,
     filters,
-    onDelete
+    onDelete,
+    isMaintenance
 }: DataTableProps<T>) => {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [itemToDelete, setItemToDelete] = useState<string | number | null>(null);
@@ -478,6 +483,7 @@ export const DataTable = <T extends { id: string | number, isActive?: boolean }>
                 isEmptyResponse={data?.length === 0}
                 isError={!success}
                 isNotFound={false}
+                isMaintenance={isMaintenance}
                 onResetFilters={() => {
                     setSearch('');
                     router.replace(`${pathname}?page=1`);

@@ -17,7 +17,7 @@ export default async function SubscriptionsPage({ searchParams }: {
 }) {
     const params = await searchParams;
     const subscriptions: PagedResponse<Subscription> | undefined = await getSubscriptions({ ...params });
-
+    console.log('subscriptions', subscriptions?.errorCode);
     return (
         <ContainerSection
             title="Control de Suscripciones"
@@ -29,6 +29,7 @@ export default async function SubscriptionsPage({ searchParams }: {
                         subscriptions={subscriptions?.data || []}
                         pagination={subscriptions?.pagination!}
                         success={subscriptions?.success}
+                        isMaintenance={subscriptions?.errorCode === 'SERVICE_UNAVAILABLE'}
                     />
                 </Suspense>
             </div>

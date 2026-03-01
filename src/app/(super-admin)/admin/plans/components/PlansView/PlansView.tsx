@@ -10,9 +10,10 @@ interface PlansViewProps {
     plans: Plan[];
     pagination: Pagination;
     success?: boolean;
+    isMaintenance: boolean;
 }
 
-export const PlansView = ({ plans, pagination, success }: PlansViewProps) => {
+export const PlansView = ({ plans, pagination, success, isMaintenance }: PlansViewProps) => {
 
     return (
         <DataTable<Plan>
@@ -27,6 +28,7 @@ export const PlansView = ({ plans, pagination, success }: PlansViewProps) => {
             filters={[
                 { id: '1', key: 'isActive', value: 'true', label: 'Activo', optionalLabel: 'Inactivo', type: 'boolean', nameGroup: 'Estado' },
             ]}
+            isMaintenance={isMaintenance}
         />
     );
 }

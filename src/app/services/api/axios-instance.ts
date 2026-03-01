@@ -31,6 +31,7 @@ const handleAxiosError = (error: unknown) => {
             if (status === 400 && error.response.data.code !== "IMAGE_NOT_UPLOADED") errorCode = "BAD_REQUEST"; 
             if (status === 429) errorCode = "RATE_LIMIT";
             if (status === 500) errorCode = "SERVER_ERROR";
+            if (status === 503) errorCode = "SERVICE_UNAVAILABLE";
 
             if (status === 422) {
                 const errors = error.response.data.errors;
