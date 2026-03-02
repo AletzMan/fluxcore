@@ -1,9 +1,27 @@
 'use server';
 
-import { apiFluxCoreServerPatch } from "@/app/services/api/axios-instance";
+import { apiFluxCoreServerPatch, apiFluxCoreServerPost } from "@/app/services/api/axios-instance";
 import { Tenant } from "@/typesModels/Tenant";
+import { RegisterTenantRequest } from "@/typesAPI/tenant.types";
 import { revalidatePath } from "next/cache";
 import { cacheService } from "@/app/services/cache.service";
+
+export async function createTenantAction(data: RegisterTenantRequest): Promise<any> {
+    try {
+        const response = await apiFluxCoreServerPost(`/tenants`, data);
+
+        cacheService.invalidateKeysByPattern(`get:/tenants`);
+        revalidatePath('/tenants');
+
+        return response;
+    } catch (error: any) {
+        console.error("Error in createTenantAction:", error);
+        return {
+            success: false,
+            message: error.message || "Error al crear el tenant"
+        };
+    }
+}
 
 export async function updateTenantAction(id: number, data: Partial<Tenant>): Promise<any> {
     try {

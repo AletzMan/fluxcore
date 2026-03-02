@@ -1,13 +1,17 @@
 "use client";
-import { Checkbox, Input, Radio, RadioGroup, Stepper } from 'lambda-ui-components';
+import { Checkbox, Input, Radio, RadioGroup, Stepper, Alert, Button, Dialog, Select } from 'lambda-ui-components';
 import styles from './FormTenant.module.scss'
-import { UserIcon } from 'lucide-react';
+import { UserIcon, CheckCircle } from 'lucide-react';
 import { Fieldset } from '@/pp/components/layout/Fieldset/Fieldset';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { RegisterTenantSchema } from '../../../../../../validations/tenant.schema';
-import { BillingCycle } from '@/enums/common.enums';
+import { RegisterTenantSchema, RegisterTenantValues } from '../../../../../../validations/tenant.schema';
+import { BillingCycle, PaymentMethod } from '@/enums/common.enums';
 import { ErrorMessages } from '@/lib/errors/message-errors';
+import { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion } from 'motion/react';
+import { createTenantAction } from '@/app/actions/tenant.actions';
 
 interface StepValidationResult {
     isValid: boolean;
@@ -15,14 +19,69 @@ interface StepValidationResult {
 }
 
 export const FormTenant = () => {
-    const { control, handleSubmit, setError, trigger, getValues, formState: { errors } } = useForm({
-        resolver: zodResolver(RegisterTenantSchema),
+    const [isCreated, setIsCreated] = useState<{ success: boolean, title: string, message: string }>({
+        success: false,
+        title: "",
+        message: ""
+    });
+    const creationResultRef = useRef<{ success: boolean, title: string, message: string } | null>(null);
+    const router = useRouter();
+
+    const { control, handleSubmit, setError, trigger, getValues, watch, formState: { errors } } = useForm<RegisterTenantValues>({
+        resolver: zodResolver(RegisterTenantSchema) as any,
+        defaultValues: {
+            companyName: "",
+            taxId: "",
+            address: "",
+            companyEmail: "",
+            phone: "",
+            autoRenew: true,
+            startTrial: true,
+            paymentMethodId: PaymentMethod.CREDIT_CARD.toString(),
+            name: "",
+            username: "",
+            email: "",
+            password: "",
+            confirmPassword: ""
+        }
     })
+
+    const onSubmit = async (data: RegisterTenantValues) => {
+        try {
+            const payload = {
+                ...data,
+                planId: Number(data.planId),
+                autoRenew: data.autoRenew === true,
+                startTrial: data.startTrial === true,
+            };
+
+            const result = await createTenantAction(payload);
+            console.log("resultForm", result);
+            const newState = {
+                success: result.success,
+                title: result.success ? "¡Comercio creado con éxito!" : "Error al crear comercio",
+                message: result.success
+                    ? "El nuevo comercio y el usuario administrador han sido creados correctamente."
+                    : (result.message || "Verifica que los datos ingresados sean correctos e intenta nuevamente.")
+            };
+
+            setIsCreated(newState);
+            creationResultRef.current = newState;
+
+        } catch (error) {
+            const errorState = {
+                success: false,
+                title: "Problema de conexión",
+                message: "Ocurrió un error inesperado al comunicarse con el servidor. Por favor, intenta de nuevo en unos momentos."
+            };
+            setIsCreated(errorState);
+            creationResultRef.current = errorState;
+        }
+    };
 
     const handleStepValidate = async (stepIndex: number): Promise<StepValidationResult> => {
         let isValid = false;
         let errorMessage = "";
-
         switch (stepIndex) {
             case 0:
                 // Validar solo los campos del paso 1: Información del comercio
@@ -31,22 +90,27 @@ export const FormTenant = () => {
                 break;
             case 1:
                 // Validar solo los campos del paso 2: Plan y suscripción
-                isValid = await trigger(['planId', 'billingCycle', 'autoRenew', 'startTrial']);
-                errorMessage = isValid ? "" : "Por favor selecciona un plan de suscripción";
+                isValid = await trigger(['planId', 'billingCycle', 'paymentMethodId', 'autoRenew', 'startTrial']);
+                errorMessage = isValid ? "" : "Por favor selecciona un plan, ciclo de facturación y método de pago";
                 break;
             case 2:
                 // Validar solo los campos del paso 3: Usuario administrador
-                isValid = await trigger(['name', 'username', 'email', 'password', 'confirmPassword']);
+                //isValid = await trigger(['name', 'username', 'email', 'password', 'confirmPassword']);
 
-                if (isValid) {
-                    const { password, confirmPassword } = getValues();
-                    if (password !== confirmPassword) {
-                        setError('confirmPassword', {
-                            type: 'manual',
-                            message: ErrorMessages.TENANT_PASSWORDS_DO_NOT_MATCH,
-                        });
-                        isValid = false;
-                    }
+
+                creationResultRef.current = null;
+                console.log("Errors", errors)
+                await handleSubmit(onSubmit)();
+
+                const result = creationResultRef.current as { success: boolean, title: string, message: string } | null;
+                if (result && result.success === false) {
+                    isValid = false;
+                    errorMessage = result.title;
+                    break;
+                }
+                if (!result) {
+                    isValid = false;
+                    break;
                 }
 
                 errorMessage = isValid ? "" : "Por favor completa todos los campos del administrador correctamente";
@@ -215,6 +279,29 @@ export const FormTenant = () => {
                             </Fieldset>
                             <Fieldset title="Opciones">
                                 <Controller
+                                    name="paymentMethodId"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Select
+                                            {...field}
+                                            label="Método de pago principal"
+                                            placeholder="Seleccione un método de pago"
+                                            size="small"
+                                            errorMessage={errors.paymentMethodId?.message}
+                                            invalid={!!errors.paymentMethodId}
+                                            options={[
+                                                { label: "Tarjeta de Crédito", value: PaymentMethod.CREDIT_CARD },
+                                                { label: "Tarjeta de Débito", value: PaymentMethod.DEBIT_CARD },
+                                                { label: "Transferencia Bancaria", value: PaymentMethod.TRANSFER },
+                                                { label: "Pago Móvil", value: PaymentMethod.MOBILE_PAYMENT },
+                                                { label: "Efectivo", value: PaymentMethod.CASH },
+                                                { label: "Crédito", value: PaymentMethod.CREDIT },
+                                                { label: "Otro", value: PaymentMethod.OTHER }
+                                            ]}
+                                        />
+                                    )}
+                                />
+                                <Controller
                                     name="startTrial"
                                     control={control}
                                     render={({ field }) => (
@@ -244,6 +331,13 @@ export const FormTenant = () => {
                 </Stepper.Content>
                 <Stepper.Content>
                     <div className={styles.formtenant_content}>
+                        {!isCreated.success && isCreated.title &&
+                            <Alert
+                                className={styles.formtenant_alert}
+                                message={isCreated.message}
+                                color={isCreated.success ? "success" : "danger"}
+                                onClose={() => setIsCreated({ title: "", message: "", success: false })}
+                            />}
                         <form className={styles.formtenant_form}>
                             <Controller
                                 name="name"
@@ -323,6 +417,51 @@ export const FormTenant = () => {
                         </form>
                     </div>
                 </Stepper.Content>
+                <Stepper.CompletedContent>
+                    <div className={styles.completed}>
+                        <div className={styles.completed_content}>
+                            <div className={styles.completed_header}>
+                                <motion.div
+                                    key="completed-success-icon"
+                                    className={styles.completed_icon_wrapper}
+                                    initial={{ scale: 0, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    transition={{
+                                        type: "spring",
+                                        stiffness: 260,
+                                        damping: 20,
+                                        repeat: Infinity,
+                                        repeatType: "reverse",
+                                        repeatDelay: 2
+                                    }}
+                                >
+                                    <CheckCircle className={styles.completed_icon} />
+                                </motion.div>
+                                <div className={styles.completed_text}>
+                                    <h2 className={styles.completed_title}>Comercio Creado Exitosamente</h2>
+                                    <p className={styles.completed_subtitle}>{`El comercio ${watch('companyName')} ha sido creado y su suscripción está configurada.`}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={styles.completed_footer}>
+                            <Button
+                                variant="solid"
+                                size="small"
+                                label="Agregar Otro Comercio"
+                                onClick={() => window.location.reload()}
+                                block
+                            />
+                            <Button
+                                variant="solid"
+                                size="small"
+                                color="neutral"
+                                label="Ver Comercios"
+                                onClick={() => router.push('/admin/tenants')}
+                                block
+                            />
+                        </div>
+                    </div>
+                </Stepper.CompletedContent>
             </Stepper>
         </div>
     );

@@ -12,4 +12,14 @@ export enum PlanStatusType {
     EXPIRED = 'EXPIRED',
     SUSPENDED = 'SUSPENDED',
     CANCELLED = 'CANCELLED'
+} 
+
+export enum PaymentMethod {
+    CASH = 'CASH',
+    CREDIT = 'CREDIT',
+    CREDIT_CARD = 'CREDIT_CARD',
+    DEBIT_CARD = 'DEBIT_CARD',
+    MOBILE_PAYMENT = 'MOBILE_PAYMENT',
+    TRANSFER = 'TRANSFER',
+    OTHER = 'OTHER'
 }

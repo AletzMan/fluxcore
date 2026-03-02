@@ -44,6 +44,7 @@ export const LogoSchema = z.object({
     logoFile: z.file().optional().or(z.literal('')),
 });
 
+export type RegisterTenantValues = z.infer<typeof RegisterTenantSchema>;
 export type GeneralValues = z.infer<typeof GeneralSchema>;
 export type ContactValues = z.infer<typeof ContactSchema>;
 export type StatusValues = z.infer<typeof StatusSchema>;
