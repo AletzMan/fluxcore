@@ -22,6 +22,7 @@ export default async function SystemLogsPage() {
                 isError={true}
                 isNotFound={false}
                 isEmptyResponse={false}
+                isMaintenance={result?.errorCode === "SERVICE_UNAVAILABLE"}
                 isSearch={false} /> : <div className={styles.system_logs}>
                 {/* Fila 1 — Proceso · Entorno · Métricas · Health */}
                 <div className={styles.top_grid}>

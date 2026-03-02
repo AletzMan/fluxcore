@@ -13,9 +13,10 @@ interface TenantsViewProps {
     tenants: Tenant[];
     pagination: Pagination;
     success?: boolean;
+    isMaintenance: boolean;
 }
 
-export const TenantsView = ({ tenants, pagination, success }: TenantsViewProps) => {
+export const TenantsView = ({ tenants, pagination, success, isMaintenance }: TenantsViewProps) => {
     const { showNotification } = useNotification();
 
     const deleteTenant = async (id: number) => {
@@ -50,6 +51,7 @@ export const TenantsView = ({ tenants, pagination, success }: TenantsViewProps) 
             columns={columns}
             pagination={pagination}
             success={success}
+            isMaintenance={isMaintenance}
             onDelete={(id) => deleteTenant(Number(id))}
             actions={[
                 "view",

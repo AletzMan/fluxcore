@@ -27,7 +27,8 @@ export default async function TenantPage({ params }: { params: { id: string } })
             isSearch={false}
             isEmptyResponse={true}
             isError={true}
-            isNotFound={tenant?.errorCode === "TENANT_NOT_FOUND"}
+            isNotFound={!tenant}
+            isMaintenance={tenant?.errorCode === "SERVICE_UNAVAILABLE"}
             urlBack="/admin/tenants"
         />;
     }

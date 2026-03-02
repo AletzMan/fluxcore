@@ -43,8 +43,9 @@ export default async function PlanPage({ params }: { params: { id: string } }) {
             isSearch={false}
             isEmptyResponse={false}
             isError={true}
-            isNotFound={plan?.errorCode === "PLAN_NOT_FOUND"}
-            urlBack="/admin/plans"
+            isMaintenance={plan?.errorCode === "SERVICE_UNAVAILABLE"}
+            isNotFound={!plan}
+            urlBack={`/admin/plans`}
         />;
     }
 

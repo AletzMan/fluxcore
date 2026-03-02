@@ -31,6 +31,7 @@ export default async function TenantsPage({ searchParams }: {
                         tenants={tenants?.data || []}
                         pagination={tenants?.pagination!}
                         success={tenants?.success}
+                        isMaintenance={tenants?.errorCode === "SERVICE_UNAVAILABLE"}
                     />
                 </Suspense>
             </div>

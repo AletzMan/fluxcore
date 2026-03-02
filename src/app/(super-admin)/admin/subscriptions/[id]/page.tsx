@@ -21,7 +21,8 @@ export default async function SubscriptionPage({ params }: { params: { id: strin
             isSearch={false}
             isEmptyResponse={true}
             isError={true}
-            isNotFound={subscription?.errorCode === "SUBSCRIPTION_NOT_FOUND"}
+            isNotFound={!subscription}
+            isMaintenance={subscription?.errorCode === "SERVICE_UNAVAILABLE"}
             urlBack="/admin/subscriptions"
         />;
     }

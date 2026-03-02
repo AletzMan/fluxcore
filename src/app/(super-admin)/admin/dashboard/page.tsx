@@ -50,7 +50,9 @@ export default async function AdminPage() {
                 isError={true}
                 isNotFound={false}
                 isEmptyResponse={false}
-                isSearch={false} />
+                isSearch={false}
+                isMaintenance={false}
+            />
         );
     }
 
