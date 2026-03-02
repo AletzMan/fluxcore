@@ -159,6 +159,44 @@ export const apiFluxCoreServer = async () => {
                     config: error.config,
                 });
             }
+
+            const originalRequest = error.config;
+            if (error.response?.status === 401 && !originalRequest._retry) {
+                originalRequest._retry = true;
+
+                try {
+                    const refreshResponse = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}auth/refresh-token`, {}, {
+                        headers: { Cookie: cookieStore.toString() }
+                    });
+
+                    const newAccessToken = refreshResponse.data?.data?.accessToken;
+
+                    if (newAccessToken) {
+                        try {
+                            cookieStore.set('accessToken', newAccessToken, { secure: true, path: '/' });
+                            const setCookieHeaders = refreshResponse.headers['set-cookie'];
+                            if (setCookieHeaders && setCookieHeaders.length) {
+                                setCookieHeaders.forEach((cookieStr: string) => {
+                                    if (cookieStr.includes('refreshToken=')) {
+                                        const rtMatch = cookieStr.match(/refreshToken=([^;]+)/);
+                                        if (rtMatch) {
+                                            cookieStore.set('refreshToken', rtMatch[1], { secure: true, httpOnly: true, path: '/' });
+                                        }
+                                    }
+                                });
+                            }
+                        } catch (cookieError) {
+                            // Silently ignore if `cookies().set` fails due to executing outside a Server Action context
+                        }
+
+                        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+                        return instance(originalRequest);
+                    }
+                } catch (refreshError) {
+                    return Promise.reject(refreshError);
+                }
+            }
+
             return Promise.reject(error);
         }
     );
