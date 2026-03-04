@@ -231,6 +231,7 @@ export const ErrorMessages: Record<string, string> = {
     AUTH_INVALID_REFRESH_TOKEN: "Tu sesión ha expirado. Por favor, ingresa de nuevo.",
     AUTH_USER_NOT_AUTHENTICATED: "Debes iniciar sesión para realizar esta acción",
     AUTH_UNAUTHORIZED: "No tienes permiso para realizar esta acción",
+    SESSION_EXPIRED: "Tu sesión ha expirado. Por favor, inicia sesión de nuevo.",
 
     // Global / Common
     CONFLICT: "Esta acción no se puede realizar porque los datos han cambiado o ya existen.",

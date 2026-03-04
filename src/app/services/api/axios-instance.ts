@@ -9,6 +9,21 @@ export const apiFluxCore = axios.create({
 });
 
 const handleAxiosError = (error: unknown) => {
+    // Re-lanzar errores internos de Next.js (redirect, notFound).
+    // Estos NO son errores HTTP: son excepciones especiales que Next.js
+    // usa para interrumpir el render. Si las atrapamos y las retornamos
+    // como errores normales, el redirect() nunca se ejecuta.
+    if (
+        error &&
+        typeof error === 'object' &&
+        'digest' in error &&
+        typeof (error as any).digest === 'string' &&
+        ((error as any).digest.startsWith('NEXT_REDIRECT') ||
+            (error as any).digest.startsWith('NEXT_NOT_FOUND'))
+    ) {
+        throw error;
+    }
+
     if (axios.isAxiosError(error)) {
         console.log("error", error);
         let errorCode = error.response?.data?.code || "UNKNOWN_ERROR";
@@ -137,7 +152,7 @@ export const apiFluxCoreServer = async () => {
         return config;
     });
 
-    // Response Interceptor for Caching
+    // Response Interceptor for Caching only (NO 401 handling here)
     instance.interceptors.response.use(
         (response) => {
             if ((response.config as any).cache) {
@@ -150,7 +165,6 @@ export const apiFluxCoreServer = async () => {
         async (error) => {
             // Check if it's our standard cache hit "error"
             if (error && error.__isCache) {
-                // Return a mock AxiosResponse
                 return Promise.resolve({
                     data: error.data,
                     status: 200,
@@ -159,44 +173,6 @@ export const apiFluxCoreServer = async () => {
                     config: error.config,
                 });
             }
-
-            const originalRequest = error.config;
-            if (error.response?.status === 401 && !originalRequest._retry) {
-                originalRequest._retry = true;
-
-                try {
-                    const refreshResponse = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}auth/refresh-token`, {}, {
-                        headers: { Cookie: cookieStore.toString() }
-                    });
-
-                    const newAccessToken = refreshResponse.data?.data?.accessToken;
-
-                    if (newAccessToken) {
-                        try {
-                            cookieStore.set('accessToken', newAccessToken, { secure: true, path: '/' });
-                            const setCookieHeaders = refreshResponse.headers['set-cookie'];
-                            if (setCookieHeaders && setCookieHeaders.length) {
-                                setCookieHeaders.forEach((cookieStr: string) => {
-                                    if (cookieStr.includes('refreshToken=')) {
-                                        const rtMatch = cookieStr.match(/refreshToken=([^;]+)/);
-                                        if (rtMatch) {
-                                            cookieStore.set('refreshToken', rtMatch[1], { secure: true, httpOnly: true, path: '/' });
-                                        }
-                                    }
-                                });
-                            }
-                        } catch (cookieError) {
-                            // Silently ignore if `cookies().set` fails due to executing outside a Server Action context
-                        }
-
-                        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-                        return instance(originalRequest);
-                    }
-                } catch (refreshError) {
-                    return Promise.reject(refreshError);
-                }
-            }
-
             return Promise.reject(error);
         }
     );
@@ -204,11 +180,133 @@ export const apiFluxCoreServer = async () => {
     return instance;
 };
 
-export const apiFluxCoreServerGet = async <T>(url: string, config?: AxiosRequestConfig) => {
+/**
+ * Refreshes the access token using the refresh token cookie.
+ * Sets the new tokens directly in cookies at the Server Action level
+ * so that Set-Cookie headers are properly sent back to the browser.
+ * Returns the new access token or null if refresh failed.
+ */
+async function refreshTokenOnServer(): Promise<string | null> {
+    try {
+        const { cookies } = await import("next/headers");
+        const cookieStore = await cookies();
+
+        const currentToken = cookieStore.get('accessToken')?.value;
+        const refreshHeaders: Record<string, string> = {
+            Cookie: cookieStore.toString()
+        };
+        if (currentToken) {
+            refreshHeaders['Authorization'] = `Bearer ${currentToken}`;
+        }
+
+        console.log("[refreshTokenOnServer] Attempting refresh...");
+
+        const refreshResponse = await axios.post(
+            `${process.env.NEXT_PUBLIC_API_URL}auth/refresh-token`,
+            {},
+            { headers: refreshHeaders }
+        );
+
+        const newAccessToken = refreshResponse.data?.data?.accessToken;
+
+        if (!newAccessToken) {
+            console.error("[refreshTokenOnServer] No accessToken in refresh response");
+            return null;
+        }
+
+        console.log("[refreshTokenOnServer] Got new accessToken, updating cookies...");
+
+        // Set the new accessToken cookie — this works because we're
+        // called directly from a Server Action wrapper, not from an interceptor
+        cookieStore.set('accessToken', newAccessToken, {
+            secure: process.env.NODE_ENV === 'production',
+            path: '/',
+            httpOnly: true,
+            sameSite: 'lax',
+        });
+
+        // Also update refreshToken if the backend rotated it
+        const setCookieHeaders = refreshResponse.headers['set-cookie'];
+        if (setCookieHeaders && setCookieHeaders.length) {
+            for (const cookieStr of setCookieHeaders) {
+                if (cookieStr.includes('refreshToken=')) {
+                    const rtMatch = cookieStr.match(/refreshToken=([^;]+)/);
+                    if (rtMatch) {
+                        cookieStore.set('refreshToken', rtMatch[1], {
+                            secure: process.env.NODE_ENV === 'production',
+                            httpOnly: true,
+                            path: '/',
+                            sameSite: 'lax',
+                        });
+                        console.log("[refreshTokenOnServer] refreshToken cookie updated");
+                    }
+                }
+            }
+        }
+
+        return newAccessToken;
+    } catch (error: any) {
+        console.error("[refreshTokenOnServer] Failed:", error.response?.data || error.message);
+        // No podemos borrar cookies aquí: cookies().delete() solo funciona en
+        // Server Actions y Route Handlers, NO en Server Components.
+        // El borrado se hace en /api/auth/clear-session vía redirect().
+        return null;
+    }
+}
+
+/**
+ * Wraps a server API call with automatic 401 retry.
+ * If the call fails with 401, refreshes the token and retries ONCE.
+ */
+async function withTokenRefresh<T>(
+    apiFn: (instance: ReturnType<typeof axios.create>) => Promise<T>
+): Promise<T> {
     try {
         const api = await apiFluxCoreServer();
-        const response = await api.get<T>(url, config);
-        return response.data;
+        return await apiFn(api);
+    } catch (error) {
+        // If it's a 401 error, try refreshing the token and retrying
+        if (axios.isAxiosError(error) && error.response?.status === 401) {
+            console.log("[withTokenRefresh] 401 detected, refreshing token...");
+
+            const newToken = await refreshTokenOnServer();
+            if (newToken) {
+                console.log("[withTokenRefresh] Token refreshed, retrying request...");
+
+                // Create a fresh instance with the new token
+                const { cookies } = await import("next/headers");
+                const freshCookieStore = await cookies();
+
+                const retryInstance = axios.create({
+                    ...apiFluxCore.defaults,
+                    headers: {
+                        ...apiFluxCore.defaults.headers,
+                        Authorization: `Bearer ${newToken}`,
+                        Cookie: freshCookieStore.toString()
+                    }
+                });
+
+                return await apiFn(retryInstance);
+            }
+
+            // El refresh falló: las cookies no se pueden borrar en un Server Component.
+            // Usamos redirect() al Route Handler que sí puede hacerlo.
+            // redirect() lanza una excepción especial de Next.js que interrumpe
+            // el render y redirige al navegador — no necesita return.
+            console.warn("[withTokenRefresh] Refresh failed. Redirecting to clear-session...");
+            const { redirect } = await import("next/navigation");
+            redirect('/api/auth/clear-session?callbackUrl=/login');
+        }
+        throw error;
+    }
+}
+
+export const apiFluxCoreServerGet = async <T>(url: string, config?: AxiosRequestConfig) => {
+    try {
+        return await withTokenRefresh(async (api) => {
+            const response = await api.get<T>(url, config);
+            return response.data;
+        });
     } catch (error) {
         return handleAxiosError(error);
     }
@@ -216,9 +314,10 @@ export const apiFluxCoreServerGet = async <T>(url: string, config?: AxiosRequest
 
 export const apiFluxCoreServerPost = async <T>(url: string, data?: any, config?: AxiosRequestConfig) => {
     try {
-        const api = await apiFluxCoreServer();
-        const response = await api.post<T>(url, data, config);
-        return response.data;
+        return await withTokenRefresh(async (api) => {
+            const response = await api.post<T>(url, data, config);
+            return response.data;
+        });
     } catch (error) {
         return handleAxiosError(error);
     }
@@ -226,9 +325,10 @@ export const apiFluxCoreServerPost = async <T>(url: string, data?: any, config?:
 
 export const apiFluxCoreServerPut = async <T>(url: string, data?: any, config?: AxiosRequestConfig) => {
     try {
-        const api = await apiFluxCoreServer();
-        const response = await api.put<T>(url, data, config);
-        return response.data;
+        return await withTokenRefresh(async (api) => {
+            const response = await api.put<T>(url, data, config);
+            return response.data;
+        });
     } catch (error) {
         return handleAxiosError(error);
     }
@@ -236,10 +336,10 @@ export const apiFluxCoreServerPut = async <T>(url: string, data?: any, config?: 
 
 export const apiFluxCoreServerPatch = async <T>(url: string, data?: any, config?: AxiosRequestConfig) => {
     try {
-        const api = await apiFluxCoreServer();
-        console.log("urlPATCH", url);
-        const response = await api.patch<T>(url, data, config);
-        return response.data;
+        return await withTokenRefresh(async (api) => {
+            const response = await api.patch<T>(url, data, config);
+            return response.data;
+        });
     } catch (error) {
         return handleAxiosError(error);
     }
