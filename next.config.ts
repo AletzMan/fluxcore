@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [ new URL('https://res.cloudinary.com/**')],
+    unoptimized: true,
   },
 };
 
