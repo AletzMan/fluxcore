@@ -20,4 +20,18 @@ export const statusComponent = {
     DEFAULT: 'Inactivo',
 }
 
+export const billingCycleName = {
+    MONTHLY: 'Mensual',
+    QUARTERLY: 'Trimestral',
+    SEMIANNUAL: 'Semestral',
+    ANNUAL: 'Anual',
+}
 
+ 
+
+export const planNameColor = {
+    FREE: 'neutral',
+    BASIC: 'primary',
+    PRO: 'secondary',
+    ENTERPRISE: 'success',
+}

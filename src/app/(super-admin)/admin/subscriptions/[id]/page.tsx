@@ -5,7 +5,7 @@ import { TableError } from '@/pp/components/ui/TableError/TableError';
 import { ContainerSection } from '@/pp/components/layout/ContainerSection/ContainerSection';
 import { Tag } from 'lambda-ui-components';
 import { DetailCard } from '../../components/DetailCard/DetailCard';
-import { getStatusColor, statusComponent } from '@/app/constants/common';
+import { billingCycleName, getStatusColor, planNameColor, statusComponent } from '@/app/constants/common';
 
 async function getSubscription(id: number) {
     const subscription = await subscriptionService.getSubscriptionById(id);
@@ -27,118 +27,134 @@ export default async function SubscriptionPage({ params }: { params: { id: strin
         />;
     }
 
+    const data = subscription.data;
+    const statusText = statusComponent[(data.status || "") as keyof typeof statusComponent] || data.status || "";
+    const statusColor = getStatusColor(data.status as any);
+    const cycleName = billingCycleName[data.billingCycle as keyof typeof billingCycleName] || data.billingCycle;
+    const planColor = planNameColor[data.plan?.name as keyof typeof planNameColor] as "neutral" | "primary" | "secondary" | "success" | "danger" | "warning" | "info" | null | undefined;
+
     return (
         <ContainerSection
-            title={`Detalle Suscripción #${subscription.data?.id}`}
-            description={`Información detallada sobre la suscripción de ${subscription.data?.tenantName}`}
+            title={`Suscripción #${data.id}`}
+            description={`Detalle de la suscripción`}
         >
             <div className={styles.subscriptionpage}>
-                <header>
-                    <div className={styles.titleSection}>
-                        <h1>{subscription.data?.tenantName} - Plan ID: {subscription.data?.planId}</h1>
-                        <div className={styles.headerInfo}>
-                            <div className={styles.rowHeader}>
-                                <span>Creado el:</span>
-                                <span>{subscription.data?.createdAt ? formatDateTimeShort(subscription.data.createdAt.toString()) : "N/A"}</span>
-                            </div>
-                            <div className={styles.rowHeader}>
-                                <span>Última modificación:</span>
-                                <span>{subscription.data?.lastModifiedAt ? formatDateTimeShort(subscription.data.lastModifiedAt.toString()) : "N/A"}</span>
-                            </div>
+
+                {/* ── Hero Header ── */}
+                <div className={styles.hero}>
+                    <div className={styles.heroLeft}>
+                        <h1>{data.tenantName}</h1>
+                        <div className={styles.heroMeta}>
+                            <Tag
+                                text={data.plan?.name}
+                                color={planColor}
+                                size='small'
+                                radius='small'
+                                variant='subtle'
+                            />
+                            <Tag
+                                text={statusText}
+                                color={statusColor}
+                                size='small'
+                                radius='small'
+                                variant='subtle'
+                            />
+                            <Tag
+                                text={data.autoRenew ? 'Auto-renovación' : 'Sin renovación'}
+                                color={data.autoRenew ? 'success' : 'neutral'}
+                                size='small'
+                                radius='small'
+                                variant='subtle'
+                            />
                         </div>
                     </div>
-                </header>
+                    <div className={styles.heroRight}>
+                        <span className={styles.heroPrice}>${data.price}</span>
+                        <span className={styles.heroCycle}>{cycleName}</span>
+                    </div>
+                </div>
 
+                {/* ── Stat Cards ── */}
+                <div className={styles.statsGrid}>
+                    <div className={styles.statCard} data-accent="info">
+                        <span className={styles.statLabel}>Días restantes</span>
+                        <span className={styles.statValue}>{data.daysRemaining}</span>
+                    </div>
+                    <div className={styles.statCard} data-accent="success">
+                        <span className={styles.statLabel}>Inicio</span>
+                        <span className={styles.statValue}>
+                            {data.startDate ? formatDateTimeShort(data.startDate.toString()) : "N/A"}
+                        </span>
+                    </div>
+                    <div className={styles.statCard} data-accent="warning">
+                        <span className={styles.statLabel}>Vencimiento</span>
+                        <span className={styles.statValue}>
+                            {data.endDate ? formatDateTimeShort(data.endDate.toString()) : "N/A"}
+                        </span>
+                    </div>
+                    <div className={styles.statCard} data-accent="info">
+                        <span className={styles.statLabel}>Próximo cobro</span>
+                        <span className={styles.statValue}>
+                            {data.nextBillingDate ? formatDateTimeShort(data.nextBillingDate.toString()) : "N/A"}
+                        </span>
+                    </div>
+                </div>
+
+                {/* ── Detail Cards ── */}
                 <div className={styles.grid}>
-                    {/* General Information */}
-                    <DetailCard
-                        title="Información General"
-                    >
+                    {/* Información General */}
+                    <DetailCard title="Información General">
                         <div className={styles.cardContent}>
                             <div className={styles.row}>
                                 <span>Empresa (Tenant)</span>
-                                <span>{subscription.data?.tenantName}</span>
+                                <span>{data.tenantName}</span>
                             </div>
                             <div className={styles.row}>
-                                <span>Plan ID</span>
-                                <span>{subscription.data?.planId}</span>
+                                <span>Plan</span>
+                                <span>{data.plan?.name}</span>
                             </div>
                             <div className={styles.row}>
-                                <span>Ciclo Facturación</span>
-                                <span>{subscription.data?.billingCycle}</span>
+                                <span>Ciclo de Facturación</span>
+                                <span>{cycleName}</span>
                             </div>
                             <div className={styles.row}>
                                 <span>Precio</span>
-                                <span>${subscription.data?.price}</span>
+                                <span>${data.price}</span>
+                            </div>
+                            <div className={styles.row}>
+                                <span>Método de pago</span>
+                                <span>{data.paymentMethodId || "No asignado"}</span>
                             </div>
                         </div>
                     </DetailCard>
 
-                    {/* Status & Dates */}
-                    <DetailCard
-                        title="Estado & Fechas"
-                    >
+                    {/* Cancelación & Notas */}
+                    <DetailCard title="Cancelación y Notas">
                         <div className={styles.cardContent}>
                             <div className={styles.rowInline}>
-                                <span>Estado:</span>
-                                <Tag
-                                    text={statusComponent[(subscription.data?.status || "") as keyof typeof statusComponent] || subscription.data?.status || ""}
-                                    color={getStatusColor(subscription.data?.status as any)}
-                                    size='small'
-                                    radius='small'
-                                    variant='subtle'
-                                />
-                            </div>
-                            <div className={styles.rowInline}>
-                                <span>Auto-Renovación:</span>
-                                <Tag
-                                    text={subscription.data?.autoRenew ? 'Activa' : 'Inactiva'}
-                                    color={subscription.data?.autoRenew ? 'success' : 'danger'}
-                                    size='small'
-                                    radius='small'
-                                    variant='subtle'
-                                />
-                            </div>
-                            <div className={styles.row}>
-                                <span>Fecha Inicio</span>
-                                <span>{subscription.data?.startDate ? formatDateTimeShort(subscription.data.startDate.toString()) : "N/A"}</span>
-                            </div>
-                            <div className={styles.row}>
-                                <span>Fecha Fin</span>
-                                <span>{subscription.data?.endDate ? formatDateTimeShort(subscription.data.endDate.toString()) : "N/A"}</span>
-                            </div>
-                            <div className={styles.row}>
-                                <span>Próximo Cobro</span>
-                                <span>{subscription.data?.nextBillingDate ? formatDateTimeShort(subscription.data.nextBillingDate.toString()) : "N/A"}</span>
-                            </div>
-                        </div>
-                    </DetailCard>
-
-                    {/* Additional details */}
-                    <DetailCard
-                        title="Detalles adicionales"
-                    >
-                        <div className={styles.cardContent}>
-                            <div className={styles.row}>
-                                <span>Días restantes</span>
-                                <span>{subscription.data?.daysRemaining} días</span>
-                            </div>
-                            <div className={styles.row}>
                                 <span>Cancelado</span>
-                                <span>{subscription.data?.cancelledAt ? formatDateTimeShort(subscription.data?.cancelledAt?.toString()) : 'N/A'}</span>
+                                <span>{data.cancelledAt ? formatDateTimeShort(data.cancelledAt.toString()) : 'No cancelada'}</span>
                             </div>
                             <div className={styles.row}>
-                                <span>Razón Canceleación</span>
-                                <span>{subscription.data?.cancellationReason || "N/A"}</span>
+                                <span>Razón de cancelación</span>
+                                <span>{data.cancellationReason || "N/A"}</span>
                             </div>
                             <div className={styles.row}>
                                 <span>Notas</span>
-                                <span>{subscription.data?.notes || "Sin notas"}</span>
+                                <p className={styles.note}>{data.notes || "Sin notas"}</p>
+                            </div>
+                            <div className={styles.rowInline}>
+                                <span>Creado</span>
+                                <span>{data.createdAt ? formatDateTimeShort(data.createdAt.toString()) : "N/A"}</span>
+                            </div>
+                            <div className={styles.rowInline}>
+                                <span>Última modificación</span>
+                                <span>{data.lastModifiedAt ? formatDateTimeShort(data.lastModifiedAt.toString()) : "N/A"}</span>
                             </div>
                         </div>
                     </DetailCard>
-
                 </div>
+
             </div>
         </ContainerSection>
     );

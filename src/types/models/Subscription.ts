@@ -5,7 +5,7 @@ export interface Subscription {
     tenantId: number;
     tenantName: string;
     planId: number;
-    //plan: Plan;
+    plan: Plan;
     status: string;
     billingCycle: string;
     price: number;
