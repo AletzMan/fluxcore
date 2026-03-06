@@ -17,17 +17,20 @@ import {
     LineChart,
     Clock,
     ShieldCheck,
-    ShieldPlus
+    ShieldPlus,
+    CircleQuestionMarkIcon
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/common-utils';
-import { Badge, Card, Divider, Tag } from 'lambda-ui-components';
+import { Badge, Card, Divider, Tag, Tooltip } from 'lambda-ui-components';
 
 interface PlanCardProps {
     plan: Partial<PlanFormValues>;
     isHighlighted?: boolean;
+    children?: React.ReactNode;
+    type?: 'monthly' | 'yearly';
 }
 
-export const PlanCard: React.FC<PlanCardProps> = ({ plan, isHighlighted = false }) => {
+export const PlanCard: React.FC<PlanCardProps> = ({ plan, isHighlighted = false, children, type = 'monthly' }) => {
     const {
         name = 'Nombre del Plan',
         description = 'Descripción del plan',
@@ -50,14 +53,6 @@ export const PlanCard: React.FC<PlanCardProps> = ({ plan, isHighlighted = false 
 
     return (
         <Card className={`${styles.plancard} ${isHighlighted ? styles.plancard_highlighted : ''}`}>
-            {trialDays > 0 && (
-                <div className={styles.plancard_badge}>
-                    <Tag color="info">
-                        <Clock size={12} />
-                        <span>{trialDays} días de prueba</span>
-                    </Tag>
-                </div>
-            )}
 
             <header className={styles.plancard_header}>
                 <h3 className={styles.plancard_title}>{name}</h3>
@@ -66,51 +61,26 @@ export const PlanCard: React.FC<PlanCardProps> = ({ plan, isHighlighted = false 
 
             <div className={styles.plancard_pricing}>
                 <div className={styles.plancard_main_price}>
-                    <span className={styles.plancard_amount}>{formatCurrency(monthlyPrice)}</span>
+                    <span className={styles.plancard_amount}>{type === 'monthly' ? formatCurrency(monthlyPrice) : formatCurrency(annualPrice / 12)}</span>
                     <span className={styles.plancard_period}>/mes</span>
                 </div>
-
-                {/*<div className={styles.plancard_secondary_pricing}>
-                    <div className={styles.plancard_price_item}>
-                        <span>Pago Trimestral:</span>
-                        <strong>{formatCurrency(quarterlyPrice)}</strong>
+                {type === 'yearly' && (
+                    <div className={styles.plancard_sub_price}>
+                        <span>Facturado anualmente a <strong>{formatCurrency(annualPrice)}/año</strong></span>
                     </div>
-                    <div className={styles.plancard_price_item}>
-                        <span>Pago Semestral:</span>
-                        <strong>{formatCurrency(semiannualPrice)}</strong>
+                )}
+                {type === 'monthly' && (
+                    <div className={styles.plancard_sub_price}>
+                        <span>Facturado mensualmente</span>
                     </div>
-                    <div className={styles.plancard_price_item}>
-                        <span>Pago Anual:</span>
-                        <strong>{formatCurrency(annualPrice)}</strong>
-                    </div>
-                </div>*/}
+                )}
             </div>
 
-            <Divider />
-
-            <div className={styles.plancard_limits}>
-                <div className={styles.plancard_limit_item}>
-                    <Users size={18} className={styles.plancard_limit_icon} />
-                    <div className={styles.plancard_limit_info}>
-                        <span className={styles.plancard_limit_value}>{maxUsers === -1 ? 'Ilimitados' : maxUsers}</span>
-                        <span className={styles.plancard_limit_label}>Usuarios</span>
-                    </div>
+            {children && (
+                <div className={styles.plancard_action}>
+                    {children}
                 </div>
-                <div className={styles.plancard_limit_item}>
-                    <Package size={18} className={styles.plancard_limit_icon} />
-                    <div className={styles.plancard_limit_info}>
-                        <span className={styles.plancard_limit_value}>{maxProducts === -1 ? 'Ilimitados' : maxProducts}</span>
-                        <span className={styles.plancard_limit_label}>Productos</span>
-                    </div>
-                </div>
-                <div className={styles.plancard_limit_item}>
-                    <MapPin size={18} className={styles.plancard_limit_icon} />
-                    <div className={styles.plancard_limit_info}>
-                        <span className={styles.plancard_limit_value}>{maxBranches === -1 ? 'Ilimitadas' : maxBranches}</span>
-                        <span className={styles.plancard_limit_label}>Sucursales</span>
-                    </div>
-                </div>
-            </div>
+            )}
 
             <Divider />
 
@@ -120,43 +90,52 @@ export const PlanCard: React.FC<PlanCardProps> = ({ plan, isHighlighted = false 
                     <FeatureItem label="Gestión de Inventario" isEnabled={hasInventoryManagement} icon={<Zap size={16} />} />
                     <FeatureItem label="Reportes de Ventas" isEnabled={hasSalesReports} icon={<BarChart3 size={16} />} />
                     <FeatureItem label="Reportes Avanzados" isEnabled={hasAdvancedReports} icon={<LineChart size={16} />} />
-                    <FeatureItem label="Multi-Moneda" isEnabled={hasMultiCurrency} icon={<Globe size={16} />} />
-                    <FeatureItem label="Acceso a API" isEnabled={hasApiAccess} icon={<Terminal size={16} />} />
+                    {/*<FeatureItem label="Multi-Moneda" isEnabled={hasMultiCurrency} icon={<Globe size={16} />} />*/}
                     <FeatureItem label="Soporte Prioritario" isEnabled={hasPrioritySupport} icon={<Headset size={16} />} />
+                    {/*<FeatureItem label="Acceso a API" isEnabled={hasApiAccess} icon={<Terminal size={16} />} />*/}
                 </ul>
 
                 {features.length > 0 && (
                     <>
                         <h4 className={`${styles.plancard_features_title} ${styles.mt_4}`}>Características Adicionales</h4>
                         <ul className={styles.plancard_features_list}>
-                            {features.map((feature, index) => (
+                            {features.sort((a, b) => a.displayOrder - b.displayOrder).map((feature, index) =>
                                 <FeatureItem
                                     key={index}
                                     label={feature.name}
+                                    description={feature.description}
                                     isEnabled={feature.isEnabled}
                                     icon={<ShieldPlus size={16} />}
                                 />
-                            ))}
+                            )}
                         </ul>
                     </>
                 )}
             </section>
+
         </Card>
     );
 };
 
 interface FeatureItemProps {
     label: string;
+    description?: string;
     isEnabled: boolean;
     icon: React.ReactNode;
 }
 
-const FeatureItem: React.FC<FeatureItemProps> = ({ label, isEnabled, icon }) => (
+const FeatureItem: React.FC<FeatureItemProps> = ({ label, description, isEnabled, icon }) => (
     <li className={`${styles.feature_item} ${!isEnabled ? styles.feature_item_disabled : ''}`}>
         <div className={styles.feature_icon_wrapper}>
             {icon}
         </div>
-        <span className={styles.feature_label}>{label}</span>
+        <div className={styles.feature_label}>{label}
+            {description && description !== ' ' && (
+                <Tooltip content={description} radius="small">
+                    <span className={styles.feature_description} ><CircleQuestionMarkIcon size={16} /></span>
+                </Tooltip>
+            )}
+        </div>
         {isEnabled ? (
             <Check size={16} className={styles.feature_check} />
         ) : (

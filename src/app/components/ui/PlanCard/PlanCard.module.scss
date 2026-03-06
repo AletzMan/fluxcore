@@ -1,15 +1,17 @@
 .plancard {
     width: 100%;
-    max-width: 375px;
+    height: 100%;
+    max-width: 280px;
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-sm);
     position: relative;
-    overflow: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: var(--box-shadow-xs);
 
     &>div {
+        height: 100%;
+        max-height: 100%;
         background: linear-gradient(125deg, var(--surface-a), var(--surface-b), var(--surface-a));
     }
 
@@ -19,9 +21,10 @@
         top: 0;
         left: 0;
         right: 0;
-        height: 4px;
+        height: 0px;
         background: linear-gradient(90deg, var(--primary-base-color), var(--secondary-base-color), var(--warning-base-color));
         opacity: 0.5;
+
     }
 
     &:hover {
@@ -64,7 +67,7 @@
     }
 
     &_title {
-        font-size: var(--font-size-xl);
+        font-size: var(--font-size-lg);
         font-weight: 700;
         color: var(--foreground-title-color);
         margin: 0;
@@ -89,7 +92,7 @@
     }
 
     &_amount {
-        font-size: 3rem;
+        font-size: 2.25rem;
         font-weight: 800;
         color: var(--primary-text-color);
         letter-spacing: -0.025em;
@@ -100,10 +103,17 @@
         color: var(--surface-f);
     }
 
+    &_sub_price {
+        font-size: 0.75rem;
+        color: var(--foreground-secondary-color);
+        margin-top: var(--spacing-xs);
+        text-align: left;
+    }
+
     &_limits {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: var(--spacing-sm);
+        gap: var(--spacing-xs);
     }
 
     &_limit_item {
@@ -163,13 +173,28 @@
             gap: var(--spacing-xs);
         }
     }
+
+    &_action {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        /* Push to bottom if height is fixed */
+        padding: var(--spacing-sm) 0;
+
+        button {
+            width: 100%;
+        }
+    }
 }
 
 .feature_item {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
-    font-size: var(--font-size-sm);
+    justify-content: flex-start;
+    text-align: left;
+    gap: var(--spacing-md);
+    font-size: var(--font-size-xs);
     color: var(--surface-g);
 
     &_disabled {
@@ -188,8 +213,8 @@
 }
 
 .feature_icon_wrapper {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     border-radius: var(--radius-box);
     background: var(--primary-opacity-color);
     color: var(--primary-base-color);
@@ -199,7 +224,14 @@
 }
 
 .feature_label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
     flex: 1;
+}
+
+.feature_description {
+    color: var(--info-soft-color);
 }
 
 .feature_check {

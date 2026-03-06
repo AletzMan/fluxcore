@@ -1,12 +1,114 @@
-"use client";
+import Link from "next/link";
+import { Button } from "lambda-ui-components";
+import { ArrowRight, BarChart3, Box, ShieldCheck, Check } from "lucide-react";
+import { LogoFluxCoreLarge } from "./components/logos/LogoFluxCoreLarge";
+import { PricingSection } from "./components/landing/PricingSection";
+import { FeaturesShowcase } from "./components/landing/FeaturesShowcase";
 import styles from "./page.module.scss";
-import { Button, Input } from "lambda-ui-components";
+import { planService } from "@/app/services/api/plan.service";
+import { Plan } from "@/typesModels/Plan";
 
-export default function Home() {
+export default async function Home() {
+  const plansResponse = await planService.getActivePlans();
+  const plans = (plansResponse?.data || []).sort((a: Plan, b: Plan) => a.monthlyPrice - b.monthlyPrice);
+
   return (
     <div className={styles.page}>
-      <Button color="primary" size="medium">Button</Button>
-      <Input />
+
+      {/* --- Navegación --- */}
+      <nav className={styles.navbar}>
+        <LogoFluxCoreLarge width={28} height={28} />
+        <div className={styles.navLinks}>
+          <Link href="/login">Ingresar</Link>
+          <Button color="primary" size="small" >
+            <Link href="/register" style={{ color: 'inherit', textDecoration: 'none' }}>
+              Registrarse
+            </Link>
+          </Button>
+        </div>
+      </nav>
+
+      {/* --- Hero Section --- */}
+      <main className={styles.hero}>
+        <div className={styles.heroContent}>
+          <h1>
+            El corazón de tu negocio, en <span className={styles.highlight}>flujo constante.</span>
+          </h1>
+          <p>
+            Plataforma ERP completa para la gestión de puntos de venta, control de inventario y análisis de tu operación.
+            Elegante, rápido y en la nube.
+          </p>
+          <div className={styles.ctaGroup}>
+            <Button color="primary" size="large" radius="large">
+              <Link href="/register" style={{ color: 'inherit', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                Comenzar gratis
+                <ArrowRight size={18} />
+              </Link>
+            </Button>
+            <Button color="neutral" variant="outline" size="large" radius="large">
+              <Link href="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
+                Ir al Dashboard
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </main>
+
+      {/* --- Features --- */}
+      <section className={styles.features}>
+        <h2>Todo lo que necesitas para crecer</h2>
+        <div className={styles.featuresGrid}>
+
+          <div className={styles.featureCard}>
+            <div className={styles.icon}>
+              <Box size={24} />
+            </div>
+            <h3>Inventario Inteligente</h3>
+            <p>
+              Control total de existencias en tiempo real, alertas de stock mínimo y órdenes de compra automáticas.
+            </p>
+          </div>
+
+          <div className={styles.featureCard}>
+            <div className={styles.icon}>
+              <BarChart3 size={24} />
+            </div>
+            <h3>Punto de Venta (POS)</h3>
+            <p>
+              Ventas rápidas, ágiles y con interfaces optimizadas para cajeros.
+              Soporte para múltiples métodos de pago y facturación.
+            </p>
+          </div>
+
+          <div className={styles.featureCard}>
+            <div className={styles.icon}>
+              <ShieldCheck size={24} />
+            </div>
+            <h3>Administración y Reportes</h3>
+            <p>
+              Roles y permisos avanzados, auditoría completa y generación de analíticas de manera centralizada y segura.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      {/* --- Capturas de App (Showcase) --- */}
+      <FeaturesShowcase />
+
+      {/* --- Planes y Precios --- */}
+      <PricingSection plans={plans} />
+
+      {/* --- pie de pagina (Footer) --- */}
+      <footer className={styles.footer}>
+        <p>© {new Date().getFullYear()} FluxCore. Todos los derechos reservados.</p>
+        <div className={styles.footerLinks}>
+          <Link href="#">Privacidad</Link>
+          <Link href="#">Términos</Link>
+          <Link href="#">Contacto</Link>
+        </div>
+      </footer>
+
     </div>
   );
 }

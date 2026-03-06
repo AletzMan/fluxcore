@@ -20,6 +20,18 @@ class PlanService {
         }
     }
 
+    async getActivePlans() {
+        try {
+            const config = { cache: true, ttl: 120 };
+            const response = await apiFluxCoreServerGet<ApiResponse<Plan[]>>(`/plans/active`, config as any);
+            return response;
+        } catch (error) { 
+            if (axios.isAxiosError(error)) {
+                return error.response?.data;
+            }
+        }
+    }
+
     async getPlanById(id: number) : Promise<ApiResponse<Plan | null> | undefined> {
         try {
             const config = { cache: true, ttl: 120 };
