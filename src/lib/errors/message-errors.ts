@@ -170,6 +170,11 @@ export const ErrorMessages: Record<string, string> = {
     PLAN_MAX_PRODUCTS_INVALID: "El número máximo de productos debe ser mayor o igual a cero",
     PLAN_MAX_BRANCHES_INVALID: "El número máximo de sucursales debe ser mayor o igual a cero",
     PLAN_FEATURES_INVALID_JSON: "Las características del plan son inválidas (debe ser un JSON válido)",
+    PLAN_LIMIT_MAX_USERS: "Has alcanzado el límite de usuarios de tu plan. Actualiza tu plan para agregar más usuarios.",
+    PLAN_LIMIT_MAX_PRODUCTS: "Has alcanzado el límite de productos de tu plan. Actualiza tu plan para agregar más productos.",
+    PLAN_LIMIT_MAX_CASH_SESSIONS: "Has alcanzado el límite de sesiones de caja concurrentes de tu plan. Cierra una sesión activa o actualiza tu plan.",
+    PLAN_FEATURE_NOT_AVAILABLE: "La función no está disponible en tu plan actual. Actualiza tu plan para acceder a esta función.",
+    PLAN_NO_ACTIVE_SUBSCRIPTION: "No tienes una suscripción activa. Contacta al administrador para activar tu plan.",
 
 
     // Provider
@@ -309,4 +314,5 @@ export const ErrorMessages: Record<string, string> = {
     MAINTENANCE_ENABLE_REQUIRED: "El campo 'enable' es requerido",
     MAINTENANCE_MESSAGE_TOO_LONG: "El mensaje de mantenimiento no debe exceder los 500 caracteres",
     SERVICE_UNAVAILABLE: "El sitio está en mantenimiento",
+ 
 };
