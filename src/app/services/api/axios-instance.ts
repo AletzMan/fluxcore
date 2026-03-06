@@ -207,7 +207,8 @@ async function refreshTokenOnServer(): Promise<string | null> {
             { headers: refreshHeaders }
         );
 
-        const newAccessToken = refreshResponse.data?.data?.accessToken;
+        console.log("refreshResponse.data", refreshResponse.data.data.token);  
+        const newAccessToken = refreshResponse.data?.data?.token;
 
         if (!newAccessToken) {
             console.error("[refreshTokenOnServer] No accessToken in refresh response");
@@ -216,32 +217,40 @@ async function refreshTokenOnServer(): Promise<string | null> {
 
         console.log("[refreshTokenOnServer] Got new accessToken, updating cookies...");
 
-        // Set the new accessToken cookie — this works because we're
-        // called directly from a Server Action wrapper, not from an interceptor
-        cookieStore.set('accessToken', newAccessToken, {
-            secure: process.env.NODE_ENV === 'production',
-            path: '/',
-            httpOnly: true,
-            sameSite: 'lax',
-        });
+        // Intentamos persistir las cookies. Esto SOLO funciona en Server Actions
+        // y Route Handlers. En Server Components (render de páginas) fallará,
+        // pero el token nuevo se retorna igualmente para usarse en el retry.
+        try {
+            cookieStore.set('accessToken', newAccessToken, {
+                secure: process.env.NODE_ENV === 'production',
+                path: '/',
+                httpOnly: true,
+                sameSite: 'lax',
+            });
 
-        // Also update refreshToken if the backend rotated it
-        const setCookieHeaders = refreshResponse.headers['set-cookie'];
-        if (setCookieHeaders && setCookieHeaders.length) {
-            for (const cookieStr of setCookieHeaders) {
-                if (cookieStr.includes('refreshToken=')) {
-                    const rtMatch = cookieStr.match(/refreshToken=([^;]+)/);
-                    if (rtMatch) {
-                        cookieStore.set('refreshToken', rtMatch[1], {
-                            secure: process.env.NODE_ENV === 'production',
-                            httpOnly: true,
-                            path: '/',
-                            sameSite: 'lax',
-                        });
-                        console.log("[refreshTokenOnServer] refreshToken cookie updated");
+            // Also update refreshToken if the backend rotated it
+            const setCookieHeaders = refreshResponse.headers['set-cookie'];
+            if (setCookieHeaders && setCookieHeaders.length) {
+                for (const cookieStr of setCookieHeaders) {
+                    if (cookieStr.includes('refreshToken=')) {
+                        const rtMatch = cookieStr.match(/refreshToken=([^;]+)/);
+                        if (rtMatch) {
+                            cookieStore.set('refreshToken', rtMatch[1], {
+                                secure: process.env.NODE_ENV === 'production',
+                                httpOnly: true,
+                                path: '/',
+                                sameSite: 'lax',
+                            });
+                            console.log("[refreshTokenOnServer] refreshToken cookie updated");
+                        }
                     }
                 }
             }
+            console.log("[refreshTokenOnServer] Cookies updated successfully");
+        } catch (cookieError) {
+            // En Server Components no se pueden modificar cookies.
+            // El token nuevo se retorna de todas formas para el retry inmediato.
+            console.warn("[refreshTokenOnServer] Could not persist cookies (Server Component context). Token will be used for retry only.");
         }
 
         return newAccessToken;
