@@ -27,7 +27,7 @@ export function PricingSection({ plans }: PricingSectionProps) {
                                     <div key={plan.id} className={styles.pricingCardWrapper}>
                                         <PlanCard plan={plan as any} isHighlighted={isPopular} type="monthly">
                                             <Link
-                                                href="/register"
+                                                href={`/register?planId=${plan.id}&billing=monthly`}
                                                 type="button"
                                                 color={isPopular ? "primary" : "neutral"}
                                                 variant={isPopular ? "solid" : "outline"}
@@ -50,7 +50,7 @@ export function PricingSection({ plans }: PricingSectionProps) {
                                     <div key={plan.id} className={styles.pricingCardWrapper}>
                                         <PlanCard plan={plan as any} isHighlighted={isPopular} type="yearly">
                                             <Link
-                                                href="/register"
+                                                href={`/register?planId=${plan.id}&billing=yearly`}
                                                 type="button"
                                                 color={isPopular ? "primary" : "neutral"}
                                                 variant={isPopular ? "solid" : "outline"}
