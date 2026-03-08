@@ -1,7 +1,7 @@
 import { formatCurrency, formatPercentage } from '../../../../lib/utils/common-utils';
 import { Icon } from '../../Icon';
 import styles from './KipCard.module.scss'
-import { DollarSign, Building2, CreditCard, Zap, AlertTriangle, UserPlus, User, Activity, TrendingDown, ShoppingBag, TrendingUp } from 'lucide-react';
+import { DollarSign, Building2, CreditCard, Zap, AlertTriangle, UserPlus, User, Activity, TrendingDown, ShoppingBag, TrendingUp, Box } from 'lucide-react';
 
 interface KipCardProps {
     type: keyof typeof typeKipCard;
@@ -102,6 +102,20 @@ const typeKipCard = {
         icon: <TrendingDown size={25} absoluteStrokeWidth />,
         color: "#f43f5e",
         message: null,
+        isCurrency: false,
+    },
+    activeProducts: {
+        title: "Productos activos",
+        icon: <Box size={25} absoluteStrokeWidth />,
+        color: "#10b981",
+        message: null,
+        isCurrency: false,
+    },
+    totalSales: {
+        title: "Total de ventas",
+        icon: <ShoppingBag size={25} absoluteStrokeWidth />,
+        color: "#3b82f6",
+        message: "vs mes anterior",
         isCurrency: false,
     },
     stockAlerts: {

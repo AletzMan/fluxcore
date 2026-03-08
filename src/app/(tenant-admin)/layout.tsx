@@ -32,8 +32,8 @@ const menuData: NavigationMenuData[] = [
     },
     {
         id: "sales",
-        label: "Ventas (POS)",
-        path: "/ventas/pos",
+        label: "Ventas",
+        path: "/ventas",
         icon: <ShoppingCart size={25} absoluteStrokeWidth />
     },
     {

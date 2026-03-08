@@ -17,7 +17,7 @@ export default async function SettingsPage() {
                 isNotFound={false}
                 isEmptyResponse={false}
                 isSearch={false}
-                isMaintenance={data.maintenance.isEnabled} /> : <div className={styles.settings}>
+                isMaintenance={data?.maintenance?.isEnabled || false} /> : <div className={styles.settings}>
                 <MaintenanceCard data={data.maintenance} />
             </div>}
         </ContainerSection>
