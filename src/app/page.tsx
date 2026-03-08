@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "lambda-ui-components";
-import { ArrowRight, BarChart3, Box, ShieldCheck, CreditCard } from "lucide-react";
+import { ArrowRight, BarChart3, Box, ShieldCheck, CreditCard, Zap, Users, Clock } from "lucide-react";
 import { LogoFluxCoreLarge } from "./components/logos/LogoFluxCoreLarge";
 import { PricingSection } from "./components/landing/PricingSection";
 import { FeaturesShowcase } from "./components/landing/FeaturesShowcase";
@@ -31,6 +31,10 @@ export default async function Home() {
       {/* --- Hero Section --- */}
       <main className={styles.hero}>
         <div className={styles.heroContent}>
+          <span className={styles.heroBadge}>
+            <Zap size={14} />
+            Nuevo · Prueba gratuita disponible
+          </span>
           <h1>
             El corazón de tu negocio, en <span className={styles.highlight}>flujo constante.</span>
           </h1>
@@ -58,10 +62,37 @@ export default async function Home() {
         </div>
       </main>
 
+      {/* --- Stats / Social Proof --- */}
+      <section className={styles.stats}>
+        <div className={styles.statItem}>
+          <div className={styles.statIcon}><Users size={20} /></div>
+          <div className={styles.statContent}>
+            <span className={styles.statNumber}>500+</span>
+            <span className={styles.statLabel}>Negocios activos</span>
+          </div>
+        </div>
+        <div className={styles.statDivider} />
+        <div className={styles.statItem}>
+          <div className={styles.statIcon}><BarChart3 size={20} /></div>
+          <div className={styles.statContent}>
+            <span className={styles.statNumber}>1M+</span>
+            <span className={styles.statLabel}>Ventas procesadas</span>
+          </div>
+        </div>
+        <div className={styles.statDivider} />
+        <div className={styles.statItem}>
+          <div className={styles.statIcon}><Clock size={20} /></div>
+          <div className={styles.statContent}>
+            <span className={styles.statNumber}>99.9%</span>
+            <span className={styles.statLabel}>Uptime garantizado</span>
+          </div>
+        </div>
+      </section>
+
       {/* --- Features --- */}
       <section className={styles.features}>
         <h2>Todo lo que necesitas para crecer</h2>
-        <p style={{ textAlign: 'center', color: 'var(--foreground-secondary-color)', marginTop: 'calc(var(--spacing-xl) * -1)', marginBottom: 'var(--spacing-2xl)', maxWidth: '600px', marginInline: 'auto' }}>
+        <p className={styles.sectionSubtitle}>
           Herramientas potentes y fáciles de usar, diseñadas para que tu negocio opere sin fricción.
         </p>
         <div className={styles.featuresGrid}>
