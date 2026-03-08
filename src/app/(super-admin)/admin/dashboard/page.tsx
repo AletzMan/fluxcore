@@ -9,7 +9,7 @@ import { SystemStatus } from "./components/SystemStatus/SystemStatus";
 import { ChartGroup } from "@/typesComponents/chart";
 import { ContainerSection } from "@/pp/components/layout/ContainerSection/ContainerSection";
 import { summaryService } from "@/app/services/api/summary.service";
-import { MrrDataPoint, PlanDistribution } from "@/typesAPI/summary";
+import { MrrDataPoint, PlanDistribution } from "@/typesAPI/summary.types";
 import { TableError } from "@/pp/components/ui/TableError/TableError";
 
 

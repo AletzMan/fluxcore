@@ -1,7 +1,7 @@
 import { apiFluxCoreServerGet, apiFluxCoreServerPost } from "./axios-instance";
 import { ApiResponse } from "@/typesAPI/common.types";
 import { SystemSettingsResponse } from "@/typesModels/Settings";
-import { ToggleMaintenanceRequest } from "@/typesAPI/settings";
+import { ToggleMaintenanceRequest } from "@/typesAPI/settings.types";
 
 class SettingsService {
 

@@ -2,7 +2,7 @@ import { DashboardCard } from "@/pp/components/ui/DashboardCard/DashboardCard";
 import { Divider, Link, Progress, Tooltip } from "lambda-ui-components";
 import styles from "./SystemStatus.module.scss";
 import { ExternalLink } from "lucide-react";
-import { ApiErrorRate } from "@/typesAPI/summary";
+import { ApiErrorRate } from "@/typesAPI/summary.types";
 
 interface SystemStatusProps {
     uptime: number;

@@ -1,7 +1,7 @@
 'use server';
 
 import {  apiFluxCoreServerPut } from "@/app/services/api/axios-instance";
-import { ToggleMaintenanceRequest } from "@/typesAPI/settings";
+import { ToggleMaintenanceRequest } from "@/typesAPI/settings.types";
 import { revalidatePath } from "next/cache";
 import { cacheService } from "@/app/services/cache.service";
 
