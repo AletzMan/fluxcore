@@ -50,32 +50,14 @@
     flex: 1;
     position: relative;
     overflow: hidden;
+    background-image:
+        linear-gradient(to right, var(--border-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 70%);
 
-    &::before {
-        content: "";
-        position: absolute;
-        top: -20%;
-        left: -10%;
-        width: 60%;
-        height: 80%;
-        background: radial-gradient(circle, var(--lambda-color-cyan-500) 0%, transparent 60%);
-        opacity: 0.08;
-        filter: blur(100px);
-        z-index: 0;
-    }
 
-    &::after {
-        content: "";
-        position: absolute;
-        bottom: -20%;
-        right: -10%;
-        width: 60%;
-        height: 80%;
-        background: radial-gradient(circle, var(--lambda-color-sky-950) 0%, transparent 60%);
-        opacity: 0.05;
-        filter: blur(100px);
-        z-index: 0;
-    }
 }
 
 .heroContent {
