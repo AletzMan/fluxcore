@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import { getHomeRouteForRole } from "../lib/utils/auth-utils";
 import { LogoFluxCore } from "./components/logos/LogoFluxCore";
 import { useAuth } from "@/hooks/useAuth";
-import { Sparkles, ArrowLeft, Home } from "lucide-react";
-import { motion } from "motion/react";
+import { ArrowLeft, Home } from "lucide-react";
 
 export default function NotFound() {
     const { user } = useAuth();
@@ -15,84 +14,70 @@ export default function NotFound() {
     const homeRoute = getHomeRouteForRole(user?.role || 'CASHIER');
 
     return (
-        <div className={styles.container}>
-            {/* Background glowing effects */}
-            <div className={styles.glowCyan} />
-            <div className={styles.glowSky} />
+        <div className={styles.scene}>
+            {/* Perspective grid floor */}
+            <div className={styles.gridFloor} />
 
-            <motion.div
-                className={styles.card}
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            >
-                <motion.div
-                    className={styles.logoWrapper}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2, duration: 0.5 }}
-                >
-                    <LogoFluxCore width={48} height={48} />
-                </motion.div>
+            {/* Floating particles */}
+            <div className={styles.particles}>
+                {Array.from({ length: 20 }).map((_, i) => (
+                    <span key={i} className={styles.particle} style={{
+                        '--x': `${Math.random() * 100}%`,
+                        '--y': `${Math.random() * 100}%`,
+                        '--size': `${2 + Math.random() * 4}px`,
+                        '--duration': `${3 + Math.random() * 6}s`,
+                        '--delay': `${Math.random() * 5}s`,
+                    } as React.CSSProperties} />
+                ))}
+            </div>
 
-                <div className={styles.content}>
-                    <motion.div
-                        className={styles.numberWrapper}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.3, duration: 0.5, type: "spring", stiffness: 100 }}
-                    >
-                        <h1 className={styles.errorNumber}>404</h1>
-                        <Sparkles className={styles.sparkleIcon} size={40} />
-                    </motion.div>
-
-                    <motion.div
-                        className={styles.textWrapper}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.5 }}
-                    >
-                        <h2>¿Te perdiste en el flujo?</h2>
-                        <p>
-                            La página que buscas no existe o fue movida.
-                            Pero no te preocupes, el corazón de tu negocio sigue latiendo.
-                        </p>
-                    </motion.div>
-
-                    <motion.div
-                        className={styles.actions}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.6 }}
-                    >
-                        <Button
-                            color="primary"
-                            size="large"
-                            radius="large"
-                            onClick={() => router.push(homeRoute)}
-                            block
-                        >
-                            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%' }}>
-                                <ArrowLeft size={18} />
-                                Volver a {user?.role === 'CASHIER' ? 'Ventas' : 'mi Panel'}
-                            </span>
-                        </Button>
-                        <Button
-                            color="neutral"
-                            size="large"
-                            radius="large"
-                            variant="outline"
-                            onClick={() => router.push('/')}
-                            block
-                        >
-                            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%' }}>
-                                <Home size={18} />
-                                Ir a inicio
-                            </span>
-                        </Button>
-                    </motion.div>
+            {/* Main content */}
+            <div className={styles.content}>
+                <div className={styles.glitchWrapper}>
+                    <h1 className={styles.errorCode} data-text="404">404</h1>
                 </div>
-            </motion.div>
+
+                <div className={styles.divider}>
+                    <span className={styles.dividerLine} />
+                    <LogoFluxCore width={32} height={32} />
+                    <span className={styles.dividerLine} />
+                </div>
+
+                <div className={styles.info}>
+                    <h2>Ruta no encontrada</h2>
+                    <p>
+                        Esta página se ha perdido en el flujo de datos.
+                        Verifica la URL o regresa a territorio conocido.
+                    </p>
+                </div>
+
+                <div className={styles.actions}>
+                    <Button
+                        color="primary"
+                        size="large"
+                        onClick={() => router.push(homeRoute)}
+                    >
+                        <span className={styles.btnContent}>
+                            <ArrowLeft size={18} />
+                            Volver a {user?.role === 'CASHIER' ? 'Ventas' : 'mi Panel'}
+                        </span>
+                    </Button>
+                    <Button
+                        color="neutral"
+                        size="large"
+                        variant="soft"
+                        onClick={() => router.push('/')}
+                    >
+                        <span className={styles.btnContent}>
+                            <Home size={18} />
+                            Ir al inicio
+                        </span>
+                    </Button>
+                </div>
+            </div>
+
+            {/* Scan line effect */}
+            <div className={styles.scanline} />
         </div>
     );
 }
