@@ -1,13 +1,13 @@
 "use client";
 
 import styles from "./not-found.module.scss";
-import { Button, Flex } from "lambda-ui-components";
+import { Button } from "lambda-ui-components";
 import { useRouter } from "next/navigation";
 import { getHomeRouteForRole } from "../lib/utils/auth-utils";
 import { LogoFluxCore } from "./components/logos/LogoFluxCore";
 import { useAuth } from "@/hooks/useAuth";
-import { Icon } from "./components/Icon";
-import { CloudOff } from "lucide-react";
+import { Sparkles, ArrowLeft, Home } from "lucide-react";
+import { motion } from "motion/react";
 
 export default function NotFound() {
     const { user } = useAuth();
@@ -16,36 +16,83 @@ export default function NotFound() {
 
     return (
         <div className={styles.container}>
-            <div className={styles.card}>
-                <LogoFluxCore width={100} height={100} />
-                <Flex gap={10} direction="column" align="center">
-                    <h1>404</h1>
-                    <Icon icon={CloudOff} size={50} />
-                </Flex>
-                <h2>Página no encontrada</h2>
-                <p>Parece que la ruta que buscas no existe o fue movida.
-                    Verifica la URL o usa los botones de abajo para volver a un lugar seguro.
-                </p>
-                <Flex gap={10}>
-                    <Button
-                        color="primary"
-                        size="medium"
-                        block
-                        onClick={() => router.push(homeRoute)}
+            {/* Background glowing effects */}
+            <div className={styles.glowCyan} />
+            <div className={styles.glowSky} />
+
+            <motion.div
+                className={styles.card}
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            >
+                <motion.div
+                    className={styles.logoWrapper}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2, duration: 0.5 }}
+                >
+                    <LogoFluxCore width={48} height={48} />
+                </motion.div>
+
+                <div className={styles.content}>
+                    <motion.div
+                        className={styles.numberWrapper}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.3, duration: 0.5, type: "spring", stiffness: 100 }}
                     >
-                        Volver a {user?.role === 'CASHIER' ? 'Ventas' : 'mi Panel'}
-                    </Button>
-                    <Button
-                        color="primary"
-                        size="medium"
-                        block
-                        variant="outline"
-                        onClick={() => router.push('/')}
+                        <h1 className={styles.errorNumber}>404</h1>
+                        <Sparkles className={styles.sparkleIcon} size={40} />
+                    </motion.div>
+
+                    <motion.div
+                        className={styles.textWrapper}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5 }}
                     >
-                        Ir a inicio
-                    </Button>
-                </Flex>
-            </div>
+                        <h2>¿Te perdiste en el flujo?</h2>
+                        <p>
+                            La página que buscas no existe o fue movida.
+                            Pero no te preocupes, el corazón de tu negocio sigue latiendo.
+                        </p>
+                    </motion.div>
+
+                    <motion.div
+                        className={styles.actions}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6 }}
+                    >
+                        <Button
+                            color="primary"
+                            size="large"
+                            radius="large"
+                            onClick={() => router.push(homeRoute)}
+                            block
+                        >
+                            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%' }}>
+                                <ArrowLeft size={18} />
+                                Volver a {user?.role === 'CASHIER' ? 'Ventas' : 'mi Panel'}
+                            </span>
+                        </Button>
+                        <Button
+                            color="neutral"
+                            size="large"
+                            radius="large"
+                            variant="outline"
+                            onClick={() => router.push('/')}
+                            block
+                        >
+                            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%' }}>
+                                <Home size={18} />
+                                Ir a inicio
+                            </span>
+                        </Button>
+                    </motion.div>
+                </div>
+            </motion.div>
         </div>
     );
 }

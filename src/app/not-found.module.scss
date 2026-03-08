@@ -5,49 +5,132 @@
     justify-content: center;
     width: 100vw;
     height: 100vh;
-    padding: 1rem;
+    padding: var(--spacing-xl);
+    position: relative;
+    overflow: hidden;
+    background-color: var(--surface-a);
+    background-image: url("data:image/svg+xml,%3Csvg width='42' height='44' viewBox='0 0 42 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Page-1' fill='none' fill-rule='evenodd'%3E%3Cg id='brick-wall' fill='%239C92AC' fill-opacity='0.1'%3E%3Cpath d='M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
 
-    .card {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1.5rem;
-        padding: 2rem;
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--spacing-2xl) var(--spacing-xl);
+    width: 100%;
+    max-width: 480px;
+    border-radius: var(--radius-2xl);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--surface-a);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05),
+        0 0 0 1px var(--border-color) inset;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        max-width: 35rem;
-        border-radius: var(--radius-box);
-        border: var(--border-width) solid var(--border-color);
-        background-color: var(--surface-a);
-        text-align: center;
+        height: 6px;
+        background: linear-gradient(90deg, var(--lambda-color-sky-950), var(--lambda-color-cyan-400), var(--lambda-color-cyan-600));
+    }
+}
 
-        h1 {
-            margin: 0;
-            font-size: 6rem;
-            font-weight: 800;
-            line-height: 1;
-            background: linear-gradient(135deg, var(--foreground-color) 0%, var(--surface-b) 100%);
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0.8;
-        }
+.logoWrapper {
+    margin-bottom: var(--spacing-xl);
+    background: var(--surface-b);
+    padding: var(--spacing-md);
+    border-radius: 50%;
+    box-shadow: var(--box-shadow-sm);
+    border: 1px solid var(--border-color);
+}
 
-        h2 {
-            margin: 0;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xl);
+    width: 100%;
+}
 
-        p {
-            margin: 0;
-            opacity: 0.8;
-            max-width: 80%;
-        }
+.numberWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        div {
-            & svg {
-                opacity: 0.1;
-            }
-        }
+    .errorNumber {
+        margin: 0;
+        font-size: min(8rem, 25vw);
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -0.05em;
+        background: linear-gradient(135deg, var(--lambda-color-sky-950) 0%, var(--lambda-color-cyan-400) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        opacity: 0.9;
+    }
+
+    .sparkleIcon {
+        position: absolute;
+        top: -10px;
+        right: -30px;
+        color: var(--lambda-color-cyan-500);
+        opacity: 0.8;
+        animation: pulse 2s infinite ease-in-out alternate;
+    }
+}
+
+.textWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+
+    h2 {
+        margin: 0;
+        font-size: var(--font-size-2xl);
+        font-weight: 700;
+        color: var(--foreground-title-color);
+        letter-spacing: -0.02em;
+    }
+
+    p {
+        margin: 0 auto;
+        color: var(--foreground-secondary-color);
+        line-height: 1.6;
+        font-size: var(--font-size-md);
+        max-width: 85%;
+    }
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    padding: 0 var(--spacing-lg);
+
+    @media (max-width: 480px) {
+        padding: 0;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.9) rotate(0deg);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1.1) rotate(10deg);
+        opacity: 1;
     }
 }
