@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+import { CheckCircle2, ArrowRight } from "lucide-react";
 import styles from "./FeaturesShowcase.module.scss";
 
 export function FeaturesShowcase() {
@@ -27,6 +28,9 @@ export function FeaturesShowcase() {
                         <li><CheckCircle2 size={18} /> <span>Búsqueda rápida por código o variante</span></li>
                         <li><CheckCircle2 size={18} /> <span>Facturación electrónica integrada</span></li>
                     </ul>
+                    <Link href="/register" className={styles.featureCta}>
+                        Probar gratis <ArrowRight size={16} />
+                    </Link>
                 </div>
                 <div className={styles.featureImageWrapper}>
                     <Image
@@ -52,6 +56,9 @@ export function FeaturesShowcase() {
                         <li><CheckCircle2 size={18} /> <span>Historial de movimientos y ajustes de stock</span></li>
                         <li><CheckCircle2 size={18} /> <span>Gestión multicategoría y marcas</span></li>
                     </ul>
+                    <Link href="/register" className={styles.featureCta}>
+                        Probar gratis <ArrowRight size={16} />
+                    </Link>
                 </div>
                 <div className={styles.featureImageWrapper}>
                     <Image
@@ -77,6 +84,9 @@ export function FeaturesShowcase() {
                         <li><CheckCircle2 size={18} /> <span>Administración de empleados y cajeros</span></li>
                         <li><CheckCircle2 size={18} /> <span>Permisos granulares y niveles de usuario</span></li>
                     </ul>
+                    <Link href="/register" className={styles.featureCta}>
+                        Probar gratis <ArrowRight size={16} />
+                    </Link>
                 </div>
                 <div className={styles.featureImageWrapper}>
                     <div className={styles.placeholderImage}>

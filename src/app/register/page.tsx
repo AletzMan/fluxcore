@@ -14,9 +14,7 @@ export default async function RegisterPage() {
     return (
         <div className={styles.page}>
             <nav className={styles.navbar}>
-                <Link href="/">
-                    <LogoFluxCoreLarge width={28} height={28} />
-                </Link>
+                <LogoFluxCoreLarge width={28} height={28} />
                 <div className={styles.navLinks}>
                     <span style={{ color: "var(--foreground-secondary-color)" }}>¿Ya tienes cuenta?</span>
                     <Button color="primary" variant="outline" size="small">

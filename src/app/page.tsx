@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "lambda-ui-components";
-import { ArrowRight, BarChart3, Box, ShieldCheck, Check } from "lucide-react";
+import { ArrowRight, BarChart3, Box, ShieldCheck, CreditCard } from "lucide-react";
 import { LogoFluxCoreLarge } from "./components/logos/LogoFluxCoreLarge";
 import { PricingSection } from "./components/landing/PricingSection";
 import { FeaturesShowcase } from "./components/landing/FeaturesShowcase";
@@ -51,6 +51,10 @@ export default async function Home() {
               </Link>
             </Button>
           </div>
+          <p className={styles.trialNote}>
+            <CreditCard size={16} />
+            Prueba gratuita · No se requiere tarjeta de crédito
+          </p>
         </div>
       </main>
 
@@ -98,6 +102,18 @@ export default async function Home() {
 
       {/* --- Planes y Precios --- */}
       <PricingSection plans={plans} />
+
+      {/* --- CTA Final --- */}
+      <section className={styles.ctaFinal}>
+        <h2>¿Listo para transformar tu negocio?</h2>
+        <p>Comienza tu prueba gratuita hoy. Sin compromiso, sin tarjeta de crédito.</p>
+        <Button color="primary" size="large" radius="large">
+          <Link href="/register" style={{ color: 'inherit', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            Comenzar gratis
+            <ArrowRight size={18} />
+          </Link>
+        </Button>
+      </section>
 
       {/* --- pie de pagina (Footer) --- */}
       <footer className={styles.footer}>

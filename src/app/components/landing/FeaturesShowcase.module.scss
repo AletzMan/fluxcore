@@ -101,6 +101,28 @@
                 }
             }
         }
+
+        .featureCta {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            margin-top: var(--spacing-lg);
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: var(--font-size-md);
+            text-decoration: none;
+            transition: gap 0.3s ease, color 0.2s ease;
+
+            &:hover {
+                gap: var(--spacing-sm);
+                color: var(--primary-hover-color, var(--primary-color));
+            }
+
+            @media (max-width: 992px) {
+                justify-content: center;
+                width: 100%;
+            }
+        }
     }
 
     .featureImageWrapper {

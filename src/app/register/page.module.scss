@@ -34,9 +34,9 @@
 .content {
     flex: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    padding: var(--spacing-xl);
+    padding: var(--spacing-lg);
 }
 
 .registerContainer {
@@ -51,17 +51,16 @@
 
 .header {
     text-align: center;
-    margin-bottom: var(--spacing-2xl);
+    margin-bottom: var(--spacing-md);
 
     h1 {
-        font-size: var(--font-size-3xl);
-        font-weight: 700;
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-bold);
         color: var(--foreground-title-color);
-        margin-bottom: var(--spacing-sm);
     }
 
     p {
-        font-size: var(--font-size-lg);
+        font-size: var(--font-size-md);
         color: var(--foreground-secondary-color);
     }
 }

@@ -12,6 +12,7 @@ export function PricingSection({ plans }: PricingSectionProps) {
     return (
         <section className={styles.pricing}>
             <h2>Elige el plan perfecto para ti</h2>
+            <p className={styles.pricingSubtitle}>Todos los planes incluyen periodo de prueba gratuito. Sin tarjeta de crédito.</p>
             <Tabs variant="box" color="primary" size="large" radius="medium">
                 <Tabs.List>
                     <Tabs.Tab title="Mensual" />

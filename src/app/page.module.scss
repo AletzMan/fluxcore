@@ -120,6 +120,20 @@
     justify-content: center;
 }
 
+.trialNote {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: var(--font-size-sm) !important;
+    color: var(--foreground-secondary-color) !important;
+    margin-top: var(--spacing-sm);
+    opacity: 0.8;
+
+    svg {
+        flex-shrink: 0;
+    }
+}
+
 /* --- Features Section --- */
 .features {
     padding: 80px var(--spacing-xl);
@@ -207,6 +221,13 @@
     }
 }
 
+.pricingSubtitle {
+    font-size: var(--font-size-md);
+    color: var(--foreground-secondary-color);
+    margin-top: calc(var(--spacing-md) * -1);
+    margin-bottom: var(--spacing-lg);
+}
+
 .pricingGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -251,5 +272,29 @@
                 color: var(--primary-color);
             }
         }
+    }
+}
+
+/* --- CTA Final --- */
+.ctaFinal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px var(--spacing-xl);
+    background: linear-gradient(135deg, var(--lambda-color-sky-950) 0%, var(--lambda-color-cyan-600) 100%);
+    gap: var(--spacing-lg);
+
+    h2 {
+        font-size: var(--font-size-3xl);
+        font-weight: 700;
+        color: white;
+    }
+
+    p {
+        font-size: var(--font-size-lg);
+        color: rgba(255, 255, 255, 0.85);
+        max-width: 500px;
     }
 }

@@ -5,6 +5,7 @@ import { Plan } from "@/typesModels/Plan";
 import { PricingSection } from "@/app/components/landing/PricingSection";
 import { RegisterForm } from "./RegisterForm/RegisterForm";
 import styles from "../page.module.scss";
+import { Link } from "lambda-ui-components";
 
 interface RegisterClientProps {
     plans: Plan[];
@@ -43,14 +44,15 @@ export function RegisterClient({ plans }: RegisterClientProps) {
             <div className={styles.header}>
                 <h1>Crea tu cuenta</h1>
                 <p>Estás a punto de iniciar con el plan <strong>{selectedPlan.name}</strong> en ciclo <strong>{billingCycle === 'yearly' ? 'Anual' : 'Mensual'}</strong>.</p>
-                <div style={{ marginTop: 'var(--spacing-md)' }}>
-                    <button
-                        style={{ background: 'none', border: 'none', color: 'var(--primary-color)', cursor: 'pointer', textDecoration: 'underline' }}
-                        onClick={() => router.push('/register')}
-                    >
-                        Cambiar plan
-                    </button>
-                </div>
+
+                <Link
+                    href="/register"
+                    variant="text"
+                    color="primary"
+                    size="small"
+                >
+                    Cambiar plan
+                </Link>
             </div>
 
             {/* Componente del Formulario */}
