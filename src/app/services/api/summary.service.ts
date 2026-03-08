@@ -1,6 +1,6 @@
 import { apiFluxCoreServerGet } from "./axios-instance";
 import { ApiResponse } from "@/typesAPI/common.types";
-import { DashboardSummary } from "@/typesModels/summary";
+import { DashboardSummary } from "@/typesModels/Summary";
 
 class SummaryService {
 

@@ -23,3 +23,14 @@ export enum PaymentMethod {
     TRANSFER = 'TRANSFER',
     OTHER = 'OTHER'
 }
+
+export enum SaleStatus {
+    CREATED = 'CREATED',
+    IN_PROGRESS = 'IN_PROGRESS',
+    DRAFT = 'DRAFT',
+    PARTIAL_PAID = 'PARTIAL_PAID',
+    COMPLETED = 'COMPLETED',
+    CANCELLED = 'CANCELLED'
+}
+ 
+
