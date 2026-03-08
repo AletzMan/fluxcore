@@ -61,6 +61,9 @@ export default async function Home() {
       {/* --- Features --- */}
       <section className={styles.features}>
         <h2>Todo lo que necesitas para crecer</h2>
+        <p style={{ textAlign: 'center', color: 'var(--foreground-secondary-color)', marginTop: 'calc(var(--spacing-xl) * -1)', marginBottom: 'var(--spacing-2xl)', maxWidth: '600px', marginInline: 'auto' }}>
+          Herramientas potentes y fáciles de usar, diseñadas para que tu negocio opere sin fricción.
+        </p>
         <div className={styles.featuresGrid}>
 
           <div className={styles.featureCard}>
@@ -113,15 +116,25 @@ export default async function Home() {
             <ArrowRight size={18} />
           </Link>
         </Button>
+        <span className={styles.ctaTrialNote}>
+          <CreditCard size={14} />
+          No se requiere tarjeta de crédito
+        </span>
       </section>
 
-      {/* --- pie de pagina (Footer) --- */}
+      {/* --- Footer --- */}
       <footer className={styles.footer}>
-        <p>© {new Date().getFullYear()} FluxCore. Todos los derechos reservados.</p>
-        <div className={styles.footerLinks}>
-          <Link href="#">Privacidad</Link>
-          <Link href="#">Términos</Link>
-          <Link href="#">Contacto</Link>
+        <div className={styles.footerTop}>
+          <LogoFluxCoreLarge width={24} height={24} />
+          <p>Plataforma ERP en la nube para punto de venta, inventario y administración de tu negocio.</p>
+        </div>
+        <div className={styles.footerBottom}>
+          <span>© {new Date().getFullYear()} FluxCore. Todos los derechos reservados.</span>
+          <div className={styles.footerLinks}>
+            <Link href="#">Privacidad</Link>
+            <Link href="#">Términos</Link>
+            <Link href="#">Contacto</Link>
+          </div>
         </div>
       </footer>
 
