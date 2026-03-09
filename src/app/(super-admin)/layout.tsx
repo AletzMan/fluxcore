@@ -30,7 +30,13 @@ const menuData: NavigationMenuData[] = [
         id: "dashboard",
         label: "Dashboard",
         path: "/admin/dashboard",
-        icon: <LayoutDashboard size={25} absoluteStrokeWidth />
+        icon: <LayoutDashboard size={25} absoluteStrokeWidth />,
+        children: [
+            {
+                id: "0",
+                label: "Administración de Clientes",
+            }
+        ]
     },
     {
         id: "tenants",
@@ -48,7 +54,13 @@ const menuData: NavigationMenuData[] = [
         id: "subscriptions",
         label: "Suscripciones",
         path: "/admin/subscriptions",
-        icon: <CreditCard size={25} absoluteStrokeWidth />
+        icon: <CreditCard size={25} absoluteStrokeWidth />,
+        children: [
+            {
+                id: "0",
+                label: "Mantenimiento",
+            }
+        ]
     },
     {
         id: "system-logs",

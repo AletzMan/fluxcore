@@ -17,23 +17,44 @@ type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'PURCHASING_AGENT' | 'CASH
 const ROUTE_ACCESS: Record<string, UserRole[]> = {
     // Solo SUPER_ADMIN
     '/admin': ['SUPER_ADMIN'],
+    '/admin/dashboard': ['SUPER_ADMIN'],
     '/admin/tenants': ['SUPER_ADMIN'],
+    '/admin/plans': ['SUPER_ADMIN'],
     '/admin/subscriptions': ['SUPER_ADMIN'],
-    '/admin/system': ['SUPER_ADMIN'],
+    '/admin/system-logs': ['SUPER_ADMIN'],
+    '/admin/settings': ['SUPER_ADMIN'],
 
-    // SUPER_ADMIN y TENANT_ADMIN
-    '/configuracion/usuarios': ['SUPER_ADMIN', 'ADMIN'],
-    '/configuracion/roles': ['SUPER_ADMIN', 'ADMIN'],
-    '/configuracion/empresa': ['SUPER_ADMIN', 'ADMIN'],
-    '/finanzas/reportes/balance': ['SUPER_ADMIN', 'ADMIN'],
+    // TENANT_ADMIN
+    '/dashboard': ['ADMIN'],
+    '/operaciones': ['ADMIN'],
+    '/operaciones/ventas': ['ADMIN'],
+    '/operaciones/caja': ['ADMIN'],
+    '/catalogo': ['ADMIN'],
+    '/catalogo/productos': ['ADMIN'],
+    '/catalogo/categorias': ['ADMIN'],
+    '/catalogo/marcas': ['ADMIN'],
+    '/almacen': ['ADMIN'],
+    '/almacen/inventario': ['ADMIN'],
+    '/almacen/movimientos': ['ADMIN'],
+    '/personas': ['ADMIN'],
+    '/personas/clientes': ['ADMIN'],
+    '/personas/proveedores': ['ADMIN'],
+    '/personas/empleados': ['ADMIN'],
+    '/control': ['ADMIN'],
+    '/control/reportes': ['ADMIN'],
+    '/control/configuracion': ['ADMIN'], 
 
     // Managers y superiores
+    /*
     '/reportes': ['SUPER_ADMIN', 'ADMIN', 'MANAGER'],
     '/inventario': ['SUPER_ADMIN', 'ADMIN', 'MANAGER'],
+    */
 
     // Todos los autenticados
+    /*
     '/dashboard': ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'CASHIER'],
     '/ventas/pos': ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'CASHIER'],
+    */
 };
 
 const AUTH_ROUTES = ['/login', '/register', '/forgot-password'];
