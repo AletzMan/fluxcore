@@ -58,7 +58,6 @@ const ROUTE_ACCESS: Record<string, UserRole[]> = {
 };
 
 const AUTH_ROUTES = ['/login', '/register', '/forgot-password'];
-const ALWAYS_PUBLIC_ROUTES = ['/'];
 
 function decodeToken(token: string): JwtPayload | null {
     try {
@@ -74,21 +73,6 @@ function decodeToken(token: string): JwtPayload | null {
 
 function getUserRole(payload: JwtPayload): UserRole {
     return payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] as UserRole;
-}
-
-function hasAccessToRoute(pathname: string, role: UserRole): boolean {
-    // Buscar coincidencia exacta o por prefijo
-    const matchedRoute = Object.keys(ROUTE_ACCESS).find(route =>
-        pathname === route || pathname.startsWith(route + '/')
-    );
-
-    if (!matchedRoute) {
-        // Ruta no configurada = permitir (o denegar según prefieras)
-        return false;
-    }
-
-    const allowedRoles = ROUTE_ACCESS[matchedRoute];
-    return allowedRoles.includes(role);
 }
 
 
@@ -124,10 +108,6 @@ export function middleware(request: NextRequest) {
             if (!payload) return NextResponse.next(); // Dejar que el cliente refresque el token
 
             const role = getUserRole(payload);
-            // 👑 BYPASS SUPER_ADMIN: Si es Super Admin, puede entrar a TODO
-            if (role === 'SUPER_ADMIN') {
-                return NextResponse.next();
-            }
 
             // Verificar si la ruta específica está restringida
             const matchedRoute = Object.keys(ROUTE_ACCESS).find(route =>
