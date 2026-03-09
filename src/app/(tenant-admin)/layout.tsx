@@ -13,7 +13,7 @@ export default function TenantAdminLayout({ children }: { children: React.ReactN
             <div className={styles.content}>
                 <Sidebar
                     menuData={menuData}
-                    title="Panel de control"
+                    title="FluxCore"
                 />
                 <section className={styles["content_section"]}>
                     {children}
@@ -24,7 +24,7 @@ export default function TenantAdminLayout({ children }: { children: React.ReactN
 }
 
 const menuData: NavigationMenuData[] = [
-    // 1. LO QUE DEJA LANA Y SE USA DIARIO
+    // 1. OPERACIONES
     {
         id: "dashboard",
         label: "Dashboard",
@@ -33,61 +33,61 @@ const menuData: NavigationMenuData[] = [
         children: [
             {
                 id: "0",
-                label: "Caja y Ventas",
+                label: "Operaciones",
             }
         ]
     },
     {
         id: "sales",
         label: "Ventas",
-        path: "/ventas",
+        path: "/operaciones/ventas",
         icon: <ShoppingCart size={25} absoluteStrokeWidth />
     },
     {
-        id: "cashSessions", // Lo subimos porque el corte de caja es de todos los días
-        label: "Cortes de Caja",
-        path: "/caja/sesiones",
+        id: "cashSessions",
+        label: "Caja",
+        path: "/operaciones/caja",
         icon: <Wallet size={25} absoluteStrokeWidth />,
         children: [
             {
                 id: "0",
-                label: "Catálogo y Almacén",
+                label: "Catálogo",
             }
         ]
     },
 
-    // 2. EL CATÁLOGO (Lo que vendes)
+    // 2. CATÁLOGO
     {
-        id: "products", // Más amigable que "Productos Maestros"
+        id: "products",
         label: "Productos",
         path: "/catalogo/productos",
         icon: <Package size={25} absoluteStrokeWidth />
     },
     {
-        id: "productVariants",
-        label: "Variantes",
-        path: "/catalogo/variantes",
-        icon: <Layers size={25} absoluteStrokeWidth /> // Capas, para las tallas o colores
-    },
-    {
         id: "categories",
         label: "Categorías",
         path: "/catalogo/categorias",
-        icon: <Tags size={25} absoluteStrokeWidth /> // Etiquetas
+        icon: <Tags size={25} absoluteStrokeWidth />
     },
     {
         id: "brands",
         label: "Marcas",
         path: "/catalogo/marcas",
-        icon: <Award size={25} absoluteStrokeWidth /> // Una medallita o estrellita
+        icon: <Award size={25} absoluteStrokeWidth />,
+        children: [
+            {
+                id: "0",
+                label: "Almacén",
+            }
+        ]
     },
 
-    // 3. LOS FIERROS DEL ALMACÉN
+    // 3. ALMACÉN
     {
         id: "inventory",
         label: "Inventario",
         path: "/almacen/inventario",
-        icon: <Boxes size={25} absoluteStrokeWidth /> // Cajas en plural
+        icon: <Boxes size={25} absoluteStrokeWidth />
     },
     {
         id: "movements",
@@ -97,38 +97,38 @@ const menuData: NavigationMenuData[] = [
         children: [
             {
                 id: "0",
-                label: "Contactos",
+                label: "Personas",
             }
         ]
     },
 
-    // 4. LA BANDA (Tus contactos)
+    // 4. PERSONAS
     {
         id: "customers",
         label: "Clientes",
-        path: "/contactos/clientes",
-        icon: <Contact size={25} absoluteStrokeWidth /> // La agenda
+        path: "/personas/clientes",
+        icon: <Contact size={25} absoluteStrokeWidth />
     },
     {
         id: "providers",
         label: "Proveedores",
-        path: "/contactos/proveedores",
-        icon: <Truck size={25} absoluteStrokeWidth /> // El camioncito que acordamos
+        path: "/personas/proveedores",
+        icon: <Truck size={25} absoluteStrokeWidth />
     },
     {
         id: "employees",
         label: "Empleados",
-        path: "/contactos/empleados",
+        path: "/personas/empleados",
         icon: <UserCog size={25} absoluteStrokeWidth />,
         children: [
             {
                 id: "0",
-                label: "Administración",
+                label: "Control",
             }
         ]
     },
 
-    // 5. EL PAPELEO Y AJUSTES (Hasta el fondo)
+    // 5. CONTROL
     {
         id: "reports",
         label: "Reportes",
