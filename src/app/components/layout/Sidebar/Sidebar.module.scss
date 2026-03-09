@@ -19,12 +19,22 @@
 
         &_open {
             transform: translateX(0);
+
+            .toggle_btn svg {
+                transform: rotate(0deg);
+            }
+        }
+
+        .group_divider_text {
+            max-width: 300px;
+            opacity: 1;
+            padding-right: var(--spacing-sm);
         }
     }
 
     @media (width >=768px) {
 
-        &:hover {
+        &_open_desktop {
             width: 330px;
 
             .link {
@@ -36,6 +46,17 @@
                         display: flex;
                     }
                 }
+            }
+
+            .group_divider_text {
+                max-width: 300px;
+                opacity: 1;
+                padding-right: var(--spacing-sm);
+            }
+
+            .toggle_btn svg {
+                // When pinned open, point left to indicate "Close/Unpin".
+                transform: rotate(0deg);
             }
         }
     }
@@ -56,15 +77,72 @@
         flex-direction: column;
         gap: var(--spacing-xs);
 
-        div {
-            display: grid;
-            grid-template-columns: 2.7em 1fr;
-            padding: var(--spacing-md) var(--spacing-none) var(--spacing-sm) var(--spacing-xs);
-            place-items: center center;
-            gap: var(--spacing-xs);
+        &>.header {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-md) var(--spacing-sm) var(--spacing-xs) var(--spacing-xs);
 
-            & svg {
-                stroke: var(--primary-text-color);
+            .logo {
+                min-width: 2.7em;
+                display: none;
+                flex-shrink: 0;
+                justify-content: center;
+                align-items: center;
+
+                svg {
+                    stroke: var(--primary-text-color);
+                }
+            }
+
+            h3 {
+                display: none;
+                flex: 1;
+                margin-left: var(--spacing-xs);
+            }
+
+            .toggle_btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: var(--spacing-xs) 0;
+                margin-left: 0;
+                width: 3.3em;
+                border-radius: var(--radius-field);
+                flex-shrink: 0;
+
+                svg {
+                    stroke: var(--primary-text-color);
+                    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    // By default, pointing RIGHT to indicate "Pin Open".
+                    transform: rotate(180deg);
+                }
+
+                &:hover {
+                    background-color: var(--surface-b);
+                }
+            }
+
+            &.header_open {
+                .logo {
+                    display: flex;
+                }
+
+                h3 {
+                    display: block;
+                    opacity: 1;
+                }
+
+                .toggle_btn {
+                    margin-left: auto;
+                    min-width: auto;
+                    transform: rotate(180deg);
+                }
             }
         }
     }
@@ -76,7 +154,7 @@
     place-items: center start;
     gap: 1rem;
     padding: var(--spacing-none) var(--spacing-none) var(--spacing-none) var(--spacing-md);
-    height: var(--spacing-3xl);
+    height: calc(var(--spacing-2xl) + var(--spacing-sm));
     text-decoration: none;
     font-weight: 500;
     width: var(--spacing-3xl);
@@ -137,5 +215,35 @@
 
     & svg {
         stroke: var(--foreground-color);
+    }
+}
+
+.group_divider {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: var(--spacing-md) 0;
+
+    &_text {
+        display: inline-block;
+        max-width: 0;
+        opacity: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        transition: max-width 0.3s ease, opacity 0.2s ease, padding-right 0.3s ease;
+        text-transform: uppercase;
+        color: var(--surface-f);
+        font-weight: 600;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        line-height: 1;
+        padding-right: 0;
+    }
+
+    &_line {
+        flex: 1;
+        height: 1px;
+        border-top: 1px dashed var(--border-color);
+        opacity: 0.5;
     }
 }

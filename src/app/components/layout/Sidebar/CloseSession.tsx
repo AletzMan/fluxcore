@@ -12,7 +12,7 @@ export const CloseSession = () => {
             disabled={isLoading}
         >
             <DoorOpen size={25} absoluteStrokeWidth />
-            <span> Cerrar sesión</span>
+            <span>Cerrar sesión</span>
         </button>
     );
 }
