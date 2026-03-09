@@ -42,3 +42,8 @@ export enum SaleAction
     COMPLETE = 'COMPLETE',
     RETURN_SALE = 'RETURN_SALE'
 }
+
+export enum CashSessionStatus {
+    CLOSE = 'CLOSE',
+    OPEN = 'OPEN'
+}
