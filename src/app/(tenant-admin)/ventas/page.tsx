@@ -25,8 +25,6 @@ export default async function SalesPage({ searchParams }: {
         <ContainerSection
             title="Gestión de Ventas"
             description="Consulta el historial de ventas, facturas y pagos realizados."
-            titleAddButton="Nueva Venta (POS)"
-            hrefAddButton="/ventas/pos"
         >
             <div className={styles.sales}>
                 <Suspense fallback={<div>Cargando...</div>}>

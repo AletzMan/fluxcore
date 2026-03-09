@@ -1,18 +1,14 @@
-import { Breadcrumb } from "lambda-ui-components";
+import { ContainerSection } from "@/app/components/layout/ContainerSection/ContainerSection";
 
 export default function SettingsStorePage() {
     return (
-        <div>
-            <Breadcrumb
-                items={[
-                    { label: "Configuración", href: "/configuracion" },
-                    { label: "Empresa", href: "/configuracion/empresa" }
-                ]}
-            />
-            <h1 style={{ marginTop: 'var(--spacing-lg)', fontSize: 'var(--font-size-2xl)' }}>Configuración de Sucursal/Empresa</h1>
-            <p style={{ color: 'var(--foreground-secondary-color)' }}>
-                Edita los datos de la sucursal, ticket, y métodos de pago aceptados.
-            </p>
-        </div>
+        <ContainerSection
+            title="Configuración de Sucursal/Empresa"
+            description="Edita los datos de la sucursal, ticket, y métodos de pago aceptados."
+        >
+            <div style={{ padding: 'var(--spacing-md)' }}>
+                {/* Contenido de configuración aquí */}
+            </div>
+        </ContainerSection>
     );
 }

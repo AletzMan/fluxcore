@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { Button } from "lambda-ui-components";
 import { ArrowLeft } from "lucide-react";
@@ -26,7 +27,9 @@ export default async function RegisterPage() {
             </nav>
 
             <main className={styles.content}>
-                <RegisterClient plans={plans} />
+                <Suspense fallback={<div>Cargando opciones...</div>}>
+                    <RegisterClient plans={plans} />
+                </Suspense>
             </main>
         </div>
     );

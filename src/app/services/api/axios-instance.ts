@@ -314,6 +314,7 @@ export const apiFluxCoreServerGet = async <T>(url: string, config?: AxiosRequest
     try {
         return await withTokenRefresh(async (api) => {
             const response = await api.get<T>(url, config);
+            console.log("apiFluxCoreServerGet response.data", response.data);
             return response.data;
         });
     } catch (error) {

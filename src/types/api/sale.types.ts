@@ -1,6 +1,7 @@
-import { PaymentMethod, SaleStatus } from "@/enums/common.enums";
+import { PaymentMethod, SaleAction, SaleStatus } from "@/enums/common.enums";
 import { CreateSaleDetail } from "./sale-detail.types";
 import { BaseParams } from "./common.types";
+import { Sale } from "@/typesModels/Sale";
 
 export interface CreateSale {
     createdBy: number;
@@ -29,3 +30,16 @@ export interface SaleParams extends BaseParams {
     paymentMethod?: PaymentMethod;
     creatorId?: number;
 }
+ 
+
+export interface SaleFlow {
+    id: number;
+    status: SaleStatus;
+    total: number;
+    paidAmount: number;
+    remainingAmount: number;
+    payments: PaymentResponse[];
+    saleDetails: Sale[];
+    allowedActions: SaleAction[];
+}
+    

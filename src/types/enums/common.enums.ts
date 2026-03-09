@@ -33,4 +33,12 @@ export enum SaleStatus {
     CANCELLED = 'CANCELLED'
 }
  
-
+export enum SaleAction
+{
+    ADD_ITEM = 'ADD_ITEM',
+    REMOVE_ITEM = 'REMOVE_ITEM',
+    ADD_PAYMENT = 'ADD_PAYMENT',
+    CANCEL = 'CANCEL',
+    COMPLETE = 'COMPLETE',
+    RETURN_SALE = 'RETURN_SALE'
+}

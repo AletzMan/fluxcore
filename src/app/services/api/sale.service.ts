@@ -15,11 +15,11 @@ class SaleService {
         if (params?.paymentMethod) queryParams.append("PaymentMethod", params.paymentMethod);
         if (params?.creatorId) queryParams.append("CreatorId", params.creatorId.toString());
 
-        return await apiFluxCoreServerGet<PagedResponse<Sale>>(`/sales?${queryParams.toString()}`);
+        return await apiFluxCoreServerGet<PagedResponse<Sale>>(`/sales?${queryParams.toString()}`) as PagedResponse<Sale>;
     }
 
     async getSaleById(id: string | number): Promise<ApiResponse<Sale>> {
-        return await apiFluxCoreServerGet<ApiResponse<Sale>>(`/sales/${id}`);
+        return await apiFluxCoreServerGet<ApiResponse<Sale>>(`/sales/${id}`) as ApiResponse<Sale>;
     }
 }
 

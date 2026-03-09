@@ -1,17 +1,14 @@
-import { Breadcrumb } from "lambda-ui-components";
+import { ContainerSection } from "@/app/components/layout/ContainerSection/ContainerSection";
 
 export default function ReportsPage() {
     return (
-        <div>
-            <Breadcrumb
-                items={[
-                    { label: "Reportes", href: "/reportes" }
-                ]}
-            />
-            <h1 style={{ marginTop: 'var(--spacing-lg)', fontSize: 'var(--font-size-2xl)' }}>Reportes y Analíticas</h1>
-            <p style={{ color: 'var(--foreground-secondary-color)' }}>
-                Visualiza el rendimiento y datos estadísticos de ventas y otras métricas clave.
-            </p>
-        </div>
+        <ContainerSection
+            title="Reportes y Analíticas"
+            description="Visualiza reportes detallados y métricas clave de tu negocio con exportación a PDF."
+        >
+            <div style={{ padding: 'var(--spacing-md)' }}>
+                {/* Contenido de reportes aquí */}
+            </div>
+        </ContainerSection>
     );
 }
