@@ -16,6 +16,7 @@ interface TableErrorProps {
     onResetFilters?: () => void;
     onRetry?: () => void;
     urlBack?: string;
+    hasAddButton?: boolean;
 }
 
 export const TableError = ({
@@ -27,7 +28,8 @@ export const TableError = ({
     onCreate,
     onResetFilters,
     onRetry,
-    urlBack
+    urlBack,
+    hasAddButton = true
 }: TableErrorProps) => {
 
     const router = useRouter();
@@ -40,7 +42,7 @@ export const TableError = ({
     if (!isError && !isSearch && !isEmptyResponse) return null;
 
 
-    const stateConfig = getStateConfig(isError, isEmptyResponse, isSearch, isNotFound, isMaintenance);
+    const stateConfig = getStateConfig(isError, isEmptyResponse, isSearch, isNotFound, isMaintenance, hasAddButton);
 
 
     if (!stateConfig) return null;
@@ -64,14 +66,16 @@ export const TableError = ({
                 <p>{stateConfig.message}</p>
                 {stateConfig.showButton && (
                     <div className={styles.tableerror_action}>
-                        <Button
-                            variant={stateConfig.btnVariant}
-                            color={stateConfig.btnColor}
-                            icon={stateConfig.btnIcon}
-                            onClick={handleAction}
-                            size="small"
-                            label={stateConfig.btnLabel}
-                        />
+                        {hasAddButton && (
+                            <Button
+                                variant={stateConfig.btnVariant}
+                                color={stateConfig.btnColor}
+                                icon={stateConfig.btnIcon}
+                                onClick={handleAction}
+                                size="small"
+                                label={stateConfig.btnLabel}
+                            />
+                        )}
                         {stateConfig.actionType === 'retry' && (
                             <Link
                                 href="https://lambdaflux.com/soporte"
@@ -102,7 +106,7 @@ interface StateConfig {
     btnColor: "primary" | "secondary" | "neutral" | "info" | "success" | "danger" | "warning";
 }
 
-const getStateConfig = (isError: boolean, isEmptyResponse: boolean, isSearch: boolean, isNotFound: boolean, isMaintenance: boolean): StateConfig | undefined => {
+const getStateConfig = (isError: boolean, isEmptyResponse: boolean, isSearch: boolean, isNotFound: boolean, isMaintenance: boolean, hasAddButton: boolean): StateConfig | undefined => {
 
     console.log(isError, isEmptyResponse, isSearch, isNotFound, isMaintenance);
 
@@ -122,12 +126,17 @@ const getStateConfig = (isError: boolean, isEmptyResponse: boolean, isSearch: bo
 
     if (isEmptyResponse && !isError) {
         return {
-            icon: <PackageOpen size={120} strokeWidth={1.5} />,
-            title: "Comienza a agregar contenido",
-            message: "Aún no hay registros. Crea el primero para empezar.",
-            showButton: true,
+            icon: <PackageOpen size={120} strokeWidth={1.5} className="text-slate-500/50" />,
+            title: hasAddButton
+                ? "Esto está muy tranquilo..."
+                : "Nada que mostrar por ahora",
+            message: hasAddButton
+                ? "Aún no tienes información aquí. Agrega tu primer registro para darle vida a esta sección."
+                : "No hay registros disponibles en este momento. Los datos aparecerán aquí en cuanto haya actividad.",
+
+            showButton: hasAddButton,
             actionType: 'create',
-            btnLabel: "Crear nuevo registro",
+            btnLabel: "Crear el primero",
             btnIcon: <Plus size={16} />,
             btnVariant: "solid",
             btnColor: "primary"

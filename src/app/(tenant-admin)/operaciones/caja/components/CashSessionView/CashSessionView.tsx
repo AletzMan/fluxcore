@@ -62,6 +62,7 @@ export const CashSessionView = ({ sessions, pagination, success, isMaintenance }
             success={success}
             isMaintenance={isMaintenance || false}
             actions={["view"]}
+            hasAddButton={false}
             filters={[
                 { id: '1', key: 'status', value: 'OPEN', label: 'Abierta', type: 'multiple-choice', nameGroup: 'Estado' },
                 { id: '2', key: 'status', value: 'CLOSE', label: 'Cerrada', type: 'multiple-choice', nameGroup: 'Estado' },

@@ -23,6 +23,7 @@ export interface DataTableColumn<T> {
     align?: "left" | "center" | "right";
     isSortable?: boolean;
     render?: (value: T) => React.ReactNode;
+
 }
 
 
@@ -73,6 +74,11 @@ interface DataTableProps<T> {
      * Indica si el sitio está en mantenimiento
      */
     isMaintenance: boolean;
+
+    /**
+     * Indica si se debe mostrar el botón de agregar
+     */
+    hasAddButton?: boolean;
 }
 
 export const DataTable = <T extends { id: string | number, isActive?: boolean }>({
@@ -83,7 +89,8 @@ export const DataTable = <T extends { id: string | number, isActive?: boolean }>
     actions,
     filters,
     onDelete,
-    isMaintenance
+    isMaintenance,
+    hasAddButton
 }: DataTableProps<T>) => {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [itemToDelete, setItemToDelete] = useState<string | number | null>(null);
@@ -484,6 +491,7 @@ export const DataTable = <T extends { id: string | number, isActive?: boolean }>
                 isError={!success}
                 isNotFound={false}
                 isMaintenance={isMaintenance}
+                hasAddButton={hasAddButton}
                 onResetFilters={() => {
                     setSearch('');
                     router.replace(`${pathname}?page=1`);

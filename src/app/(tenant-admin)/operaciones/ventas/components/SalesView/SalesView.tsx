@@ -61,6 +61,7 @@ export const SalesView = ({ sales, pagination, success, isMaintenance }: SalesVi
             success={success}
             isMaintenance={isMaintenance || false}
             actions={["view"]}
+            hasAddButton={false}
             filters={[
                 { id: '1', key: 'status', value: 'CREATED', label: 'Creada', type: 'multiple-choice', nameGroup: 'Estado' },
                 { id: '2', key: 'status', value: 'IN_PROGRESS', label: 'En progreso', type: 'multiple-choice', nameGroup: 'Estado' },

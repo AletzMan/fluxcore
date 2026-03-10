@@ -25,8 +25,6 @@ export default async function CajaPage({ searchParams }: {
         <ContainerSection
             title="Caja y Sesiones"
             description="Gestiona las aperturas y los cortes de caja, así como el dinero en efectivo."
-            titleAddButton="Abrir Turno"
-            hrefAddButton="/operaciones/caja/nuevo"
         >
             <div className={styles.container}>
                 <Suspense fallback={<div>Cargando sesiones de caja...</div>}>
