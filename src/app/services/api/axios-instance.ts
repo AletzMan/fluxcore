@@ -354,4 +354,15 @@ export const apiFluxCoreServerPatch = async <T>(url: string, data?: any, config?
         return handleAxiosError(error);
     }
 };
+
+export const apiFluxCoreServerDelete = async <T>(url: string, config?: AxiosRequestConfig) => {
+    try {
+        return await withTokenRefresh(async (api) => {
+            const response = await api.delete<T>(url, config);
+            return response.data;
+        });
+    } catch (error) {
+        return handleAxiosError(error);
+    }
+};
     

@@ -79,6 +79,11 @@ interface DataTableProps<T> {
      * Indica si se debe mostrar el botón de agregar
      */
     hasAddButton?: boolean;
+
+    /**
+     * URL a la que redirigir cuando se hace clic en el botón de Crear del empty state
+     */
+    urlAddButton?: string;
 }
 
 export const DataTable = <T extends { id: string | number, isActive?: boolean }>({
@@ -90,7 +95,8 @@ export const DataTable = <T extends { id: string | number, isActive?: boolean }>
     filters,
     onDelete,
     isMaintenance,
-    hasAddButton
+    hasAddButton,
+    urlAddButton
 }: DataTableProps<T>) => {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [itemToDelete, setItemToDelete] = useState<string | number | null>(null);
@@ -492,6 +498,7 @@ export const DataTable = <T extends { id: string | number, isActive?: boolean }>
                 isNotFound={false}
                 isMaintenance={isMaintenance}
                 hasAddButton={hasAddButton}
+                onCreate={() => router.push(urlAddButton || `${pathname}/add`)}
                 onResetFilters={() => {
                     setSearch('');
                     router.replace(`${pathname}?page=1`);
