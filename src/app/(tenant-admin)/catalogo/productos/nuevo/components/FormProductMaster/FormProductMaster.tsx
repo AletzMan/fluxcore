@@ -20,7 +20,7 @@ export const FormProductMaster = ({ product }: { product?: ProductMaster }) => {
         message: ""
     });
 
-    const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<ProductMasterFormValues>({
+    const { control, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<ProductMasterFormValues>({
         resolver: zodResolver(ProductMasterSchema) as any,
         defaultValues: {
             name: product?.name || "",
@@ -50,6 +50,11 @@ export const FormProductMaster = ({ product }: { product?: ProductMaster }) => {
                     router.refresh();
                 }, 1000);
             } else {
+                if (result.fieldErrors) {
+                    for (const [field, fieldMessage] of Object.entries(result.fieldErrors)) {
+                        setError(field as keyof ProductMasterFormValues, { type: 'server', message: fieldMessage });
+                    }
+                }
                 setStatus({ type: 'error', message: result.message || "No se pudo guardar el producto." });
             }
         } catch (error) {

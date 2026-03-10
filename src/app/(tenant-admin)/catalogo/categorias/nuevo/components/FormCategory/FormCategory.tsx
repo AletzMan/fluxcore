@@ -25,7 +25,7 @@ export const FormCategory = ({ category, onSuccess, onCancel }: FormCategoryProp
         message: ""
     });
 
-    const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<CategoryFormValues>({
+    const { control, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<CategoryFormValues>({
         resolver: zodResolver(CategorySchema) as any,
         defaultValues: {
             name: category?.name || "",
@@ -57,6 +57,11 @@ export const FormCategory = ({ category, onSuccess, onCancel }: FormCategoryProp
                     router.refresh();
                 }, 1000);
             } else {
+                if (result.fieldErrors) {
+                    for (const [field, fieldMessage] of Object.entries(result.fieldErrors)) {
+                        setError(field as keyof CategoryFormValues, { type: 'server', message: fieldMessage });
+                    }
+                }
                 setStatus({ type: 'error', message: result.message || "No se pudo guardar la categoría." });
             }
         } catch (error) {

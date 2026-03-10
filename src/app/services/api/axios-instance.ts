@@ -50,7 +50,34 @@ const handleAxiosError = (error: unknown) => {
 
             if (status === 422) {
                 const errors = error.response.data.errors;
-                message = errors[0].message;
+                // errors es un objeto { campo: [{ code, message }] }
+                const fieldErrors: Record<string, string> = {};
+
+                if (errors && typeof errors === 'object') {
+                    for (const [field, fieldErrorList] of Object.entries(errors)) {
+                        if (Array.isArray(fieldErrorList) && fieldErrorList.length > 0) {
+                            const firstError = fieldErrorList[0] as { code: string; message: string };
+                            // Traducir el code al mensaje en español, o usar el message original
+                            fieldErrors[field] = ErrorMessages[firstError.code] || firstError.message;
+                        }
+                    }
+
+                    // Mensaje general: tomar el primer error de campo como resumen
+                    const firstFieldKey = Object.keys(fieldErrors)[0];
+                    console.log("firstFieldKey", firstFieldKey);
+                    if (firstFieldKey) {
+                        message = fieldErrors[firstFieldKey];
+                    }
+                }
+
+                return {
+                    data: null,
+                    success: false,
+                    errorCode,
+                    message,
+                    fieldErrors,
+                    timestamp: new Date()
+                };
             }
             message = ErrorMessages[errorCode] || message;
         }

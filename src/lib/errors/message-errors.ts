@@ -7,9 +7,9 @@ export const ErrorMessages: Record<string, string> = {
     BRAND_NAME_EMPTY: "El nombre de la marca es requerido",
     BRAND_NAME_INVALID: "El nombre de la marca no es válido",
     BRAND_NAME_MIN_LENGTH: "El nombre de la marca es demasiado corto",
-    BRAND_DESCRIPTION_MAX_LENGTH: "La descripción es demasiado larga",
-    BRAND_LOGO_FILE_INVALID: "El archivo del logo no es válido",
-    BRAND_LOGO_FILE_SIZE_EXCEEDED: "El archivo del logo excede el tamaño permitido",
+    BRAND_DESCRIPTION_MAX_LENGTH: "La descripción es demasiado larga", 
+    BRAND_LOGO_FILE_INVALID: "El archivo del logo no es válido, solo se permiten archivos JPG, PNG y WEBP",
+    BRAND_LOGO_FILE_SIZE_EXCEEDED: "El archivo del logo excede el tamaño permitido, debe ser menor a 2MB",
     BRAND_UPDATE_EMPTY: "No se detectaron cambios para actualizar",
 
     // Cash Movement

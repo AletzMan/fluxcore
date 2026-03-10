@@ -21,7 +21,17 @@ export const createProductVariantAction = async (formData: FormData) => {
             imageFile: imageFile && imageFile.name ? imageFile : undefined
         };
 
-        const response = await productVariantService.createProductVariant(data);
+        const response = await productVariantService.createProductVariant(data) as any;
+
+        if (response.success === false) {
+            return {
+                success: false,
+                message: response.message || "Ocurrió un error al crear la variante",
+                errorCode: response.errorCode,
+                fieldErrors: response.fieldErrors as Record<string, string> | undefined
+            };
+        }
+
         return {
             success: response.success,
             message: response.message || "Variante creada exitosamente",
@@ -31,7 +41,8 @@ export const createProductVariantAction = async (formData: FormData) => {
         return {
             success: false,
             message: error.message || "Ocurrió un error al crear la variante",
-            errorCode: error.errorCode
+            errorCode: error.errorCode,
+            fieldErrors: error.fieldErrors as Record<string, string> | undefined
         };
     }
 }
@@ -56,7 +67,17 @@ export const updateProductVariantAction = async (id: number, formData: FormData)
             imageFile: imageFile && imageFile.name ? imageFile : undefined
         };
 
-        const response = await productVariantService.updateProductVariant(id, data);
+        const response = await productVariantService.updateProductVariant(id, data) as any;
+
+        if (response.success === false) {
+            return {
+                success: false,
+                message: response.message || "Ocurrió un error al actualizar la variante",
+                errorCode: response.errorCode,
+                fieldErrors: response.fieldErrors as Record<string, string> | undefined
+            };
+        }
+
         return {
             success: response.success,
             message: response.message || "Variante actualizada exitosamente",
@@ -66,7 +87,8 @@ export const updateProductVariantAction = async (id: number, formData: FormData)
         return {
             success: false,
             message: error.message || "Ocurrió un error al actualizar la variante",
-            errorCode: error.errorCode
+            errorCode: error.errorCode,
+            fieldErrors: error.fieldErrors as Record<string, string> | undefined
         };
     }
 }

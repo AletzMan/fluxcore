@@ -30,7 +30,7 @@ export const FormProductVariant = ({ productMasterId, variant, onSuccess, onCanc
     // Para controlar el archivo en estado local
     const [file, setFile] = useState<File | null>(null);
 
-    const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<ProductVariantFormValues>({
+    const { control, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<ProductVariantFormValues>({
         resolver: zodResolver(ProductVariantSchema) as any,
         defaultValues: {
             barcode: variant?.barcode || "",
@@ -68,6 +68,11 @@ export const FormProductVariant = ({ productMasterId, variant, onSuccess, onCanc
                     router.refresh(); // Para refrescar la tabla del detalle
                 }, 1000);
             } else {
+                if (result.fieldErrors) {
+                    for (const [field, fieldMessage] of Object.entries(result.fieldErrors)) {
+                        setError(field as keyof ProductVariantFormValues, { type: 'server', message: fieldMessage });
+                    }
+                }
                 setStatus({ type: 'error', message: result.message || "No se pudo guardar la variante." });
             }
         } catch (error) {

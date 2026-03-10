@@ -1,15 +1,14 @@
 "use server";
-import { productMasterService } from "../services/api/product-master.service";
-import { CreateProductMaster } from "@/typesAPI/product-master";
+import { brandService } from "../services/api/brand.service";
 
-export const createProductMasterAction = async (data: CreateProductMaster) => {
+export const createBrandAction = async (formData: FormData) => {
     try {
-        const response = await productMasterService.createProductMaster(data) as any;
-
+        const response = await brandService.createBrand(formData) as any;
+        
         if (response.success === false) {
             return {
                 success: false,
-                message: response.message || "Ocurrió un error al crear el producto",
+                message: response.message || "Ocurrió un error al crear la marca",
                 errorCode: response.errorCode,
                 fieldErrors: response.fieldErrors as Record<string, string> | undefined
             };
@@ -17,27 +16,27 @@ export const createProductMasterAction = async (data: CreateProductMaster) => {
 
         return {
             success: response.success,
-            message: response.message || "Producto base creado exitosamente",
+            message: response.message || "Marca creada exitosamente",
             data: response.data
         };
     } catch (error: any) {
         return {
             success: false,
-            message: error.message || "Ocurrió un error al crear el producto",
+            message: error.message || "Ocurrió un error al crear la marca",
             errorCode: error.errorCode,
             fieldErrors: error.fieldErrors as Record<string, string> | undefined
         };
     }
 }
 
-export const updateProductMasterAction = async (id: number, data: CreateProductMaster) => {
+export const updateBrandAction = async (id: number, formData: FormData) => {
     try {
-        const response = await productMasterService.updateProductMaster(id, data) as any;
-
+        const response = await brandService.updateBrand(id, formData) as any;
+        
         if (response.success === false) {
             return {
                 success: false,
-                message: response.message || "Ocurrió un error al actualizar el producto",
+                message: response.message || "Ocurrió un error al actualizar la marca",
                 errorCode: response.errorCode,
                 fieldErrors: response.fieldErrors as Record<string, string> | undefined
             };
@@ -45,13 +44,13 @@ export const updateProductMasterAction = async (id: number, data: CreateProductM
 
         return {
             success: response.success,
-            message: response.message || "Producto base actualizado exitosamente",
+            message: response.message || "Marca actualizada exitosamente",
             data: response.data
         };
     } catch (error: any) {
         return {
             success: false,
-            message: error.message || "Ocurrió un error al actualizar el producto",
+            message: error.message || "Ocurrió un error al actualizar la marca",
             errorCode: error.errorCode,
             fieldErrors: error.fieldErrors as Record<string, string> | undefined
         };
