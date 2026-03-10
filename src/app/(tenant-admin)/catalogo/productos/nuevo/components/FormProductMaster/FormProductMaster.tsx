@@ -6,12 +6,14 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProductMasterSchema, ProductMasterFormValues } from '@/validations/product-master.schema';
 import { useRouter } from 'next/navigation';
-import { createProductMasterAction } from '@/app/actions/product-master.actions';
+import { createProductMasterAction, updateProductMasterAction } from '@/app/actions/product-master.actions';
 import { useState } from 'react';
 import { Package } from 'lucide-react';
 import styles from './FormProductMaster.module.scss';
+import { ProductMaster } from '@/typesModels/ProductMaster';
 
-export const FormProductMaster = () => {
+export const FormProductMaster = ({ product }: { product?: ProductMaster }) => {
+    const isEditMode = !!product;
     const router = useRouter();
     const [status, setStatus] = useState<{ type: 'idle' | 'success' | 'error', message: string }>({
         type: 'idle',
@@ -21,25 +23,31 @@ export const FormProductMaster = () => {
     const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<ProductMasterFormValues>({
         resolver: zodResolver(ProductMasterSchema) as any,
         defaultValues: {
-            name: "",
-            description: "",
-            categoryId: 1, // Default por ahora
-            brandId: 1     // Default por ahora
+            name: product?.name || "",
+            description: product?.description || "",
+            categoryId: product?.categoryId || 1, // Default por ahora
+            brandId: product?.brandId || 1     // Default por ahora
         }
     });
 
     const onSubmit = async (data: ProductMasterFormValues) => {
         try {
             setStatus({ type: 'idle', message: '' });
-            const result = await createProductMasterAction({
+
+            const payload = {
                 ...data,
                 description: data.description || ""
-            });
+            };
+
+            const result = isEditMode && product
+                ? await updateProductMasterAction(product.id, payload)
+                : await createProductMasterAction(payload);
 
             if (result.success && result.data?.id) {
-                setStatus({ type: 'success', message: "Producto guardado con éxito. Redirigiendo..." });
+                setStatus({ type: 'success', message: `Producto ${isEditMode ? 'actualizado' : 'guardado'} con éxito. Redirigiendo...` });
                 setTimeout(() => {
                     router.push(`/catalogo/productos/${result.data?.id}`);
+                    router.refresh();
                 }, 1000);
             } else {
                 setStatus({ type: 'error', message: result.message || "No se pudo guardar el producto." });
@@ -49,8 +57,12 @@ export const FormProductMaster = () => {
         }
     };
 
+    const onError = () => {
+        setStatus({ type: 'error', message: "Por favor revisa los campos en rojo. Hay errores de validación." });
+    };
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <form onSubmit={handleSubmit(onSubmit, onError)} className={styles.form}>
             {status.type === 'error' && (
                 <Alert message={status.message} color="danger" onClose={() => setStatus({ type: 'idle', message: '' })} />
             )}
@@ -153,7 +165,7 @@ export const FormProductMaster = () => {
                     variant="solid"
                     color="primary"
                     size="small"
-                    label={isSubmitting ? "Guardando..." : "Crear Producto Maestro"}
+                    label={isSubmitting ? "Guardando..." : (isEditMode ? "Guardar Cambios" : "Crear Producto Maestro")}
                     loading={isSubmitting}
                 />
             </div>

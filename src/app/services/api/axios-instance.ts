@@ -326,6 +326,7 @@ export const apiFluxCoreServerPost = async <T>(url: string, data?: any, config?:
     try {
         return await withTokenRefresh(async (api) => {
             const response = await api.post<T>(url, data, config);
+            console.log("apiFluxCoreServerPost response.data", response.data);
             return response.data;
         });
     } catch (error) {

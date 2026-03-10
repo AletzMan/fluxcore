@@ -84,6 +84,10 @@ interface DataTableProps<T> {
      * URL a la que redirigir cuando se hace clic en el botón de Crear del empty state
      */
     urlAddButton?: string;
+    /**
+     * Función que se ejecuta al hacer clic en el botón de editar
+     */
+    onEdit?: (item: T) => void;
 }
 
 export const DataTable = <T extends { id: string | number, isActive?: boolean }>({
@@ -96,7 +100,8 @@ export const DataTable = <T extends { id: string | number, isActive?: boolean }>
     onDelete,
     isMaintenance,
     hasAddButton,
-    urlAddButton
+    urlAddButton,
+    onEdit
 }: DataTableProps<T>) => {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [itemToDelete, setItemToDelete] = useState<string | number | null>(null);
@@ -469,6 +474,20 @@ export const DataTable = <T extends { id: string | number, isActive?: boolean }>
                                                     />
                                                 );
                                             }
+                                            if (action === "edit" && onEdit) {
+                                                return (
+                                                    <Button
+                                                        key={action}
+                                                        size='tiny'
+                                                        variant='solid'
+                                                        type='button'
+                                                        color='secondary'
+                                                        icon={<Pencil />}
+                                                        onClick={() => onEdit(item)}
+                                                    />
+                                                );
+                                            }
+
                                             if (action !== "delete") {
                                                 return (
                                                     <Link

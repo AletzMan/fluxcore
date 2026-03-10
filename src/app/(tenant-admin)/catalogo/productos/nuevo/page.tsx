@@ -1,6 +1,6 @@
 import { ContainerSection } from "@/app/components/layout/ContainerSection/ContainerSection";
 import { FormProductMaster } from "./components/FormProductMaster/FormProductMaster";
-import styles from "../../Productspage.module.scss";
+import styles from "../Productspage.module.scss";
 
 export default function NuevoProductoPage() {
     return (

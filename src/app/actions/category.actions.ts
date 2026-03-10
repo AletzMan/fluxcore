@@ -18,3 +18,20 @@ export const createCategoryAction = async (data: CreateCategory) => {
         };
     }
 }
+
+export const updateCategoryAction = async (id: number, data: CreateCategory) => {
+    try {
+        const response = await categoryService.updateCategory(id, data);
+        return {
+            success: response.success,
+            message: response.message || "Categoría actualizada exitosamente",
+            data: response.data
+        };
+    } catch (error: any) {
+        return {
+            success: false,
+            message: error.message || "Ocurrió un error al actualizar la categoría",
+            errorCode: error.errorCode
+        };
+    }
+}

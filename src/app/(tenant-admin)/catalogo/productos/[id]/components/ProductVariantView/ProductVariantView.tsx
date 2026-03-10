@@ -1,8 +1,11 @@
 "use client";
+import { useState } from "react";
+import { Dialog } from "lambda-ui-components";
 import { DataTable, DataTableColumn } from "@/app/components/ui/DataTable/DataTable";
 import { ProductVariant } from "@/typesModels/ProductVariant";
 import { Pagination } from "@/typesAPI/common.types";
 import { formatCurrency } from "@/lib/utils/common-utils";
+import { FormProductVariant } from "../../variantes/nuevo/components/FormProductVariant/FormProductVariant";
 import styles from "./ProductVariantView.module.scss";
 
 interface ProductVariantViewProps {
@@ -14,6 +17,19 @@ interface ProductVariantViewProps {
 }
 
 export const ProductVariantView = ({ variants, pagination, success, isMaintenance, masterId }: ProductVariantViewProps) => {
+    const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+    const handleEdit = (variant: ProductVariant) => {
+        setSelectedVariant(variant);
+        setIsDialogOpen(true);
+    };
+
+    const handleCloseDialog = () => {
+        setIsDialogOpen(false);
+        setTimeout(() => setSelectedVariant(null), 300); // delay to unmount cleanly
+    };
+
     const columns: DataTableColumn<ProductVariant>[] = [
         {
             sortKey: "id",
@@ -48,16 +64,33 @@ export const ProductVariantView = ({ variants, pagination, success, isMaintenanc
     ];
 
     return (
-        <DataTable
-            data={variants}
-            columns={columns}
-            pagination={pagination}
-            success={success}
-            isMaintenance={isMaintenance || false}
-            actions={["edit", "delete"]}
-            hasAddButton={true}
-            urlAddButton={`/catalogo/productos/${masterId}/variantes/nuevo`}
-            filters={[]}
-        />
+        <>
+            <DataTable
+                data={variants}
+                columns={columns}
+                pagination={pagination}
+                success={success}
+                isMaintenance={isMaintenance || false}
+                actions={["edit", "delete"]}
+                onEdit={handleEdit}
+                hasAddButton={true}
+                urlAddButton={`/catalogo/productos/${masterId}/variantes/nuevo`}
+                filters={[]}
+            />
+
+            <Dialog isOpen={isDialogOpen} onClose={handleCloseDialog}>
+                {selectedVariant && (
+                    <div className={styles.dialogContent}>
+                        <h2 className={styles.dialogTitle}>Editar Variante</h2>
+                        <FormProductVariant
+                            productMasterId={masterId}
+                            variant={selectedVariant}
+                            onSuccess={handleCloseDialog}
+                            onCancel={handleCloseDialog}
+                        />
+                    </div>
+                )}
+            </Dialog>
+        </>
     );
 };

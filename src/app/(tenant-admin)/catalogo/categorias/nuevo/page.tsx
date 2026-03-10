@@ -1,6 +1,6 @@
 import { ContainerSection } from "@/app/components/layout/ContainerSection/ContainerSection";
 import { FormCategory } from "./components/FormCategory/FormCategory";
-import styles from "../../Categorypage.module.scss";
+import styles from "../Categorypage.module.scss";
 
 export default function NuevaCategoriaPage() {
     return (

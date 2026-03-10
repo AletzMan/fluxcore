@@ -6,12 +6,21 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProductVariantSchema, ProductVariantFormValues } from '@/validations/product-variant.schema';
 import { useRouter } from 'next/navigation';
-import { createProductVariantAction } from '@/app/actions/product-variant.actions';
+import { createProductVariantAction, updateProductVariantAction } from '@/app/actions/product-variant.actions';
 import { useState } from 'react';
 import { Layers } from 'lucide-react';
 import styles from './FormProductVariant.module.scss';
+import { ProductVariant } from '@/typesModels/ProductVariant';
 
-export const FormProductVariant = ({ productMasterId }: { productMasterId: number }) => {
+interface FormProductVariantProps {
+    productMasterId: number;
+    variant?: ProductVariant;
+    onSuccess?: () => void;
+    onCancel?: () => void;
+}
+
+export const FormProductVariant = ({ productMasterId, variant, onSuccess, onCancel }: FormProductVariantProps) => {
+    const isEditMode = !!variant;
     const router = useRouter();
     const [status, setStatus] = useState<{ type: 'idle' | 'success' | 'error', message: string }>({
         type: 'idle',
@@ -24,9 +33,9 @@ export const FormProductVariant = ({ productMasterId }: { productMasterId: numbe
     const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<ProductVariantFormValues>({
         resolver: zodResolver(ProductVariantSchema) as any,
         defaultValues: {
-            barcode: "",
-            price: 0,
-            minStock: 0,
+            barcode: variant?.barcode || "",
+            price: variant?.price || 0,
+            minStock: variant?.minStock || 0,
             productMasterId: productMasterId
         }
     });
@@ -44,12 +53,18 @@ export const FormProductVariant = ({ productMasterId }: { productMasterId: numbe
                 formData.append('imageFile', file);
             }
 
-            const result = await createProductVariantAction(formData);
+            const result = isEditMode && variant
+                ? await updateProductVariantAction(variant.id, formData)
+                : await createProductVariantAction(formData);
 
             if (result.success) {
-                setStatus({ type: 'success', message: "Variante añadida exitosamente. Regresando a la ficha del producto..." });
+                setStatus({ type: 'success', message: `Variante ${isEditMode ? 'actualizada' : 'añadida'} exitosamente. Regresando a la ficha del producto...` });
                 setTimeout(() => {
-                    router.push(`/catalogo/productos/${productMasterId}`);
+                    if (onSuccess) {
+                        onSuccess();
+                    } else {
+                        router.push(`/catalogo/productos/${productMasterId}`);
+                    }
                     router.refresh(); // Para refrescar la tabla del detalle
                 }, 1000);
             } else {
@@ -60,8 +75,12 @@ export const FormProductVariant = ({ productMasterId }: { productMasterId: numbe
         }
     };
 
+    const onError = () => {
+        setStatus({ type: 'error', message: "Por favor revisa los campos en rojo. Hay errores de validación." });
+    };
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <form onSubmit={handleSubmit(onSubmit, onError)} className={styles.form}>
             {status.type === 'error' && (
                 <Alert message={status.message} color="danger" onClose={() => setStatus({ type: 'idle', message: '' })} />
             )}
@@ -147,7 +166,13 @@ export const FormProductVariant = ({ productMasterId }: { productMasterId: numbe
                     variant="soft"
                     color="neutral"
                     size="small"
-                    onClick={() => router.back()}
+                    onClick={() => {
+                        if (onCancel) {
+                            onCancel();
+                        } else {
+                            router.back();
+                        }
+                    }}
                     label="Cancelar"
                     disabled={isSubmitting}
                 />
@@ -156,7 +181,7 @@ export const FormProductVariant = ({ productMasterId }: { productMasterId: numbe
                     variant="solid"
                     color="primary"
                     size="small"
-                    label={isSubmitting ? "Guardando..." : "Agregar Variante"}
+                    label={isSubmitting ? "Guardando..." : (isEditMode ? "Guardar Cambios" : "Agregar Variante")}
                     loading={isSubmitting}
                 />
             </div>

@@ -6,11 +6,19 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CategorySchema, CategoryFormValues } from '@/validations/category.schema';
 import { useRouter } from 'next/navigation';
-import { createCategoryAction } from '@/app/actions/category.actions';
+import { createCategoryAction, updateCategoryAction } from '@/app/actions/category.actions';
 import { useState } from 'react';
 import styles from './FormCategory.module.scss';
+import { Category } from '@/typesModels/Category';
 
-export const FormCategory = () => {
+interface FormCategoryProps {
+    category?: Category;
+    onSuccess?: () => void;
+    onCancel?: () => void;
+}
+
+export const FormCategory = ({ category, onSuccess, onCancel }: FormCategoryProps) => {
+    const isEditMode = !!category;
     const router = useRouter();
     const [status, setStatus] = useState<{ type: 'idle' | 'success' | 'error', message: string }>({
         type: 'idle',
@@ -20,23 +28,32 @@ export const FormCategory = () => {
     const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<CategoryFormValues>({
         resolver: zodResolver(CategorySchema) as any,
         defaultValues: {
-            name: "",
-            description: ""
+            name: category?.name || "",
+            description: category?.description || ""
         }
     });
 
     const onSubmit = async (data: CategoryFormValues) => {
         try {
             setStatus({ type: 'idle', message: '' });
-            const result = await createCategoryAction({
+
+            const payload = {
                 name: data.name,
                 description: data.description || undefined
-            });
+            };
+
+            const result = isEditMode && category
+                ? await updateCategoryAction(category.id, payload)
+                : await createCategoryAction(payload);
 
             if (result.success) {
-                setStatus({ type: 'success', message: "Categoría creada exitosamente. Regresando..." });
+                setStatus({ type: 'success', message: `Categoría ${isEditMode ? 'actualizada' : 'creada'} exitosamente. Regresando...` });
                 setTimeout(() => {
-                    router.push(`/catalogo/categorias`);
+                    if (onSuccess) {
+                        onSuccess();
+                    } else {
+                        router.push(`/catalogo/categorias`);
+                    }
                     router.refresh();
                 }, 1000);
             } else {
@@ -47,8 +64,12 @@ export const FormCategory = () => {
         }
     };
 
+    const onError = () => {
+        setStatus({ type: 'error', message: "Por favor revisa los campos en rojo. Hay errores de validación." });
+    };
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <form onSubmit={handleSubmit(onSubmit, onError)} className={styles.form}>
             {status.type === 'error' && (
                 <Alert message={status.message} color="danger" onClose={() => setStatus({ type: 'idle', message: '' })} />
             )}
@@ -100,7 +121,13 @@ export const FormCategory = () => {
                     variant="soft"
                     color="neutral"
                     size="small"
-                    onClick={() => router.back()}
+                    onClick={() => {
+                        if (onCancel) {
+                            onCancel();
+                        } else {
+                            router.back();
+                        }
+                    }}
                     label="Cancelar"
                     disabled={isSubmitting}
                 />
@@ -109,7 +136,7 @@ export const FormCategory = () => {
                     variant="solid"
                     color="primary"
                     size="small"
-                    label={isSubmitting ? "Guardando..." : "Crear Categoría"}
+                    label={isSubmitting ? "Guardando..." : (isEditMode ? "Guardar Cambios" : "Crear Categoría")}
                     loading={isSubmitting}
                 />
             </div>

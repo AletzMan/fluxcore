@@ -1,4 +1,4 @@
-import { apiFluxCoreServerGet, apiFluxCoreServerPost, apiFluxCoreServerPut, apiFluxCoreServerDelete } from "./axios-instance";
+import { apiFluxCoreServerGet, apiFluxCoreServerPost, apiFluxCoreServerDelete, apiFluxCoreServerPatch } from "./axios-instance";
 import { PagedResponse, ApiResponse } from "@/typesAPI/common.types";
 import { Category } from "@/typesModels/Category";
 import { CategoryParams, CreateCategory, UpdateCategory } from "@/typesAPI/category.types";
@@ -22,7 +22,7 @@ class CategoryService {
     }
 
     async updateCategory(id: string | number, data: UpdateCategory): Promise<ApiResponse<Category>> {
-        return await apiFluxCoreServerPut<ApiResponse<Category>>(`/categories/${id}`, data) as ApiResponse<Category>;
+        return await apiFluxCoreServerPatch<ApiResponse<Category>>(`/categories/${id}`, data) as ApiResponse<Category>;
     }
 
     async deleteCategory(id: string | number): Promise<ApiResponse<null>> {
