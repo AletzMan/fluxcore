@@ -21,7 +21,7 @@ const jost = Jost({
 
 export const metadata: Metadata = {
   title: "FluxCore",
-  description: "FluxCore - Plataforma de Gestión de Proyectos",
+  description: "FluxCore - Plataforma de Gestión de Ventas",
 };
 
 export default function RootLayout({
