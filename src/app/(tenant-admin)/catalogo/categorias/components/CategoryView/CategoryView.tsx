@@ -2,6 +2,7 @@
 import { DataTable, DataTableColumn } from "@/app/components/ui/DataTable/DataTable";
 import { Category } from "@/typesModels/Category";
 import { Pagination } from "@/typesAPI/common.types";
+import styles from "./CategoryView.module.scss";
 
 interface CategoryViewProps {
     categories: Category[];
@@ -22,13 +23,13 @@ export const CategoryView = ({ categories, pagination, success, isMaintenance }:
             sortKey: "name",
             nameColumn: "Nombre de Categoría",
             isSortable: true,
-            render: (category) => <strong style={{ color: 'var(--primary-color)' }}>{category.name}</strong>
+            render: (category) => <strong className={styles.name}>{category.name}</strong>
         },
         {
             sortKey: "description",
             nameColumn: "Descripción",
             isSortable: true,
-            render: (category) => category.description || <span style={{ color: 'var(--muted-color)' }}>Sin descripción</span>
+            render: (category) => category.description || <span className={styles.descriptionEmpty}>Sin descripción</span>
         }
     ];
 

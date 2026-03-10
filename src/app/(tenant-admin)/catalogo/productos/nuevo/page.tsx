@@ -1,5 +1,6 @@
 import { ContainerSection } from "@/app/components/layout/ContainerSection/ContainerSection";
 import { FormProductMaster } from "./components/FormProductMaster/FormProductMaster";
+import styles from "../../Productspage.module.scss";
 
 export default function NuevoProductoPage() {
     return (
@@ -7,7 +8,7 @@ export default function NuevoProductoPage() {
             title="Nuevo Producto Maestro"
             description="Crea la ficha general de un nuevo producto; posteriormente podrás configurar sus variantes como precio o talla."
         >
-            <div style={{ padding: 'var(--spacing-lg)', maxWidth: '800px', margin: '0 auto' }}>
+            <div className={styles.formWrapper}>
                 <FormProductMaster />
             </div>
         </ContainerSection>

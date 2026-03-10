@@ -1,5 +1,6 @@
 import { ContainerSection } from "@/app/components/layout/ContainerSection/ContainerSection";
 import { FormCategory } from "./components/FormCategory/FormCategory";
+import styles from "../../Categorypage.module.scss";
 
 export default function NuevaCategoriaPage() {
     return (
@@ -7,7 +8,7 @@ export default function NuevaCategoriaPage() {
             title="Nueva Categoría"
             description="Agrega una nueva agrupación lógica para clasificar los productos del inventario."
         >
-            <div style={{ padding: 'var(--spacing-lg)', maxWidth: '600px', margin: '0 auto' }}>
+            <div className={styles.formWrapper}>
                 <FormCategory />
             </div>
         </ContainerSection>

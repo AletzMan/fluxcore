@@ -1,0 +1,58 @@
+.productDetailPage {
+    padding: var(--spacing-md);
+}
+
+.masterDetailCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.masterTitle {
+    font-size: 1.5rem;
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.masterGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.masterBox {
+    padding: var(--spacing-md);
+    background: var(--surface-b);
+    border-radius: var(--radius-box);
+}
+
+.masterBoxDescription {
+    margin: 0;
+    color: var(--muted-color);
+}
+
+.masterBoxValue {
+    margin: 0;
+}
+
+.variantsSection {
+    margin-top: var(--spacing-xl);
+    flex: 1;
+}
+
+.variantsSectionTitle {
+    margin-bottom: var(--spacing-sm);
+}
+
+.variantsSectionDesc {
+    color: var(--muted-color);
+    margin-bottom: var(--spacing-md);
+}
+
+.errorText {
+    color: var(--danger-color);
+}
+
+.variantsTableWrapper {
+    height: 450px;
+}

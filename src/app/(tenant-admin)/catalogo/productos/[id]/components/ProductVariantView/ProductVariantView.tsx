@@ -3,6 +3,7 @@ import { DataTable, DataTableColumn } from "@/app/components/ui/DataTable/DataTa
 import { ProductVariant } from "@/typesModels/ProductVariant";
 import { Pagination } from "@/typesAPI/common.types";
 import { formatCurrency } from "@/lib/utils/common-utils";
+import styles from "./ProductVariantView.module.scss";
 
 interface ProductVariantViewProps {
     variants: ProductVariant[];
@@ -34,10 +35,9 @@ export const ProductVariantView = ({ variants, pagination, success, isMaintenanc
         },
         {
             sortKey: "price",
-            nameColumn: "Precio Público",
+            nameColumn: "Precio Púb.",
             isSortable: true,
-            align: 'right',
-            render: (variant) => <strong style={{ color: 'var(--success-color)' }}>{formatCurrency(variant.price)}</strong>
+            render: (variant) => <strong className={styles.price}>{formatCurrency(variant.price)}</strong>
         },
         {
             sortKey: "minStock",

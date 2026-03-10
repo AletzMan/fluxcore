@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { createProductMasterAction } from '@/app/actions/product-master.actions';
 import { useState } from 'react';
 import { Package } from 'lucide-react';
+import styles from './FormProductMaster.module.scss';
 
 export const FormProductMaster = () => {
     const router = useRouter();
@@ -49,7 +50,7 @@ export const FormProductMaster = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-lg)' }}>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             {status.type === 'error' && (
                 <Alert message={status.message} color="danger" onClose={() => setStatus({ type: 'idle', message: '' })} />
             )}
@@ -58,7 +59,7 @@ export const FormProductMaster = () => {
             )}
 
             <Fieldset title="Información Principal">
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'var(--spacing-md)' }}>
+                <div className={styles.gridSingle}>
                     <Controller
                         name="name"
                         control={control}
@@ -97,7 +98,7 @@ export const FormProductMaster = () => {
             </Fieldset>
 
             <Fieldset title="Clasificación">
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'var(--spacing-md)' }}>
+                <div className={styles.gridMulti}>
                     {/* Nota: En el futuro estos deberían ser "Select" conectados al Endpoint de Categorias/Marcas respectivo */}
                     <Controller
                         name="categoryId"
@@ -137,7 +138,7 @@ export const FormProductMaster = () => {
                 </div>
             </Fieldset>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-md)' }}>
+            <div className={styles.actions}>
                 <Button
                     type="button"
                     variant="soft"

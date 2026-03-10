@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { createProductVariantAction } from '@/app/actions/product-variant.actions';
 import { useState } from 'react';
 import { Layers } from 'lucide-react';
+import styles from './FormProductVariant.module.scss';
 
 export const FormProductVariant = ({ productMasterId }: { productMasterId: number }) => {
     const router = useRouter();
@@ -60,7 +61,7 @@ export const FormProductVariant = ({ productMasterId }: { productMasterId: numbe
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-lg)' }}>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             {status.type === 'error' && (
                 <Alert message={status.message} color="danger" onClose={() => setStatus({ type: 'idle', message: '' })} />
             )}
@@ -69,8 +70,8 @@ export const FormProductVariant = ({ productMasterId }: { productMasterId: numbe
             )}
 
             <Fieldset title="Detalles Físicos y Precio">
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'var(--spacing-md)' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 'var(--spacing-md)' }}>
+                <div className={styles.gridSingle}>
+                    <div className={styles.gridMulti}>
                         <Controller
                             name="barcode"
                             control={control}
@@ -107,7 +108,7 @@ export const FormProductVariant = ({ productMasterId }: { productMasterId: numbe
                         />
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 'var(--spacing-md)' }}>
+                    <div className={styles.gridMulti}>
                         <Controller
                             name="minStock"
                             control={control}
@@ -126,21 +127,13 @@ export const FormProductVariant = ({ productMasterId }: { productMasterId: numbe
                             )}
                         />
 
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                            {/* Componente nativo de archivo adaptado con la marca */}
-                            <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--text-color)' }}>Imagen de la Variante (Opcional)</label>
+                        <div className={styles.fileInputWrapper}>
+                            <label className={styles.fileLabel}>Imagen de la Variante (Opcional)</label>
                             <input
                                 type="file"
                                 accept="image/*"
                                 onChange={(e) => setFile(e.target.files?.[0] || null)}
-                                style={{
-                                    padding: '8px',
-                                    border: '1px solid var(--border-color)',
-                                    borderRadius: 'var(--radius-field)',
-                                    background: 'var(--surface-a)',
-                                    cursor: 'pointer',
-                                    fontSize: '0.85rem'
-                                }}
+                                className={styles.fileInput}
                             />
                         </div>
                     </div>
@@ -148,7 +141,7 @@ export const FormProductVariant = ({ productMasterId }: { productMasterId: numbe
                 </div>
             </Fieldset>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-md)' }}>
+            <div className={styles.actions}>
                 <Button
                     type="button"
                     variant="soft"

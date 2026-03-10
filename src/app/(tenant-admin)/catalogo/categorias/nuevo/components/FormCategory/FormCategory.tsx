@@ -8,6 +8,7 @@ import { CategorySchema, CategoryFormValues } from '@/validations/category.schem
 import { useRouter } from 'next/navigation';
 import { createCategoryAction } from '@/app/actions/category.actions';
 import { useState } from 'react';
+import styles from './FormCategory.module.scss';
 
 export const FormCategory = () => {
     const router = useRouter();
@@ -47,7 +48,7 @@ export const FormCategory = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-lg)' }}>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             {status.type === 'error' && (
                 <Alert message={status.message} color="danger" onClose={() => setStatus({ type: 'idle', message: '' })} />
             )}
@@ -56,7 +57,7 @@ export const FormCategory = () => {
             )}
 
             <Fieldset title="Información de la Categoría">
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'var(--spacing-md)' }}>
+                <div className={styles.grid}>
                     <Controller
                         name="name"
                         control={control}
@@ -93,7 +94,7 @@ export const FormCategory = () => {
                 </div>
             </Fieldset>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-md)' }}>
+            <div className={styles.actions}>
                 <Button
                     type="button"
                     variant="soft"

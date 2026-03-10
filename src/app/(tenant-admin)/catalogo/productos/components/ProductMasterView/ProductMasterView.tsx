@@ -2,6 +2,7 @@
 import { DataTable, DataTableColumn } from "@/app/components/ui/DataTable/DataTable";
 import { ProductMaster } from "@/typesModels/ProductMaster";
 import { Pagination } from "@/typesAPI/common.types";
+import styles from "./ProductMasterView.module.scss";
 
 interface ProductMasterViewProps {
     products: ProductMaster[];
@@ -20,9 +21,9 @@ export const ProductMasterView = ({ products, pagination, success, isMaintenance
         },
         {
             sortKey: "name",
-            nameColumn: "Nombre del Producto",
+            nameColumn: "Producto",
             isSortable: true,
-            render: (product) => <strong style={{ color: 'var(--primary-color)' }}>{product.name}</strong>
+            render: (product) => <strong className={styles.name}>{product.name}</strong>
         },
         {
             sortKey: "categoryId",

@@ -1,0 +1,44 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.gridSingle {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+}
+
+.gridMulti {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.fileInputWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fileLabel {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.fileInput {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-field);
+    background: var(--surface-a);
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+}
