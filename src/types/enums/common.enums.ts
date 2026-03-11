@@ -101,4 +101,13 @@ export enum CfdiUsage {
     Donations = 'D04',
     WithoutFiscalEffects = 'S01',
     Payments = 'CP01'
+} 
+
+export enum UserRole {
+    SUPER_ADMIN = 1,
+    ADMIN = 2,
+    MANAGER = 3,
+    PURCHASING_AGENT = 4,
+    CASHIER = 5,
+    STOCK_CLERK = 6
 }

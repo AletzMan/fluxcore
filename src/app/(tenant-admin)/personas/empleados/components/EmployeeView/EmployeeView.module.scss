@@ -1,0 +1,14 @@
+.name {
+    font-size: var(--font-size-sm);
+    color: var(--foreground-title-color);
+}
+
+.email {
+    font-size: var(--font-size-xs);
+    color: var(--foreground-secondary-color);
+}
+
+.role {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+}
