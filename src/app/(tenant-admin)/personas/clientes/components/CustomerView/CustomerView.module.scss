@@ -1,0 +1,27 @@
+.name {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.email {
+    color: var(--foreground-secondary-color);
+    font-size: 0.875rem;
+}
+
+.balance {
+    font-weight: 600;
+}
+
+.positiveBalance {
+    color: var(--success-color);
+}
+
+.negativeBalance {
+    color: var(--danger-color);
+}
+
+.dialogContent {
+    padding: var(--spacing-md) var(--spacing-lg);
+    width: 600px;
+    max-width: 100svw;
+}
