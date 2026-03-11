@@ -14,7 +14,8 @@ export async function createSubscriptionAction(data: CreateSubscription): Promis
         console.error("Error in createSubscriptionAction:", error);
         return {
             success: false,
-            message: error.message || "Error al crear la suscripción"
+            message: error.message || "Error al crear la suscripción",
+            fieldErrors: error.fieldErrors as Record<string, string> | undefined
         };
     }
 }
@@ -34,7 +35,8 @@ export async function updateSubscriptionAction(id: number, data: UpdateSubscript
         console.error("Error in updateSubscriptionAction:", error);
         return {
             success: false,
-            message: error.message || "Error al actualizar la suscripción"
+            message: error.message || "Error al actualizar la suscripción",
+            fieldErrors: error.fieldErrors as Record<string, string> | undefined
         };
     }
 }

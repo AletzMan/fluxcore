@@ -57,6 +57,13 @@ export const FormTenant = () => {
 
             const result = await createTenantAction(payload);
             console.log("resultForm", result);
+
+            if (result && !result.success && result.fieldErrors) {
+                for (const [field, fieldMessage] of Object.entries(result.fieldErrors)) {
+                    setError(field as keyof RegisterTenantValues, { type: 'server', message: fieldMessage as string });
+                }
+            }
+
             const newState = {
                 success: result.success,
                 title: result.success ? "¡Comercio creado con éxito!" : "Error al crear comercio",

@@ -1,7 +1,7 @@
 "use client"
 import styles from './DataTable.module.scss'
 import { Button, Checkbox, DatePicker, Dialog, Divider, Dropdown, Input, Join, Link, Switch, Table, Tag } from 'lambda-ui-components';
-import { Calendar, Eye, List, ListFilter, Pencil, Search, ToggleLeft, Trash, Trash2 } from 'lucide-react';
+import { Calendar, Eye, List, ListFilter, Pencil, Search, ToggleLeft, Trash, Trash2, X } from 'lucide-react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { Pagination } from '@/typesAPI/common.types';
 import { Fragment, useState } from 'react';
@@ -290,7 +290,8 @@ export const DataTable = <T extends { id: string | number, isActive?: boolean }>
         return active;
     }
 
-    console.log("data", data)
+
+    console.log("filters", filters)
 
     return (
         <div className={styles.datatable} >
@@ -309,14 +310,14 @@ export const DataTable = <T extends { id: string | number, isActive?: boolean }>
                         </Join>
 
                     </div>
-                    <Button
+                    {filters && filters.length > 0 && <Button
                         size='small'
                         variant={isFilterOpen ? 'solid' : 'themed'}
                         color='neutral'
                         label='Filtros'
                         icon={<ListFilter />}
                         onClick={() => { setIsFilterOpen(!isFilterOpen) }}
-                    />
+                    />}
                 </div>
                 <AnimatePresence>
                     {isFilterOpen && <motion.div

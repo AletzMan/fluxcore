@@ -18,7 +18,8 @@ export async function createTenantAction(data: RegisterTenantRequest): Promise<a
         console.error("Error in createTenantAction:", error);
         return {
             success: false,
-            message: error.message || "Error al crear el tenant"
+            message: error.message || "Error al crear el tenant",
+            fieldErrors: error.fieldErrors as Record<string, string> | undefined
         };
     }
 }
@@ -41,7 +42,8 @@ export async function updateTenantAction(id: number, data: Partial<Tenant>): Pro
         console.error("Error in updateTenantAction:", error);
         return {
             success: false,
-            message: error.message || "Error al actualizar el tenant"
+            message: error.message || "Error al actualizar el tenant",
+            fieldErrors: error.fieldErrors as Record<string, string> | undefined
         };
     }
 }

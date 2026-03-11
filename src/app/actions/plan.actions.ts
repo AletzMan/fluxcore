@@ -23,7 +23,8 @@ export async function createPlanAction(data: CreatePlan): Promise<any> {
         console.error("Error in createPlanAction:", error);
         return {
             success: false,
-            message: error.message || "Error al crear el plan"
+            message: error.message || "Error al crear el plan",
+            fieldErrors: error.fieldErrors as Record<string, string> | undefined
         };
     }
 }
@@ -44,7 +45,8 @@ export async function updatePlanAction(id: number, data: UpdatePlan): Promise<an
         console.error("Error in updatePlanAction:", error);
         return {
             success: false,
-            message: error.message || "Error al actualizar el plan"
+            message: error.message || "Error al actualizar el plan",
+            fieldErrors: error.fieldErrors as Record<string, string> | undefined
         };
     }
 }

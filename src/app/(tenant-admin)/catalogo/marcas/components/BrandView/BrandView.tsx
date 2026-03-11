@@ -45,8 +45,8 @@ export const BrandView = ({ brands, pagination, success, isMaintenance }: BrandV
             render: (brand) => (
                 <div className={styles.logoWrapper}>
                     {brand.urlLogo ? (
-                        <div style={{ position: 'relative', width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden' }}>
-                            <Image src={brand.urlLogo} alt={brand.name} fill style={{ objectFit: 'cover' }} unoptimized />
+                        <div className={styles.logoWrapper_container}>
+                            <Image className={styles.logoWrapper_img} src={brand.urlLogo} alt={brand.name} width={32} height={32} unoptimized />
                         </div>
                     ) : (
                         <Avatar name={brand.name} size="small" />

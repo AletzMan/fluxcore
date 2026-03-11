@@ -27,7 +27,7 @@ export const FormSubscription = () => {
     const creationResultRef = useRef<{ success: boolean, title: string, message: string } | null>(null);
     const router = useRouter();
 
-    const { control, handleSubmit, trigger, watch, formState: { errors } } = useForm<SubscriptionFormValues>({
+    const { control, handleSubmit, trigger, setError, watch, formState: { errors } } = useForm<SubscriptionFormValues>({
         // @ts-ignore
         resolver: zodResolver(SubscriptionSchema),
         defaultValues: {
@@ -44,6 +44,13 @@ export const FormSubscription = () => {
     const onSubmit = async (data: SubscriptionFormValues) => {
         try {
             const result = await createSubscriptionAction(data);
+
+            if (result && !result.success && result.fieldErrors) {
+                for (const [field, fieldMessage] of Object.entries(result.fieldErrors)) {
+                    setError(field as keyof SubscriptionFormValues, { type: 'server', message: fieldMessage as string });
+                }
+            }
+
             const newState = {
                 success: result.success,
                 title: result.success ? "¡Suscripción creada con éxito!" : "Error al crear la suscripción",

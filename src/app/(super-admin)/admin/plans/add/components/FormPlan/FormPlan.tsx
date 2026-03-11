@@ -30,7 +30,7 @@ export const FormPlan = (props: any) => {
     const creationResultRef = useRef<{ success: boolean, title: string, message: string } | null>(null);
     const router = useRouter();
 
-    const { control, handleSubmit, trigger, watch, formState: { errors } } = useForm<PlanFormValues>({
+    const { control, handleSubmit, trigger, setError, watch, formState: { errors } } = useForm<PlanFormValues>({
         resolver: zodResolver(PlanSchema) as any,
         defaultValues: {
             name: "",
@@ -63,6 +63,13 @@ export const FormPlan = (props: any) => {
             const result = await createPlanAction({
                 ...data,
             });
+
+            if (result && !result.success && result.fieldErrors) {
+                for (const [field, fieldMessage] of Object.entries(result.fieldErrors)) {
+                    setError(field as keyof PlanFormValues, { type: 'server', message: fieldMessage as string });
+                }
+            }
+
             const newState = {
                 success: result.success,
                 title: result.success ? "¡Plan creado con éxito!" : "Error al crear el plan",

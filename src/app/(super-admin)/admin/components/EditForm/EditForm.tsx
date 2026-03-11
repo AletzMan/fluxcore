@@ -82,6 +82,7 @@ export const EditForm = <T extends Record<string, any>>({
         control,
         handleSubmit,
         reset,
+        setError,
         formState: { errors },
     } = useForm<T>({
         resolver: zodResolver(schema as any),
@@ -117,7 +118,13 @@ export const EditForm = <T extends Record<string, any>>({
                     : await apiFluxCorePut(apiUrl, payload);
             console.log("response", response);
             if ((response as any)?.success === false) {
-                setStatus({ type: 'error', message: (response as any).message || 'Error al guardar los cambios.' });
+                const resp = response as any;
+                if (resp.fieldErrors) {
+                    for (const [field, fieldMessage] of Object.entries(resp.fieldErrors)) {
+                        setError(field as any, { type: 'server', message: fieldMessage as string });
+                    }
+                }
+                setStatus({ type: 'error', message: resp.message || 'Error al guardar los cambios.' });
                 return;
             }
 

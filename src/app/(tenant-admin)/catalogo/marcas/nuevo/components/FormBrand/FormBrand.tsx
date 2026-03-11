@@ -110,11 +110,12 @@ export const FormBrand = ({ brand, onSuccess, onCancel }: FormBrandProps) => {
                         render={({ field }) => (
                             <TextArea
                                 {...field}
+                                className={styles.textArea}
                                 id="description"
                                 label="Descripción"
                                 placeholder="Ropa deportiva..."
                                 size="small"
-                                rows={2}
+                                rows={6}
                                 errorMessage={errors.description?.message}
                                 invalid={!!errors.description}
                             />

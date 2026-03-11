@@ -3,7 +3,7 @@ import { LambdaConfigProvider, NotificationProvider, ThemeProvider } from "lambd
 import SessionProvider from "./SessionProvider";
 export function ClientProviders({ children }: { children: React.ReactNode }) {
     return (
-        <LambdaConfigProvider lang="en" >
+        <LambdaConfigProvider lang="es" >
             <ThemeProvider
                 defaultTheme="slate"
                 lightTheme="ocean"

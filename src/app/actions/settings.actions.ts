@@ -16,7 +16,8 @@ export async function toggleMaintenanceAction(data: ToggleMaintenanceRequest): P
     } catch (error: any) { 
         return {
             success: false,
-            message: error.message || "Error al cambiar el modo de mantenimiento"
+            message: error.message || "Error al cambiar el modo de mantenimiento",
+            fieldErrors: error.fieldErrors as Record<string, string> | undefined
         };
     }
 }
