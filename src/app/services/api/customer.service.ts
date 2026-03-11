@@ -20,9 +20,9 @@ class CustomerService {
         return response as PagedResponse<Customer>;
     }
 
-    async getCustomerById(id: number): Promise<Customer> {
-        const response = await apiFluxCoreServerGet<Customer>(`/customers/${id}`);
-        return response as Customer;
+    async getCustomerById(id: number): Promise<ApiResponse<Customer>> {
+        const response = await apiFluxCoreServerGet<ApiResponse<Customer>>(`/customers/${id}`);
+        return response as ApiResponse<Customer>;
     }
 
     async createCustomer(data: CreateCustomer): Promise<ApiResponse<Customer>> {

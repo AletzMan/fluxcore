@@ -116,7 +116,7 @@ export const CustomerView = ({ customers, pagination, success, isMaintenance }: 
             pagination={pagination}
             success={success}
             isMaintenance={isMaintenance || false}
-            actions={["edit", "delete"]}
+            actions={["view", "delete"]}
             onDelete={(id) => deleteCustomer(Number(id))}
             hasAddButton={true}
             urlAddButton="/personas/clientes/nuevo"

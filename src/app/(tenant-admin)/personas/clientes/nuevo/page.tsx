@@ -1,6 +1,6 @@
 import { ContainerSection } from "@/app/components/layout/ContainerSection/ContainerSection";
+import styles from "../CustomerPage.module.scss";
 import { FormCustomer } from "./components/FormCustomer/FormCustomer";
-import styles from "../../CustomerPage.module.scss";
 
 export default function NuevoClientePage() {
     return (

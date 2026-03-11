@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert, Button, Input, Select, TextArea } from 'lambda-ui-components';
+import { Alert, Button, Input, Select, TextArea, Switch, Divider } from 'lambda-ui-components';
 import { Fieldset } from '@/app/components/layout/Fieldset/Fieldset';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -60,8 +60,8 @@ export const FormCustomer = ({ customer }: FormCustomerProps) => {
             setStatus({ type: 'idle', message: '' });
 
             const result = isEditMode && customer
-                ? await updateCustomerAction(customer.id, { ...data, isActive: data.isActive ?? true })
-                : await createCustomerAction(data);
+                ? await updateCustomerAction(customer.id, { ...data, address: data.address || "", isActive: data.isActive ?? true })
+                : await createCustomerAction({ ...data, address: data.address || "" });
 
             if (result.success) {
                 setStatus({ type: 'success', message: `Cliente ${isEditMode ? 'actualizado' : 'creado'} exitosamente. Regresando...` });
@@ -254,6 +254,37 @@ export const FormCustomer = ({ customer }: FormCustomerProps) => {
                 </div>
             </Fieldset>
 
+            {isEditMode && customer && (
+                <Fieldset title="Estado y Finanzas">
+                    <div className={styles.grid}>
+                        <Controller
+                            name="isActive"
+                            control={control}
+                            render={({ field }) => {
+                                const { value, ...rest } = field;
+                                return (
+                                    <Switch
+                                        {...rest}
+                                        id="isActive"
+                                        label="Cliente Activo en el sistema"
+                                        size="small"
+                                        checked={value as boolean}
+                                        onChange={(e) => field.onChange((e.target as any).checked)}
+                                    />
+                                );
+                            }}
+                        />
+                        <Input
+                            id="currentBalance"
+                            label="Saldo Actualizado"
+                            size="small"
+                            value={`$${(customer.currentBalance || 0).toFixed(2)}`}
+                            disabled
+                        />
+                    </div>
+                </Fieldset>
+            )}
+
             <div className={styles.actions}>
                 <Button
                     type="button"
@@ -269,7 +300,7 @@ export const FormCustomer = ({ customer }: FormCustomerProps) => {
                     variant="solid"
                     color="primary"
                     size="small"
-                    label={isSubmitting ? "Guardando..." : "Crear Cliente"}
+                    label={isSubmitting ? "Guardando..." : (isEditMode ? "Guardar Cambios" : "Crear Cliente")}
                     loading={isSubmitting}
                 />
             </div>
