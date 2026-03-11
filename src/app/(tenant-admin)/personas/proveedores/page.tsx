@@ -1,13 +1,42 @@
 import { ContainerSection } from "@/app/components/layout/ContainerSection/ContainerSection";
+import { providerService } from "@/app/services/api/provider.service";
+import { Suspense } from "react";
+import { PagedResponse } from "@/typesAPI/common.types";
+import { Provider } from "@/typesModels/Provider";
+import { ProviderParams } from "@/typesAPI/provider.types";
+import { ProviderView } from "./components/ProviderView/ProviderView";
+import styles from "./ProviderPage.module.scss";
 
-export default function ProveedoresPage() {
+const getProviders = async (params: Partial<ProviderParams>) => {
+    try {
+        return await providerService.getProviders(params);
+    } catch (error: any) {
+        return { success: false, data: [], errorCode: error?.errorCode } as unknown as PagedResponse<Provider>;
+    }
+}
+
+export default async function ProveedoresPage({ searchParams }: {
+    searchParams: Promise<Partial<ProviderParams>> | Partial<ProviderParams>
+}) {
+    const params = await searchParams;
+    const providers = await getProviders({ ...params });
+
     return (
         <ContainerSection
-            title="Proveedores"
-            description="Directorio y control de proveedores, para facilitar tus órdenes de compra."
+            title="Directorio de Proveedores"
+            description="Gestiona a tus socios comerciales, fabricantes y distribuidores de productos."
+            titleAddButton="Nuevo Proveedor"
+            hrefAddButton="/personas/proveedores/nuevo"
         >
-            <div style={{ padding: 'var(--spacing-md)' }}>
-                {/* Contenido de proveedores aquí */}
+            <div className={styles.container}>
+                <Suspense fallback={<div>Cargando proveedores...</div>}>
+                    <ProviderView
+                        providers={providers?.data || []}
+                        pagination={providers?.pagination!}
+                        success={providers?.success}
+                        isMaintenance={providers?.errorCode === "SERVICE_UNAVAILABLE"}
+                    />
+                </Suspense>
             </div>
         </ContainerSection>
     );

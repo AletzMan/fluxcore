@@ -1,0 +1,21 @@
+.company {
+    font-size: var(--font-size-sm);
+    color: var(--foreground-color);
+}
+
+.contact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3xs);
+
+    .name {
+        font-size: var(--font-size-sm);
+        font-weight: 500;
+        color: var(--foreground-title-color);
+    }
+
+    .email {
+        font-size: var(--font-size-xs);
+        color: var(--foreground-secondary-color);
+    }
+}

@@ -1,0 +1,31 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    flex: 1;
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: var(--spacing-sm);
+        padding-top: var(--spacing-sm);
+        padding-bottom: var(--spacing-sm);
+    }
+
+
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-none);
+
+        button {
+            width: fit-content;
+
+            @media (max-width: 600px) {
+                width: 100%;
+            }
+        }
+    }
+}
