@@ -46,4 +46,16 @@ export enum SaleAction
 export enum CashSessionStatus {
     CLOSE = 'CLOSE',
     OPEN = 'OPEN'
+} 
+
+export enum MovementType {
+    PURCHASE_RECEIPT = 100,
+    CUSTOMER_RETURN = 101,
+    POSITIVE_ADJUSTMENT = 102,
+    TRANSFER_IN = 103,
+    SALE = 200,
+    SPOILAGE = 201,
+    NEGATIVE_ADJUSTMENT = 202,
+    TRANSFER_OUT = 203,
+    INTERNAL_CONSUMPTION = 204
 }

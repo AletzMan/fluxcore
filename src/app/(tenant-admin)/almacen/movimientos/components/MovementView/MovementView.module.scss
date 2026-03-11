@@ -1,0 +1,43 @@
+.code {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.positive {
+    color: var(--success-color);
+    font-weight: 600;
+}
+
+.negative {
+    color: var(--danger-color);
+    font-weight: 600;
+}
+
+.dialogContent {
+    padding: var(--spacing-md) var(--spacing-lg);
+    width: 600px;
+    max-width: 100svw;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.detailRow {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-xs) 0;
+    border-bottom: 1px solid var(--border-color);
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &_label {
+        font-weight: 500;
+        color: var(--foreground-secondary-color);
+    }
+
+    &_value {
+        font-weight: 600;
+    }
+}
