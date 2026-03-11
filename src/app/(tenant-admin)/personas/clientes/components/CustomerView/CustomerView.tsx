@@ -6,6 +6,15 @@ import { Pagination } from "@/typesAPI/common.types";
 import { Tag, useNotification } from "lambda-ui-components";
 import { customerService } from "@/app/services/api/customer.service";
 import styles from "./CustomerView.module.scss";
+import { TaxRegime, CfdiUsage } from "@/enums/common.enums";
+
+const getTaxRegimeOptions = () => Object.entries(TaxRegime)
+    .filter(([key, value]) => typeof value === 'number')
+    .map(([key, value]) => ({ label: key.replace(/([A-Z])/g, ' $1').trim(), value: value!.toString() }));
+
+const getCfdiUsageOptions = () => Object.entries(CfdiUsage)
+    .filter(([key, value]) => typeof value === 'string')
+    .map(([key, value]) => ({ label: `${value} - ${key.replace(/([A-Z])/g, ' $1').trim()}`, value: value as string }));
 
 interface CustomerViewProps {
     customers: Customer[];
@@ -48,6 +57,7 @@ export const CustomerView = ({ customers, pagination, success, isMaintenance }: 
             sortKey: "id",
             nameColumn: "Nº",
             isSortable: true,
+            align: "center",
             width: "60px",
             render: (customer) => customer.id.toString()
         },
@@ -82,7 +92,7 @@ export const CustomerView = ({ customers, pagination, success, isMaintenance }: 
             nameColumn: "Saldo",
             isSortable: true,
             width: "120px",
-            align: "right",
+            align: "center",
             render: (customer) => {
                 const balance = customer.currentBalance || 0;
                 return (
@@ -96,12 +106,14 @@ export const CustomerView = ({ customers, pagination, success, isMaintenance }: 
             sortKey: "isActive",
             nameColumn: "Estado",
             isSortable: true,
+            align: "center",
             width: "100px",
             render: (customer) => (
                 <Tag
                     size="small"
                     variant="subtle"
                     color={customer.isActive ? "success" : "neutral"}
+                    radius="small"
                 >
                     {customer.isActive ? "Activo" : "Inactivo"}
                 </Tag>
@@ -123,7 +135,24 @@ export const CustomerView = ({ customers, pagination, success, isMaintenance }: 
             filters={[
                 { id: "f_act", key: "isActive", value: "true", label: "Solo Activos", type: "boolean", nameGroup: "Estado" },
                 { id: "f_inact", key: "isActive", value: "false", label: "Inactivos", type: "boolean", nameGroup: "Estado" },
-                { id: "f_bal", key: "hasBalance", value: "true", label: "Con Saldo", type: "boolean", nameGroup: "Finanzas" }
+                { id: "f_bal_true", key: "hasBalance", value: "true", label: "Con Saldo Pendiente", type: "boolean", nameGroup: "Finanzas" },
+                { id: "f_bal_false", key: "hasBalance", value: "false", label: "Sin Saldo", type: "boolean", nameGroup: "Finanzas" },
+                ...getTaxRegimeOptions().map(opt => ({
+                    id: `tr_${opt.value}`,
+                    key: "taxRegime",
+                    value: opt.value,
+                    label: opt.label,
+                    type: "multiple-choice" as const,
+                    nameGroup: "Régimen Fiscal"
+                })),
+                ...getCfdiUsageOptions().map(opt => ({
+                    id: `cu_${opt.value}`,
+                    key: "cfdiUsage",
+                    value: opt.value,
+                    label: opt.label,
+                    type: "multiple-choice" as const,
+                    nameGroup: "Uso CFDI"
+                }))
             ]}
         />
     );
