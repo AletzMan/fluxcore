@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import { DataTable, DataTableColumn } from "@/app/components/ui/DataTable/DataTable";
 import { Customer } from "@/typesModels/Customer";
 import { Pagination } from "@/typesAPI/common.types";
@@ -7,14 +6,21 @@ import { Tag, useNotification } from "lambda-ui-components";
 import { customerService } from "@/app/services/api/customer.service";
 import styles from "./CustomerView.module.scss";
 import { TaxRegime, CfdiUsage } from "@/enums/common.enums";
+import { TAX_REGIME_MAP, CFDI_USAGE_MAP } from "@/app/constants/customerSections";
 
 const getTaxRegimeOptions = () => Object.entries(TaxRegime)
     .filter(([key, value]) => typeof value === 'number')
-    .map(([key, value]) => ({ label: key.replace(/([A-Z])/g, ' $1').trim(), value: value!.toString() }));
+    .map(([key, value]) => ({
+        label: TAX_REGIME_MAP[value as TaxRegime] || key,
+        value: value!.toString()
+    }));
 
 const getCfdiUsageOptions = () => Object.entries(CfdiUsage)
     .filter(([key, value]) => typeof value === 'string')
-    .map(([key, value]) => ({ label: `${value} - ${key.replace(/([A-Z])/g, ' $1').trim()}`, value: value as string }));
+    .map(([key, value]) => ({
+        label: `${value} - ${CFDI_USAGE_MAP[value as CfdiUsage] || key}`,
+        value: value as string
+    }));
 
 interface CustomerViewProps {
     customers: Customer[];
@@ -133,10 +139,10 @@ export const CustomerView = ({ customers, pagination, success, isMaintenance }: 
             hasAddButton={true}
             urlAddButton="/personas/clientes/nuevo"
             filters={[
-                { id: "f_act", key: "isActive", value: "true", label: "Solo Activos", type: "boolean", nameGroup: "Estado" },
-                { id: "f_inact", key: "isActive", value: "false", label: "Inactivos", type: "boolean", nameGroup: "Estado" },
-                { id: "f_bal_true", key: "hasBalance", value: "true", label: "Con Saldo Pendiente", type: "boolean", nameGroup: "Finanzas" },
-                { id: "f_bal_false", key: "hasBalance", value: "false", label: "Sin Saldo", type: "boolean", nameGroup: "Finanzas" },
+                { id: "f_act", key: "isActive", value: "true", label: "Solo Activos", type: "boolean", nameGroup: "Estado", optionalLabel: "Solo Activos" },
+                { id: "f_inact", key: "isActive", value: "false", label: "Inactivos", type: "boolean", nameGroup: "Estado", optionalLabel: "Inactivos" },
+                { id: "f_bal_true", key: "hasBalance", value: "true", label: "Con Saldo Pendiente", type: "boolean", nameGroup: "Finanzas", optionalLabel: "Con Saldo Pendiente" },
+                { id: "f_bal_false", key: "hasBalance", value: "false", label: "Sin Saldo", type: "boolean", nameGroup: "Finanzas", optionalLabel: "Sin Saldo" },
                 ...getTaxRegimeOptions().map(opt => ({
                     id: `tr_${opt.value}`,
                     key: "taxRegime",
