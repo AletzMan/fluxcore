@@ -11,27 +11,27 @@ class EmployeeService {
         if (params?.search) queryParams.append("Search", params.search);
         if (params?.role) queryParams.append("Role", params.role.toString());
 
-        const response = await apiFluxCoreServerGet<PagedResponse<Employee>>(`/employees?${queryParams.toString()}`);
+        const response = await apiFluxCoreServerGet<PagedResponse<Employee>>(`/users?${queryParams.toString()}`);
         return response as PagedResponse<Employee>;
     }
 
     async getEmployeeById(id: number): Promise<ApiResponse<Employee>> {
-        const response = await apiFluxCoreServerGet<ApiResponse<Employee>>(`/employees/${id}`);
+        const response = await apiFluxCoreServerGet<ApiResponse<Employee>>(`/users/${id}`);
         return response as ApiResponse<Employee>;
     }
 
     async createEmployee(data: EmployeeCreate): Promise<ApiResponse<Employee>> {
-        const response = await apiFluxCoreServerPost<ApiResponse<Employee>>(`/employees`, data);
+        const response = await apiFluxCoreServerPost<ApiResponse<Employee>>(`/users`, data);
         return response as ApiResponse<Employee>;
     }
 
     async updateEmployee(id: number, data: EmployeeUpdate): Promise<ApiResponse<Employee>> {
-        const response = await apiFluxCoreServerPut<ApiResponse<Employee>>(`/employees/${id}`, data);
+        const response = await apiFluxCoreServerPut<ApiResponse<Employee>>(`/users/${id}`, data);
         return response as ApiResponse<Employee>;
     }
 
     async deactivateEmployee(id: number): Promise<ApiResponse<null>> {
-        const response = await apiFluxCoreServerPatch<ApiResponse<null>>(`/employees/${id}/deactivate`, {});
+        const response = await apiFluxCoreServerPatch<ApiResponse<null>>(`/users/${id}/deactivate`, {});
         return response as ApiResponse<null>;
     }
 }

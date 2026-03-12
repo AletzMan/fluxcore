@@ -1,5 +1,5 @@
 import { ContainerSection } from "@/app/components/layout/ContainerSection/ContainerSection";
-import styles from "../../EmployeePage.module.scss";
+import styles from "../EmployeePage.module.scss";
 import { FormEmployee } from "./components/FormEmployee/FormEmployee";
 
 export default function NuevoEmpleadoPage() {
