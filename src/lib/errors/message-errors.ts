@@ -314,5 +314,20 @@ export const ErrorMessages: Record<string, string> = {
     MAINTENANCE_ENABLE_REQUIRED: "El campo 'enable' es requerido",
     MAINTENANCE_MESSAGE_TOO_LONG: "El mensaje de mantenimiento no debe exceder los 500 caracteres",
     SERVICE_UNAVAILABLE: "El sitio está en mantenimiento",
+
+    //Company
+    COMPANY_NAME_REQUIRED: "El nombre de la empresa es requerido",
+    COMPANY_NAME_MIN_LENGTH: "El nombre de la empresa debe tener al menos 3 caracteres",
+    COMPANY_NAME_MAX_LENGTH: "El nombre de la empresa no puede exceder 100 caracteres",
+    COMPANY_TAX_ID_REQUIRED: "El RFC es requerido",
+    COMPANY_TAX_ID_MIN_LENGTH: "El RFC debe tener al menos 12 caracteres",
+    COMPANY_TAX_ID_MAX_LENGTH: "El RFC no puede exceder 13 caracteres",
+    COMPANY_ADDRESS_REQUIRED: "La dirección es requerida",
+    COMPANY_ADDRESS_MAX_LENGTH: "La dirección no puede exceder 200 caracteres",
+    COMPANY_PHONE_REQUIRED: "El teléfono es requerido",
+    COMPANY_PHONE_MIN_LENGTH: "El teléfono debe tener al menos 10 dígitos",
+    COMPANY_PHONE_INVALID: "El teléfono debe contener exactamente 10 dígitos",
+    COMPANY_EMAIL_REQUIRED: "El correo electrónico de la empresa es requerido",
+    COMPANY_EMAIL_INVALID: "El correo electrónico de la empresa es inválido",
  
 };

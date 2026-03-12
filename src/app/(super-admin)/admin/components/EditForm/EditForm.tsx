@@ -82,6 +82,7 @@ export const EditForm = <T extends Record<string, any>>({
         control,
         handleSubmit,
         reset,
+        getValues,
         setError,
         formState: { errors },
     } = useForm<T>({
@@ -110,6 +111,9 @@ export const EditForm = <T extends Record<string, any>>({
                     return acc;
                 }, {} as Record<string, any>);
             }
+
+            console.log("ERRORS:", errors);
+            console.log("VALUES:", getValues());
 
             const response = onSubmitAction
                 ? await onSubmitAction(id, payload)

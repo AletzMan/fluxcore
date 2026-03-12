@@ -12,7 +12,8 @@ import { useEditSectionStore } from '@/app/store/editsection.store';
 import { TenantSettings } from '@/typesModels/TenantSettings';
 import { UpdateTenantSettings } from '@/typesAPI/tenants-settings.types';
 import { TENANT_SETTINGS_SECTIONS } from '@/app/constants/tenantSettingsSections';
-import { updateTenantSettingsSectionAction } from '@/app/actions/tenant-settings.actions';
+import { updateTenantSettingsSectionAction, uploadTenantLogoAction } from '@/app/actions/tenant-settings.actions';
+import { tenantSettingsService } from '@/app/services/api/tenant-settings.service';
 
 const generalFields: EditFormField<TenantSettingsGeneralValues>[] = [
     { key: 'companyName', label: 'Nombre de la Empresa', type: 'text', placeholder: 'Ej. Mi Tienda S.A.' },
@@ -37,6 +38,30 @@ export const EditTenantSettingsFormWrapper = ({ settings }: EditTenantSettingsFo
     const activeSection = useEditSectionStore((s) => s.activeSection);
     const closeSection = useEditSectionStore((s) => s.closeSection);
 
+    // Inyecta companyName (campo obligatorio en el backend) en todas las peticiones de sección
+    const handleUpdateWithRequiredFields = async (id: number | string, data: any) => {
+        return updateTenantSettingsSectionAction(id, {
+            ...data,
+            companyName: settings.companyName
+        });
+    };
+
+    // ⚠️ El logo se sube igual que en FormBrand:
+    // construimos el FormData en el cliente y pasamos el FormData directamente
+    // al Server Action para que el File sobreviva la serialización de Next.js.
+    const handleLogoUpload = async (_id: number | string, data: any) => {
+        const logoFile: File | undefined = data?.logoFile;
+        if (!logoFile || !(logoFile instanceof File) || logoFile.size === 0) {
+            return { success: false, message: 'Por favor selecciona una imagen válida.' };
+        }
+
+        const formData = new FormData();
+        formData.append('logoFile', logoFile);
+        formData.append('companyName', settings.companyName); // requerido por backend
+
+        return uploadTenantLogoAction(formData);
+    };
+
     return (
         <>
             {/* ── Sección: Datos Generales ── */}
@@ -54,7 +79,7 @@ export const EditTenantSettingsFormWrapper = ({ settings }: EditTenantSettingsFo
                 isOpen={activeSection === TENANT_SETTINGS_SECTIONS.GENERAL}
                 onClose={closeSection}
                 id={settings.tenantId}
-                onSubmitAction={updateTenantSettingsSectionAction}
+                onSubmitAction={handleUpdateWithRequiredFields}
             />
 
             {/* ── Sección: Contacto ── */}
@@ -73,25 +98,24 @@ export const EditTenantSettingsFormWrapper = ({ settings }: EditTenantSettingsFo
                 isOpen={activeSection === TENANT_SETTINGS_SECTIONS.CONTACT}
                 onClose={closeSection}
                 id={settings.tenantId}
-                onSubmitAction={updateTenantSettingsSectionAction}
+                onSubmitAction={handleUpdateWithRequiredFields}
             />
 
             {/* ── Sección: Logo ── */}
             <EditForm<TenantSettingsLogoValues>
                 fields={logoFields}
                 defaultValues={{
-                    logoFile: new File([], settings.logoUrl || '', { type: 'image/png' }),
+                    logoFile: undefined,
                 }}
                 schema={TenantSettingsLogoSchema}
                 apiUrl="/tenant-admin/settings"
                 method='PATCH'
-                isMultipart
                 title="Imagen y Branding"
                 description="Actualiza el logo que aparece en el sistema y tickets."
                 isOpen={activeSection === TENANT_SETTINGS_SECTIONS.LOGO}
                 onClose={closeSection}
                 id={settings.tenantId}
-                onSubmitAction={updateTenantSettingsSectionAction}
+                onSubmitAction={handleLogoUpload}
             />
         </>
     );

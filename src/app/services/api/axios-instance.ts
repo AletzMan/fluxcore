@@ -120,6 +120,9 @@ export const apiFluxCorePost = async <T>(url: string, data?: any, config?: Axios
 
 export const apiFluxCorePut = async <T>(url: string, data?: any, config?: AxiosRequestConfig) => {
     try {
+        console.log("data", data);
+        console.log("url", url);
+        console.log("config", config);
         const response = await apiFluxCore.put<T>(url, data, config);
         return response.data;
     } catch (error) {
@@ -129,6 +132,9 @@ export const apiFluxCorePut = async <T>(url: string, data?: any, config?: AxiosR
 
 export const apiFluxCorePatch = async <T>(url: string, data?: any, config?: AxiosRequestConfig) => {
     try {
+        console.log("data", data);
+        console.log("url", url);
+        console.log("config", config);
         const response = await apiFluxCore.patch<T>(url, data, config);
         return response.data;
     } catch (error) {
