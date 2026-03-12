@@ -49,7 +49,7 @@ export const EditEmployeeFormWrapper = ({ employeeId, employee }: EditEmployeeFo
     const activeSection = useEditSectionStore((s) => s.activeSection);
     const closeSection = useEditSectionStore((s) => s.closeSection);
 
-    const apiUrl = `/employees/${employeeId}`; // fallback API url for component if needed
+    const apiUrl = `/users/${employeeId}`; // fallback API url for component if needed
 
     return (
         <>

@@ -7,12 +7,14 @@ import { DetailCard } from "@/app/components/ui/DetailCard/DetailCard";
 import { EditSection } from "@/app/(super-admin)/admin/components/EditSection/EditSection";
 import { EMPLOYEE_SECTIONS } from "@/app/constants/employeeSections";
 import { EditEmployeeFormWrapper } from "../components/EditEmployeeFormWrapper/EditEmployeeFormWrapper";
+import { TableError } from "@/app/components/ui/TableError/TableError";
 
 export default async function EmployeeDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
 
     let employee = null;
     let isError = false;
+    let errorCode = "";
 
     try {
         const res = await employeeService.getEmployeeById(Number(id));
@@ -20,23 +22,27 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
             employee = res.data;
         } else {
             isError = true;
+            errorCode = res.errorCode || "";
         }
-    } catch (error) {
+    } catch (error: any) {
         isError = true;
+        errorCode = error?.errorCode || "";
     }
 
     if (isError || !employee) {
         return (
             <ContainerSection
-                title="Empleado no encontrado"
-                description="El empleado que intentas visualizar no existe o hubo un error."
+                title="Perfil del Empleado"
+                description="Gestión de los datos maestros del empleado."
             >
-                <div style={{ display: 'flex', paddingTop: '1rem' }}>
-                    <Link
-                        href="/personas/empleados"
-                        icon={<MoveLeft />}
-                        label="Regresar a Empleados"
-                        variant="subtle"
+                <div className={styles.employeepage}>
+                    <TableError
+                        isError={isError}
+                        isMaintenance={errorCode === "SERVICE_UNAVAILABLE"}
+                        isEmptyResponse={!employee && !isError}
+                        isNotFound={errorCode === "NOT_FOUND"}
+                        isSearch={false}
+                        hasAddButton={false}
                     />
                 </div>
             </ContainerSection>

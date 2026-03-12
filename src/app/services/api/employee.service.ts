@@ -26,7 +26,7 @@ class EmployeeService {
     }
 
     async updateEmployee(id: number, data: EmployeeUpdate): Promise<ApiResponse<Employee>> {
-        const response = await apiFluxCoreServerPut<ApiResponse<Employee>>(`/users/${id}`, data);
+        const response = await apiFluxCoreServerPatch<ApiResponse<Employee>>(`/users/${id}`, data);
         return response as ApiResponse<Employee>;
     }
 

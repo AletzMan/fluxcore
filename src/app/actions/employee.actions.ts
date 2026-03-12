@@ -36,11 +36,11 @@ export const createEmployeeAction = async (data: EmployeeCreate) => {
 
 export async function updateEmployeeSectionAction(id: number, data: Partial<EmployeeUpdate>): Promise<any> {
     try {
-        const response = await apiFluxCoreServerPatch(`/employees/${id}`, data);
+        const response = await apiFluxCoreServerPatch(`/users/${id}`, data);
 
         // Limpiar el caché en memoria del servidor
-        cacheService.invalidateKeysByPattern(`get:/employees/${id}`);
-        cacheService.invalidateKeysByPattern(`get:/employees:`);
+        cacheService.invalidateKeysByPattern(`get:/users/${id}`);
+        cacheService.invalidateKeysByPattern(`get:/users:`);
 
         // Revalidar las rutas de Next.js
         revalidatePath(`/personas/empleados/${id}`);
