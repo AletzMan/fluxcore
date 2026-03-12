@@ -1,4 +1,4 @@
-import { apiFluxCoreServerGet, apiFluxCorePatch } from "./axios-instance";
+import { apiFluxCoreServerGet, apiFluxCoreServerPatch } from "./axios-instance";
 import { ApiResponse } from "@/typesAPI/common.types";
 import { TenantSettings } from "@/typesModels/TenantSettings";
 import { UpdateTenantSettings } from "@/typesAPI/tenants-settings.types";
@@ -20,7 +20,7 @@ class TenantSettingsService {
             formData.append("logoFile", data.logoFile);
         }
 
-        const response = await apiFluxCorePatch<ApiResponse<TenantSettings>>("/tenant-admin/settings", formData, {
+        const response = await apiFluxCoreServerPatch<ApiResponse<TenantSettings>>("/tenant-admin/settings", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -40,7 +40,7 @@ class TenantSettingsService {
             headers = { "Content-Type": "multipart/form-data" };
         }
 
-        const response = await apiFluxCorePatch<ApiResponse<TenantSettings>>("/tenant-admin/settings", payload, {
+        const response = await apiFluxCoreServerPatch<ApiResponse<TenantSettings>>("/tenant-admin/settings", payload, {
             headers
         });
         return response as ApiResponse<TenantSettings>;
