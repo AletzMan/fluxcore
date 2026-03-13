@@ -52,7 +52,11 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
     return (
         <ContainerSection
             title={`Perfil del Empleado`}
-            description="Visualiza y edita los permisos y datos maestros del empleado por secciones."
+            breadcrumb={[
+                { label: "Personas", href: "/personas" },
+                { label: "Empleados", href: "/personas/empleados" },
+                { label: employee.name, href: `/personas/empleados/${employee.id}` },
+            ]}
         >
             <div className={styles.employeepage}>
                 <header>

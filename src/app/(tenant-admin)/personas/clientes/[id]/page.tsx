@@ -8,45 +8,40 @@ import { EditSection } from "@/app/(super-admin)/admin/components/EditSection/Ed
 import { CUSTOMER_SECTIONS } from "@/app/constants/customerSections";
 import { EditCustomerFormWrapper } from "../components/EditCustomerFormWrapper/EditCustomerFormWrapper";
 
+import { TableError } from "@/app/components/ui/TableError/TableError";
+
+async function getCustomer(id: number) {
+    return await customerService.getCustomerById(id);
+}
+
 export default async function CustomerDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
+    const response = await getCustomer(Number(id));
 
-    let customer = null;
-    let isError = false;
-
-    try {
-        const res = await customerService.getCustomerById(Number(id));
-        if (res.success && res.data) {
-            customer = res.data;
-        } else {
-            isError = true;
-        }
-    } catch (error) {
-        isError = true;
-    }
-
-    if (isError || !customer) {
+    if (!response?.data) {
         return (
-            <ContainerSection
-                title="Cliente no encontrado"
-                description="El cliente que intentas visualizar no existe o hubo un error."
-            >
-                <div style={{ display: 'flex', paddingTop: '1rem' }}>
-                    <Link
-                        href="/personas/clientes"
-                        icon={<MoveLeft />}
-                        label="Regresar a Clientes"
-                        variant="subtle"
-                    />
-                </div>
-            </ContainerSection>
+            <TableError
+                isError={!response?.success}
+                isMaintenance={response?.errorCode === "SERVICE_UNAVAILABLE"}
+                isEmptyResponse={!response?.data}
+                isNotFound={response?.errorCode === "NOT_FOUND"}
+                isSearch={false}
+                hasAddButton={false}
+                urlBack="/personas/clientes"
+            />
         );
     }
+
+    const customer = response.data;
 
     return (
         <ContainerSection
             title={`Perfil del Cliente`}
-            description="Visualiza y edita los datos específicos de tu cliente por secciones."
+            breadcrumb={[
+                { label: "Personas", href: "/personas" },
+                { label: "Clientes", href: "/personas/clientes" },
+                { label: `${customer.firstName} ${customer.lastName}`, href: `/personas/clientes/${customer.id}` },
+            ]}
         >
             <div className={styles.customerpage}>
                 <header>

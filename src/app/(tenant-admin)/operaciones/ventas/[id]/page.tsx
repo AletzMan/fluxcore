@@ -21,7 +21,7 @@ export default async function SalePage({ params }: { params: Promise<{ id: strin
             isError={true}
             isNotFound={!sale?.data}
             isMaintenance={sale?.errorCode === "SERVICE_UNAVAILABLE"}
-            urlBack="/ventas"
+            urlBack="/operaciones/ventas"
         />;
     }
 
@@ -30,9 +30,13 @@ export default async function SalePage({ params }: { params: Promise<{ id: strin
     return (
         <ContainerSection
             title={`Detalle de Venta #${s.ticketNumber}`}
-            description={`Información completa de la venta y sus pagos.`}
+            breadcrumb={[
+                { label: "Operaciones", href: "/operaciones" },
+                { label: "Ventas", href: "/operaciones/ventas" },
+                { label: `#${s.ticketNumber}`, href: `/operaciones/ventas/${s.id}` },
+            ]}
             titleAddButton="Volver a las ventas"
-            hrefAddButton="/ventas"
+            hrefAddButton="/operaciones/ventas"
         >
             <div className={styles.salepage}>
                 <header>

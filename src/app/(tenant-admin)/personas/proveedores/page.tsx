@@ -24,7 +24,10 @@ export default async function ProveedoresPage({ searchParams }: {
     return (
         <ContainerSection
             title="Directorio de Proveedores"
-            description="Gestiona a tus socios comerciales, fabricantes y distribuidores de productos."
+            breadcrumb={[
+                { label: "Personas", href: "/personas" },
+                { label: "Proveedores", href: "/personas/proveedores" },
+            ]}
             titleAddButton="Nuevo Proveedor"
             hrefAddButton="/personas/proveedores/nuevo"
         >

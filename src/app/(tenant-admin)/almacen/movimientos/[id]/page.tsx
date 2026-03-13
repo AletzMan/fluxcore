@@ -3,6 +3,7 @@ import { movementService } from "@/app/services/api/movement.service";
 import styles from "./MovementDetailPage.module.scss";
 import { MoveLeft } from "lucide-react";
 import { Link, Divider, Tag } from "lambda-ui-components";
+import { TableError } from "@/app/components/ui/TableError/TableError";
 
 const movementTypeTranslations: Record<string, string> = {
     "100": "Compra",
@@ -50,19 +51,15 @@ export default async function MovementDetailPage({ params }: { params: Promise<{
 
     if (isError || !movement) {
         return (
-            <ContainerSection
-                title="Movimiento no encontrado"
-                description="El movimiento que intentas buscar no existe o hubo un error."
-            >
-                <div className={styles.backContainer}>
-                    <Link
-                        href="/almacen/movimientos"
-                        icon={<MoveLeft />}
-                        label="Regresar a Movimientos"
-                        variant="subtle"
-                    />
-                </div>
-            </ContainerSection>
+            <TableError
+                isError={isError}
+                isEmptyResponse={!movement && !isError}
+                isNotFound={!movement}
+                isSearch={false}
+                isMaintenance={false} // could check errorCode if available in service
+                hasAddButton={false}
+                urlBack="/almacen/movimientos"
+            />
         );
     }
 
@@ -71,7 +68,11 @@ export default async function MovementDetailPage({ params }: { params: Promise<{
     return (
         <ContainerSection
             title={`Movimiento #${movement.movementCode}`}
-            description="Detalles específicos del registro de movimiento de inventario."
+            breadcrumb={[
+                { label: "Almacén", href: "/almacen" },
+                { label: "Movimientos", href: "/almacen/movimientos" },
+                { label: `#${movement.movementCode}`, href: `/almacen/movimientos/${movement.id}` },
+            ]}
         >
             <div className={styles.container}>
                 <div className={styles.headerRow}>

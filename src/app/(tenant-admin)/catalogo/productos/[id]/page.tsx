@@ -6,6 +6,7 @@ import { ProductVariantParams } from "@/typesAPI/product-variant";
 import globalStyles from "../Productspage.module.scss";
 import styles from "./ProductDetailPage.module.scss";
 import { ProductVariantView } from "./components/ProductVariantView/ProductVariantView";
+import { TableError } from "@/app/components/ui/TableError/TableError";
 
 export default async function ProductDetailPage({
     params,
@@ -17,15 +18,41 @@ export default async function ProductDetailPage({
     const resolvedParams = await params;
     const { id } = resolvedParams;
 
+    let master = null;
+    let response = null;
+
+    try {
+        response = await productMasterService.getProductMasterById(id);
+        master = response.data;
+    } catch (error) {
+        // Error will be handled below
+    }
+
+    if (!master) {
+        return (
+            <TableError
+                isError={!response?.success}
+                isMaintenance={response?.errorCode === "SERVICE_UNAVAILABLE"}
+                isEmptyResponse={!master}
+                isNotFound={response?.errorCode === "NOT_FOUND"}
+                isSearch={false}
+                hasAddButton={false}
+                urlBack="/catalogo/productos"
+            />
+        );
+    }
+
     return (
         <ContainerSection
             title={`Detalles del Producto #${id}`}
-            description="Aquí se resume la familia o tipo de producto maestro, y a continuación puedes ver o añadir las versiones específicas (variantes) del mismo."
+            breadcrumb={[
+                { label: "Catálogo", href: "/catalogo" },
+                { label: "Productos", href: "/catalogo/productos" },
+                { label: master.name, href: `/catalogo/productos/${master.id}` },
+            ]}
         >
             <div className={`${globalStyles.container} ${styles.productDetailPage}`}>
-                <Suspense fallback={<div>Cargando ficha base...</div>}>
-                    <ProductMasterDetail id={id} />
-                </Suspense>
+                <ProductMasterDetailContent master={master} />
 
                 <div className={styles.variantsSection}>
                     <h3 className={styles.variantsSectionTitle}>Variantes de este Producto</h3>
@@ -44,19 +71,7 @@ export default async function ProductDetailPage({
 // --------------------------------------------------------
 // Server Component - Ficha Maestra
 // --------------------------------------------------------
-async function ProductMasterDetail({ id }: { id: string }) {
-    let master;
-    try {
-        const res = await productMasterService.getProductMasterById(id);
-        master = res.data;
-    } catch {
-        return <div className={styles.errorText}>Error al cargar la información base del catálogo.</div>;
-    }
-
-    if (!master) {
-        return <div>Producto base no encontrado.</div>;
-    }
-
+function ProductMasterDetailContent({ master }: { master: any }) {
     return (
         <div className={styles.masterDetailCard}>
             <h2 className={styles.masterTitle}>{master.name}</h2>

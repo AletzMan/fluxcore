@@ -24,9 +24,12 @@ export default async function EmpleadosPage({ searchParams }: {
     return (
         <ContainerSection
             title="Directorio de Empleados"
-            description="Administra a los usuarios de la plataforma, roles y accesos."
             titleAddButton="Nuevo Empleado"
             hrefAddButton="/personas/empleados/nuevo"
+            breadcrumb={[
+                { label: "Personas", href: "/personas" },
+                { label: "Empleados", href: "/personas/empleados" },
+            ]}
         >
             <div className={styles.container}>
                 <Suspense fallback={<div>Cargando empleados...</div>}>

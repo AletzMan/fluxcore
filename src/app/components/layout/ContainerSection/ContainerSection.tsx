@@ -1,22 +1,34 @@
-import { Divider, Link } from 'lambda-ui-components';
+import { Breadcrumb, Divider, Link } from 'lambda-ui-components';
 import styles from './ContainerSection.module.scss'
 import { Plus } from 'lucide-react';
+
+interface BreadcrumbItem {
+    label: string;
+    href: string;
+    icon?: React.ReactNode;
+}
 
 interface ContainerSectionProps {
     children: React.ReactNode;
     title: string;
-    description: string;
+    description?: string;
+    breadcrumb?: BreadcrumbItem[];
     titleAddButton?: string;
     hrefAddButton?: string;
 }
 
-export const ContainerSection = ({ children, title, description, titleAddButton, hrefAddButton }: ContainerSectionProps) => {
+export const ContainerSection = ({ children, title, description, breadcrumb, titleAddButton, hrefAddButton }: ContainerSectionProps) => {
     return (
         <div className={`${styles.container}  `}>
             <header className={styles.header}>
                 <div className={styles.header_content}>
+                    {breadcrumb && (
+                        <Breadcrumb
+                            items={breadcrumb} variant="stepped" color="neutral" size="tiny" radius="small"
+                        />
+                    )}
                     <h1 className={styles.header_title}>{title}</h1>
-                    <span className={styles.header_description}>{description}</span>
+                    {description && <span className={styles.header_description}>{description}</span>}
                 </div>
                 {titleAddButton && hrefAddButton && (
                     <Link

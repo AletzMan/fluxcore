@@ -7,46 +7,42 @@ import { DetailCard } from "@/app/components/ui/DetailCard/DetailCard";
 import { EditSection } from "@/app/(super-admin)/admin/components/EditSection/EditSection";
 import { PROVIDER_SECTIONS } from "@/app/constants/providerSections";
 import { EditProviderFormWrapper } from "../components/EditProviderFormWrapper/EditProviderFormWrapper";
+import { TableError } from "@/app/components/ui/TableError/TableError";
+
+async function getProvider(id: number) {
+    return await providerService.getProviderById(id);
+}
 
 export default async function ProviderDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
+    const response = await getProvider(Number(id));
 
-    let provider = null;
-    let isError = false;
+    console.log("response provider", response);
 
-    try {
-        const res = await providerService.getProviderById(Number(id));
-        if (res.success && res.data) {
-            provider = res.data;
-        } else {
-            isError = true;
-        }
-    } catch (error) {
-        isError = true;
-    }
-
-    if (isError || !provider) {
+    if (!response?.data) {
         return (
-            <ContainerSection
-                title="Proveedor no encontrado"
-                description="El proveedor que intentas visualizar no existe o hubo un error."
-            >
-                <div style={{ display: 'flex', paddingTop: '1rem' }}>
-                    <Link
-                        href="/personas/proveedores"
-                        icon={<MoveLeft />}
-                        label="Regresar a Proveedores"
-                        variant="subtle"
-                    />
-                </div>
-            </ContainerSection>
+            <TableError
+                isError={!response?.success}
+                isMaintenance={response?.errorCode === "SERVICE_UNAVAILABLE"}
+                isEmptyResponse={!response?.data}
+                isNotFound={response?.errorCode?.includes("NOT_FOUND") || false}
+                isSearch={false}
+                hasAddButton={false}
+                urlBack="/personas/proveedores"
+            />
         );
     }
+
+    const provider = response.data;
 
     return (
         <ContainerSection
             title={`Perfil del Proveedor`}
-            description="Visualiza y edita los datos maestros de tu proveedor por secciones."
+            breadcrumb={[
+                { label: "Personas", href: "/personas" },
+                { label: "Proveedores", href: "/personas/proveedores" },
+                { label: provider.companyName, href: `/personas/proveedores/${provider.id}` },
+            ]}
         >
             <div className={styles.providerpage}>
                 <header>

@@ -87,6 +87,17 @@ export const TableError = ({
                                 type='button'
                             />
                         )}
+                        {stateConfig.actionType === 'back' && (
+                            <Link
+                                href={urlBack || "/"}
+                                variant="soft"
+                                color="info"
+                                icon={<RefreshCcw size={16} />}
+                                label="Volver a la lista"
+                                size="small"
+                                type='button'
+                            />
+                        )}
                     </div>
                 )}
             </div>
