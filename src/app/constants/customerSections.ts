@@ -51,3 +51,23 @@ export const CFDI_USAGE_MAP = {
     [CfdiUsage.WithoutFiscalEffects]: "Sin efectos fiscales",
     [CfdiUsage.Payments]: "Pagos / Complemento de pago"
 }
+
+export const CFDI_USAGE_CODES = {
+    0: "G01",
+    1: "G02",
+    2: "G03",
+    3: "I01",
+    4: "I02",
+    5: "I03",
+    6: "I04",
+    7: "I05",
+    8: "I06",
+    9: "I07",
+    10: "I08",
+    11: "D01",
+    12: "D02",
+    13: "D03",
+    14: "D04",
+    15: "S01",
+    16: "CP01"
+}

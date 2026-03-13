@@ -84,23 +84,23 @@ export enum TaxRegime {
 }
 
 export enum CfdiUsage {
-    AcquisitionOfMerchandise = 'G01',
-    ReturnsDamagesOrAllowances = 'G02',
-    GeneralExpenses = 'G03',
-    Construction = 'I01',
-    OfficeFurnitureAndEquipment = 'I02',
-    TransportEquipment = 'I03',
-    ComputerEquipment = 'I04',
-    ToolsAndDies = 'I05',
-    TelephoneCommunications = 'I06',
-    SatelliteCommunications = 'I07',
-    OtherMachineryAndEquipment = 'I08',
-    MedicalAndDentalExpenses = 'D01',
-    DisabilityMedicalExpenses = 'D02',
-    FuneralExpenses = 'D03',
-    Donations = 'D04',
-    WithoutFiscalEffects = 'S01',
-    Payments = 'CP01'
+    AcquisitionOfMerchandise = 0,
+    ReturnsDamagesOrAllowances = 1,
+    GeneralExpenses = 2,
+    Construction = 3,
+    OfficeFurnitureAndEquipment = 4,
+    TransportEquipment = 5,
+    ComputerEquipment = 6,
+    ToolsAndDies = 7,
+    TelephoneCommunications = 8,
+    SatelliteCommunications = 9,
+    OtherMachineryAndEquipment = 10,
+    MedicalAndDentalExpenses = 11,
+    DisabilityMedicalExpenses = 12,
+    FuneralExpenses = 13,
+    Donations = 14,
+    WithoutFiscalEffects = 15,
+    Payments = 16
 } 
 
 export enum UserRole {

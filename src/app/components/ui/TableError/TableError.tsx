@@ -108,7 +108,7 @@ interface StateConfig {
 
 const getStateConfig = (isError: boolean, isEmptyResponse: boolean, isSearch: boolean, isNotFound: boolean, isMaintenance: boolean, hasAddButton: boolean): StateConfig | undefined => {
 
-    console.log(isError, isEmptyResponse, isSearch, isNotFound, isMaintenance);
+    console.log(isError, isEmptyResponse, isSearch, isNotFound, isMaintenance, hasAddButton);
 
     if (isSearch && isEmptyResponse) {
         return {

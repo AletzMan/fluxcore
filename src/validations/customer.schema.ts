@@ -30,8 +30,8 @@ export const CustomerTaxSchema = z.object({
     zipCode: z.string()
         .min(5, "El código postal debe tener 5 dígitos")
         .max(5, "El código postal debe tener 5 dígitos"),
-    taxRegime: z.nativeEnum(TaxRegime, { error: "Régimen Fiscal requerido" }),
-    cfdiUsage: z.nativeEnum(CfdiUsage, { error: "Uso de CFDI requerido" }),
+    taxRegime: z.preprocess((val) => Number(val), z.nativeEnum(TaxRegime, { error: "Régimen Fiscal requerido" })),
+    cfdiUsage: z.preprocess((val) => Number(val), z.nativeEnum(CfdiUsage, { error: "Uso de CFDI requerido" })),
 });
 export type CustomerTaxValues = z.infer<typeof CustomerTaxSchema>;
 

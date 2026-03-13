@@ -6,7 +6,7 @@ import { Tag, useNotification } from "lambda-ui-components";
 import { customerService } from "@/app/services/api/customer.service";
 import styles from "./CustomerView.module.scss";
 import { TaxRegime, CfdiUsage } from "@/enums/common.enums";
-import { TAX_REGIME_MAP, CFDI_USAGE_MAP } from "@/app/constants/customerSections";
+import { TAX_REGIME_MAP, CFDI_USAGE_MAP, CFDI_USAGE_CODES } from "@/app/constants/customerSections";
 
 const getTaxRegimeOptions = () => Object.entries(TaxRegime)
     .filter(([key, value]) => typeof value === 'number')
@@ -16,11 +16,17 @@ const getTaxRegimeOptions = () => Object.entries(TaxRegime)
     }));
 
 const getCfdiUsageOptions = () => Object.entries(CfdiUsage)
-    .filter(([key, value]) => typeof value === 'string')
-    .map(([key, value]) => ({
-        label: `${value} - ${CFDI_USAGE_MAP[value as CfdiUsage] || key}`,
-        value: value as string
-    }));
+    .filter(([key, value]) => typeof value === 'number')
+    .map(([key, value]) => {
+        const val = value as number;
+        // @ts-ignore - CFDI_USAGE_CODES keys are numbers
+        const code = CFDI_USAGE_CODES[val] || key;
+        const description = CFDI_USAGE_MAP[val as CfdiUsage] || key;
+        return {
+            label: `${code} - ${description}`,
+            value: val.toString()
+        };
+    });
 
 interface CustomerViewProps {
     customers: Customer[];

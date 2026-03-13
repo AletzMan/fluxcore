@@ -12,18 +12,35 @@ import {
 import { EditForm, EditFormField } from '@/app/(super-admin)/admin/components/EditForm/EditForm';
 import { useEditSectionStore } from '@/app/store/editsection.store';
 import { Customer } from '@/typesModels/Customer';
-import { CUSTOMER_SECTIONS } from '@/app/constants/customerSections';
+import { CUSTOMER_SECTIONS, TAX_REGIME_MAP, CFDI_USAGE_MAP, CFDI_USAGE_CODES } from '@/app/constants/customerSections';
 import { updateCustomerSectionAction } from '@/app/actions/customer.actions';
 import { CfdiUsage, TaxRegime } from '@/enums/common.enums';
 
 // Helper to convert enums to select options
 const getTaxRegimeOptions = () => Object.entries(TaxRegime)
     .filter(([key, value]) => typeof value === 'number')
-    .map(([key, value]) => ({ label: key.replace(/([A-Z])/g, ' $1').trim(), value: value!.toString() }));
+    .map(([key, value]) => ({
+        label: TAX_REGIME_MAP[value as TaxRegime] || key,
+        value: value!.toString()
+    }));
 
 const getCfdiUsageOptions = () => Object.entries(CfdiUsage)
-    .filter(([key, value]) => typeof value === 'string')
-    .map(([key, value]) => ({ label: `${value} - ${key.replace(/([A-Z])/g, ' $1').trim()}`, value: value as string }));
+    .filter(([key, value]) => typeof value === 'number')
+    .map(([key, value]) => {
+        const val = value as number;
+        const code = CFDI_USAGE_CODES[val as keyof typeof CFDI_USAGE_CODES] || key;
+        const description = CFDI_USAGE_MAP[val as CfdiUsage] || key;
+        return {
+            label: `${code} - ${description}`,
+            value: val.toString()
+        };
+    });
+
+const getCfdiUsageIndexByCode = (code?: string): CfdiUsage | undefined => {
+    if (!code) return undefined;
+    const entry = Object.entries(CFDI_USAGE_CODES).find(([_key, val]) => val === code);
+    return entry ? Number(entry[0]) as CfdiUsage : undefined;
+};
 
 const generalFields: EditFormField<CustomerGeneralValues>[] = [
     { key: 'firstName', label: 'Nombre(s)', type: 'text', placeholder: 'Ej. Juan' },
@@ -106,7 +123,7 @@ export const EditCustomerFormWrapper = ({ customerId, customer }: EditCustomerFo
                     rfc: customer.rfc,
                     zipCode: customer.address, // API uses zipCode separately internally but usually we store it in address or model differently
                     taxRegime: customer.taxRegimeCode,
-                    cfdiUsage: customer.cfdiUsageCode as CfdiUsage,
+                    cfdiUsage: getCfdiUsageIndexByCode(customer.cfdiUsageCode) as CfdiUsage,
                 }}
                 schema={CustomerTaxSchema}
                 apiUrl={apiUrl}

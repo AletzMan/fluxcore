@@ -87,7 +87,7 @@ export const InventoryView = ({ inventoryRows, pagination, success, isMaintenanc
             pagination={pagination}
             success={success}
             isMaintenance={isMaintenance || false}
-
+            hasAddButton={false}
             filters={[
                 // Filtros booleanos mappeados a un multiple-choice o boolean en el backend
                 { key: 'isLowStock', value: 'true', label: 'Bajo Stock', type: 'boolean', nameGroup: 'Estado de Stock' },

@@ -16,6 +16,7 @@ class CustomerService {
         if (params?.hasBalance !== undefined) queryParams.append("HasBalance", params.hasBalance.toString());
         if (params?.zipCode) queryParams.append("ZipCode", params.zipCode);
 
+        console.log("URL: ", `/customers?${queryParams.toString()}`);
         const response = await apiFluxCoreServerGet<PagedResponse<Customer>>(`/customers?${queryParams.toString()}`);
         return response as PagedResponse<Customer>;
     }
