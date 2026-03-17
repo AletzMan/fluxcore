@@ -27,11 +27,10 @@ export const billingCycleName = {
     ANNUAL: 'Anual',
 }
 
- 
-
 export const planNameColor = {
     FREE: 'neutral',
     BASIC: 'primary',
     PRO: 'secondary',
     ENTERPRISE: 'success',
 }
+ 

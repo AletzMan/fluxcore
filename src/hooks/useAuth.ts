@@ -2,8 +2,8 @@ import { useAuthStore } from '@/app/store/auth.store';
 import { authService } from '@/app/services/api/auth.service';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import type { LoginCredentials, RegisterData } from '@/typesAPI/auth.types';
-import { ErrorMessages } from '../lib/errors/message-errors';
+import type { LoginCredentials, RegisterData } from '@/typesAPI/auth.types'; 
+import { getHomeRouteForRole } from '@/lib/utils/auth-utils';
 
 export function useAuth() {
     const router = useRouter();
@@ -19,7 +19,10 @@ export function useAuth() {
         const response = await authService.login(credentials);
 
         if (response && response.success) {
-            router.push('/admin/dashboard');
+            if (response.data) {
+                const homeRoute = getHomeRouteForRole(response.data.user.role || 'ADMIN');
+                router.push(homeRoute);
+            }
         } else {
             setError(response?.message || "Ocurrió un error al iniciar sesión");
         }
@@ -32,8 +35,9 @@ export function useAuth() {
 
         const response = await authService.register(data);
 
-        if (response && response.success) {
-            router.push('/admin/dashboard');
+        if (response && response.success && response.data) {
+            const homeRoute = getHomeRouteForRole(response.data.user.role || 'ADMIN');
+            router.push(homeRoute);
         } else {
             setError(response?.message || "Ocurrió un error en el registro");
         }
