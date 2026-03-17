@@ -14,7 +14,9 @@ class CashSessionService {
         if (params?.toDate) queryParams.append("ToDate", params.toDate.toISOString());
         if (params?.onlyWithDiscrepancies) queryParams.append("OnlyWithDiscrepancies", "true");
         if (params?.userId) queryParams.append("UserId", params.userId.toString());
-
+        if(params?.sortBy) queryParams.append("SortBy", params.sortBy);
+        if(params?.sortDirection) queryParams.append("SortDirection", params.sortDirection);
+        
         return await apiFluxCoreServerGet<PagedResponse<CashSession>>(`/cash-sessions?${queryParams.toString()}`) as PagedResponse<CashSession>;
     }
 

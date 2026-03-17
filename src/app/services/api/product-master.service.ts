@@ -10,6 +10,8 @@ class ProductMasterService {
         if (params?.pageSize) queryParams.append("PageSize", params.pageSize.toString());
         if (params?.search) queryParams.append("Search", params.search);
         if (params?.categoryId) queryParams.append("CategoryId", params.categoryId.toString());
+        if(params?.sortBy) queryParams.append("SortBy", params.sortBy);
+        if(params?.sortDirection) queryParams.append("SortDirection", params.sortDirection);
         
         return await apiFluxCoreServerGet<PagedResponse<ProductMaster>>(`/product-masters?${queryParams.toString()}`) as PagedResponse<ProductMaster>;
     }

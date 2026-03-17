@@ -9,6 +9,8 @@ class MovementService {
         if (params?.page) queryParams.append("Page", params.page.toString());
         if (params?.pageSize) queryParams.append("PageSize", params.pageSize.toString());
         if (params?.search) queryParams.append("Search", params.search);
+        if(params?.sortBy) queryParams.append("SortBy", params.sortBy);
+        if(params?.sortDirection) queryParams.append("SortDirection", params.sortDirection);
         
         if (params?.type !== undefined) queryParams.append("Type", params.type.toString());
         if (params?.userId !== undefined) queryParams.append("UserId", params.userId.toString());

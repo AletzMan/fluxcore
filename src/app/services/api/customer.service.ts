@@ -9,7 +9,8 @@ class CustomerService {
         if (params?.page) queryParams.append("Page", params.page.toString());
         if (params?.pageSize) queryParams.append("PageSize", params.pageSize.toString());
         if (params?.search) queryParams.append("Search", params.search);
-        
+        if(params?.sortBy) queryParams.append("SortBy", params.sortBy);
+        if(params?.sortDirection) queryParams.append("SortDirection", params.sortDirection);
         if (params?.isActive !== undefined) queryParams.append("IsActive", params.isActive.toString());
         if (params?.taxRegime !== undefined) queryParams.append("TaxRegime", params.taxRegime.toString());
         if (params?.cfdiUsage !== undefined) queryParams.append("CfdiUsage", params.cfdiUsage.toString());

@@ -14,7 +14,9 @@ class SaleService {
         if (params?.toDate) queryParams.append("ToDate", params.toDate.toISOString());
         if (params?.paymentMethod) queryParams.append("PaymentMethod", params.paymentMethod);
         if (params?.creatorId) queryParams.append("CreatorId", params.creatorId.toString());
-
+        if(params?.sortBy) queryParams.append("SortBy", params.sortBy);
+        if(params?.sortDirection) queryParams.append("SortDirection", params.sortDirection);
+        
         return await apiFluxCoreServerGet<PagedResponse<Sale>>(`/sales?${queryParams.toString()}`) as PagedResponse<Sale>;
     }
 

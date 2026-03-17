@@ -10,7 +10,8 @@ class EmployeeService {
         if (params?.pageSize) queryParams.append("PageSize", params.pageSize.toString());
         if (params?.search) queryParams.append("Search", params.search);
         if (params?.role) queryParams.append("Role", params.role.toString());
-
+        if(params?.sortBy) queryParams.append("SortBy", params.sortBy);
+        if(params?.sortDirection) queryParams.append("SortDirection", params.sortDirection);
         const response = await apiFluxCoreServerGet<PagedResponse<Employee>>(`/users?${queryParams.toString()}`);
         return response as PagedResponse<Employee>;
     }

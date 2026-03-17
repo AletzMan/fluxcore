@@ -9,6 +9,8 @@ class CategoryService {
         if (params?.page) queryParams.append("Page", params.page.toString());
         if (params?.pageSize) queryParams.append("PageSize", params.pageSize.toString());
         if (params?.search) queryParams.append("Search", params.search);
+        if(params?.sortBy) queryParams.append("SortBy", params.sortBy);
+        if(params?.sortDirection) queryParams.append("SortDirection", params.sortDirection);
         
         return await apiFluxCoreServerGet<PagedResponse<Category>>(`/categories?${queryParams.toString()}`) as PagedResponse<Category>;
     }
